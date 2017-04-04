@@ -98,58 +98,49 @@
 </blockquote>
 <h1 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h1><p>在这里呢我们先来建立两张有外键关联的张表。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">CREATE DATABASE db0206;</div><div class="line">USE db0206;</div><div class="line"></div><div class="line">CREATE TABLE `db0206`.`tbl_dept`(  </div><div class="line">  `id` INT(11) NOT NULL AUTO_INCREMENT,</div><div class="line">  `deptName` VARCHAR(30),</div><div class="line">  `locAdd` VARCHAR(40),</div><div class="line">  PRIMARY KEY (`id`)</div><div class="line">) ENGINE=INNODB CHARSET=utf8;</div><div class="line"></div><div class="line">CREATE TABLE `db0206`.`tbl_emp`(  </div><div class="line">  `id` INT(11) NOT NULL AUTO_INCREMENT,</div><div class="line">  `name` VARCHAR(20),</div><div class="line">  `deptId` INT(11),</div><div class="line">  PRIMARY KEY (`id`),</div><div class="line">  FOREIGN KEY (`deptId`) REFERENCES `db0206`.`tb_dept`(`id`)</div><div class="line">) ENGINE=INNODB CHARSET=utf8;</div><div class="line">/*插入数据*/</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;RD&apos;,11);</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;HR&apos;,12);</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;MK&apos;,13);</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;MIS&apos;,14);</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;FD&apos;,15);</div><div class="line"></div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;z3&apos;,1);</div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;z4&apos;,1);</div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;z5&apos;,1);</div><div class="line"></div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;w5&apos;,2);</div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;w6&apos;,2);</div><div class="line"></div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;s7&apos;,3);</div><div class="line"></div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;s8&apos;,4);</div></pre></td></tr></table></figure>
-<h1 id="文氏图与SQL语句的编写以及查询结果"><a href="#文氏图与SQL语句的编写以及查询结果" class="headerlink" title="文氏图与SQL语句的编写以及查询结果"></a>文氏图与SQL语句的编写以及查询结果</h1><h2 id="内连接"><a href="#内连接" class="headerlink" title="内连接"></a>内连接</h2><h3 id="内连接文氏图"><a href="#内连接文氏图" class="headerlink" title="内连接文氏图"></a>内连接文氏图</h3><p><img src="media/14906669823269/14906671067372.png" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果"><a href="#执行的sql语句以及执行的查询结果" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
+<h1 id="文氏图与SQL语句的编写以及查询结果"><a href="#文氏图与SQL语句的编写以及查询结果" class="headerlink" title="文氏图与SQL语句的编写以及查询结果"></a>文氏图与SQL语句的编写以及查询结果</h1><h2 id="内连接"><a href="#内连接" class="headerlink" title="内连接"></a>内连接</h2><h3 id="内连接文氏图"><a href="#内连接文氏图" class="headerlink" title="内连接文氏图"></a>内连接文氏图</h3><h4 id="执行的sql语句以及执行的查询结果"><a href="#执行的sql语句以及执行的查询结果" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
 <li>执行的sql语句</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a inner join tbl_emp b on a.id=b.deptId;</div></pre></td></tr></table></figure>
 <ul>
-<li>查询结果<br>  <img src="media/14906669823269/14906671283981.png" alt=""></li>
+<li>查询结果</li>
 </ul>
-<h2 id="左外连接"><a href="#左外连接" class="headerlink" title="左外连接"></a>左外连接</h2><h3 id="左外连接文氏图"><a href="#左外连接文氏图" class="headerlink" title="左外连接文氏图"></a>左外连接文氏图</h3><p><img src="media/14906669823269/14906671404628.png" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-1"><a href="#执行的sql语句以及执行的查询结果-1" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
+<h2 id="左外连接"><a href="#左外连接" class="headerlink" title="左外连接"></a>左外连接</h2><h3 id="左外连接文氏图"><a href="#左外连接文氏图" class="headerlink" title="左外连接文氏图"></a>左外连接文氏图</h3><h4 id="执行的sql语句以及执行的查询结果-1"><a href="#执行的sql语句以及执行的查询结果-1" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
 <li>执行的sql语句</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a left join tbl_emp b on a.id=b.deptId;</div></pre></td></tr></table></figure>
 <ul>
-<li>查询结果<br> <img src="media/14906669823269/14906671491566.png" alt=""></li>
+<li>查询结果</li>
 </ul>
-<h2 id="右外连接"><a href="#右外连接" class="headerlink" title="右外连接"></a>右外连接</h2><h3 id="右外连接文氏图"><a href="#右外连接文氏图" class="headerlink" title="右外连接文氏图"></a>右外连接文氏图</h3><p><img src="media/14906669823269/14906671586536.jpg" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-2"><a href="#执行的sql语句以及执行的查询结果-2" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
+<h2 id="右外连接"><a href="#右外连接" class="headerlink" title="右外连接"></a>右外连接</h2><h3 id="右外连接文氏图"><a href="#右外连接文氏图" class="headerlink" title="右外连接文氏图"></a>右外连接文氏图</h3><h4 id="执行的sql语句以及执行的查询结果-2"><a href="#执行的sql语句以及执行的查询结果-2" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
 <li>执行的sql语句</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a right join tbl_emp b on a.id=b.deptId;</div></pre></td></tr></table></figure>
 <ul>
-<li>查询结果<br>  <img src="media/14906669823269/14906671715548.png" alt=""></li>
+<li>查询结果</li>
 </ul>
-<h2 id="左连接"><a href="#左连接" class="headerlink" title="左连接"></a>左连接</h2><h3 id="左连接文氏图"><a href="#左连接文氏图" class="headerlink" title="左连接文氏图"></a>左连接文氏图</h3><p><img src="media/14906669823269/14906671817769.png" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-3"><a href="#执行的sql语句以及执行的查询结果-3" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
+<h2 id="左连接"><a href="#左连接" class="headerlink" title="左连接"></a>左连接</h2><h3 id="左连接文氏图"><a href="#左连接文氏图" class="headerlink" title="左连接文氏图"></a>左连接文氏图</h3><h4 id="执行的sql语句以及执行的查询结果-3"><a href="#执行的sql语句以及执行的查询结果-3" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
 <li>执行的sql语句</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">elect * from tbl_dept a left join tbl_emp b on a.id=b.deptId where b.deptId is null;</div></pre></td></tr></table></figure>
 <ul>
 <li>查询结果</li>
 </ul>
-<p><img src="media/14906669823269/14906671960016.png" alt=""></p>
-<h2 id="右连接"><a href="#右连接" class="headerlink" title="右连接"></a>右连接</h2><h3 id="右连接文氏图"><a href="#右连接文氏图" class="headerlink" title="右连接文氏图"></a>右连接文氏图</h3><p><img src="media/14906669823269/14906672122367.jpg" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-4"><a href="#执行的sql语句以及执行的查询结果-4" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
+<h2 id="右连接"><a href="#右连接" class="headerlink" title="右连接"></a>右连接</h2><h3 id="右连接文氏图"><a href="#右连接文氏图" class="headerlink" title="右连接文氏图"></a>右连接文氏图</h3><h4 id="执行的sql语句以及执行的查询结果-4"><a href="#执行的sql语句以及执行的查询结果-4" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
 <li>执行的sql语句</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a right join tbl_emp b on a.id=b.deptId where a.id is null;</div></pre></td></tr></table></figure>
 <ul>
 <li>查询结果</li>
 </ul>
-<p><img src="media/14906669823269/14906672303744.png" alt=""></p>
-<h2 id="全连接"><a href="#全连接" class="headerlink" title="全连接"></a>全连接</h2><h3 id="全连接文氏图"><a href="#全连接文氏图" class="headerlink" title="全连接文氏图"></a>全连接文氏图</h3><p><img src="media/14906669823269/14906672393192.png" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-5"><a href="#执行的sql语句以及执行的查询结果-5" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
+<h2 id="全连接"><a href="#全连接" class="headerlink" title="全连接"></a>全连接</h2><h3 id="全连接文氏图"><a href="#全连接文氏图" class="headerlink" title="全连接文氏图"></a>全连接文氏图</h3><h4 id="执行的sql语句以及执行的查询结果-5"><a href="#执行的sql语句以及执行的查询结果-5" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
 <li>执行的sql语句</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a right join tbl_emp b on a.id=b.deptId </div><div class="line">union </div><div class="line">select * from tbl_dept a left join tbl_emp b on a.id=b.deptId;</div></pre></td></tr></table></figure>
 <ul>
-<li>查询结果<br> <img src="media/14906669823269/14906672485581.png" alt=""></li>
+<li>查询结果</li>
 </ul>
-<h2 id="两张表中都没有出现的数据集"><a href="#两张表中都没有出现的数据集" class="headerlink" title="两张表中都没有出现的数据集"></a>两张表中都没有出现的数据集</h2><h3 id="文氏图"><a href="#文氏图" class="headerlink" title="文氏图"></a>文氏图</h3><p><img src="media/14906669823269/14906672571414.jpg" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-6"><a href="#执行的sql语句以及执行的查询结果-6" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
+<h2 id="两张表中都没有出现的数据集"><a href="#两张表中都没有出现的数据集" class="headerlink" title="两张表中都没有出现的数据集"></a>两张表中都没有出现的数据集</h2><h3 id="文氏图"><a href="#文氏图" class="headerlink" title="文氏图"></a>文氏图</h3><h4 id="执行的sql语句以及执行的查询结果-6"><a href="#执行的sql语句以及执行的查询结果-6" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
 <li>执行的sql语句</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a right join tbl_emp b on a.id=b.deptId where a.id is null union select * from tbl_dept a left join tbl_emp b on a.id=b.deptId where b.deptId is null;</div></pre></td></tr></table></figure>
