@@ -130,23 +130,23 @@
 <p>在192.168.99.121/122机器上各一个NameServer、Master进程。</p>
 </blockquote>
 <p>以192.168.99.121为例：</p>
-<h2 id="第一步，修改-etc-hosts文件"><a href="#第一步，修改-etc-hosts文件" class="headerlink" title="第一步，修改/etc/hosts文件"></a><strong>第一步，修改/etc/hosts文件</strong></h2><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<h3 id="第一步，修改-etc-hosts文件"><a href="#第一步，修改-etc-hosts文件" class="headerlink" title="第一步，修改/etc/hosts文件"></a><strong>第一步，修改/etc/hosts文件</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>hosts配置</p>
 <p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>确保相互之间可以ping通</p>
-<h2 id="第二步，解压并创建存储路径"><a href="#第二步，解压并创建存储路径" class="headerlink" title="第二步，解压并创建存储路径"></a><strong>第二步，解压并创建存储路径</strong></h2><blockquote>
+<h3 id="第二步，解压并创建存储路径"><a href="#第二步，解压并创建存储路径" class="headerlink" title="第二步，解压并创建存储路径"></a><strong>第二步，解压并创建存储路径</strong></h3><blockquote>
 <p><strong>tar -xvf alibaba-rocketmq-3.2.6.tar.gz
 </strong></p>
 <p><strong>mkdir -p alibaba-rocketmq/store/{commitlog,consumequeue,index}</strong></p>
 </blockquote>
-<h2 id="第三步，配置文件"><a href="#第三步，配置文件" class="headerlink" title="第三步，配置文件"></a><strong>第三步，配置文件</strong></h2><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<h3 id="第三步，配置文件"><a href="#第三步，配置文件" class="headerlink" title="第三步，配置文件"></a><strong>第三步，配置文件</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>broker-x.properties</p>
 <p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>配置项</p>
 <blockquote>
 <p>上面已经将实际中常用的配置项给出来了！</p>
 </blockquote>
-<h2 id="第四步，修改日志配置文件"><a href="#第四步，修改日志配置文件" class="headerlink" title="第四步，修改日志配置文件"></a><strong>第四步，修改日志配置文件</strong></h2><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<h3 id="第四步，修改日志配置文件"><a href="#第四步，修改日志配置文件" class="headerlink" title="第四步，修改日志配置文件"></a><strong>第四步，修改日志配置文件</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>注意到logback.*.xml配置文件中：</p>
 <p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>需要替换${user.name}</p>
@@ -155,12 +155,12 @@
 <p><strong>sed -i ‘s#${user.home}#/software/alibaba-rocketmq#g’ *.xml
 </strong></p>
 </blockquote>
-<h2 id="第五步，修改启动脚本中的JVM参数"><a href="#第五步，修改启动脚本中的JVM参数" class="headerlink" title="第五步，修改启动脚本中的JVM参数"></a><strong>第五步，修改启动脚本中的JVM参数</strong></h2><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<h3 id="第五步，修改启动脚本中的JVM参数"><a href="#第五步，修改启动脚本中的JVM参数" class="headerlink" title="第五步，修改启动脚本中的JVM参数"></a><strong>第五步，修改启动脚本中的JVM参数</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>vim runbroker.sh/rumserver.sh</p>
 <blockquote>
 <p><strong>注意，在这里我将JVM的堆的初始化和最大大小统一设置为1G，并将新生代大小设置为512M。主要是考虑到我的虚拟机内存，实际上在线上是可以走默认的4G堆内存的。</strong></p>
 </blockquote>
-<h2 id="第六步，启动NameServer"><a href="#第六步，启动NameServer" class="headerlink" title="第六步，启动NameServer"></a><strong>第六步，启动NameServer</strong></h2><blockquote>
+<h3 id="第六步，启动NameServer"><a href="#第六步，启动NameServer" class="headerlink" title="第六步，启动NameServer"></a><strong>第六步，启动NameServer</strong></h3><blockquote>
 <p><strong>nohup sh mqnamesrv &amp;
 </strong></p>
 </blockquote>
@@ -168,14 +168,14 @@
 <p>NameServer</p>
 <p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>nameserver启动日志</p>
-<h2 id="第七步，启动broker-X"><a href="#第七步，启动broker-X" class="headerlink" title="第七步，启动broker-X"></a><strong>第七步，启动broker-X</strong></h2><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<h3 id="第七步，启动broker-X"><a href="#第七步，启动broker-X" class="headerlink" title="第七步，启动broker-X"></a><strong>第七步，启动broker-X</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>启动broker</p>
 <p>注意观察日志：</p>
 <p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>broker.log</p>
 <p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
 <p>进程与端口</p>
-<h2 id="第八步：RocketMQ-Console"><a href="#第八步：RocketMQ-Console" class="headerlink" title="第八步：RocketMQ Console"></a><strong>第八步：RocketMQ Console</strong></h2><blockquote>
+<h3 id="第八步：RocketMQ-Console"><a href="#第八步：RocketMQ-Console" class="headerlink" title="第八步：RocketMQ Console"></a><strong>第八步：RocketMQ Console</strong></h3><blockquote>
 <p>把rocketmq-console.war部署到Tomcat下即可。</p>
 </blockquote>
 <p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
