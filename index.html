@@ -80,6 +80,213 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/04/10/head-first-git-branch/" title="Git由浅入深之分支管理" itemprop="url">Git由浅入深之分支管理</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
+		
+  <p class="article-time">
+    <time datetime="2017-04-10T14:50:00.000Z" itemprop="datePublished"> Published 2017-04-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>几乎所有的版本控制系统都以分支的方式进行操作，分支是独立于项目主线的一条支线，我们可以在不影响主线代码的情况下，在分支下进行工作。对于传统的一些版本控制工具来说，我们通常需要花费比较多的时间拷贝主线代码，创建一个分支，并且对分支的管理效率也越来越不令人满意，而如今备受推崇的Git确实名副其实，Git中的分支非常轻量，我们可以随时随意创建任意数量的新分支，几乎感觉不到什么延时，而且对分支的操作也很高效，如，切换分支，暂存内容，分支合并，分支提交等。</p>
+<h2 id="Git分支的与众不同"><a href="#Git分支的与众不同" class="headerlink" title="Git分支的与众不同"></a>Git分支的与众不同</h2><p>上一节我们提到相对于其他大多数版本控制系统，Git分支是轻量且高效的，为什么呢？答案在前几篇已经有提到：传统的版本控制系统存储的数据是文件的变更，而Git则是存储一系列的文件快照（snapshot）。</p>
+<p>Git分支的这些特性，使得分支对我们几乎没有什么限制，一般针对每一个功能或需求都可以随意创建分支，而在传统的版本控制系统，这样几乎是不现实的。</p>
+<p>当我们向服务器提交数据时，Git会存储一个提交对象（commit object），这个存储对象包括一系列有用信息，<a href="http://blog.codingplayboy.com/2017/03/23/git_internal/" target="_blank" rel="external">详见上一篇中提交对象</a>。</p>
+<h2 id="Git主干分支（master）"><a href="#Git主干分支（master）" class="headerlink" title="Git主干分支（master）"></a>Git主干分支（master）</h2><p>master，有主人，大师的意思，在Git是通常作为主干分支，Git初始化仓库时，默认创建的分支名就是master，就像默认的远端主机别名是origin一样，大多数人不会修改它，这并不说明它与别的分支有什么区别，你可以随意修改名称。</p>
+<h2 id="分支类型"><a href="#分支类型" class="headerlink" title="分支类型"></a>分支类型</h2><p>在Git中，除了默认的master主干分支，我们创建的每一个分支，一般可分为两种：</p>
+<ul>
+<li>长运行分支（Long-Running branch）:与master并行，长期存在使用的分支，如用以测试项目稳定性或作为主分支；</li>
+<li>主题分支（topic branch）：针对每一个需求或功能或bug而暂时创建的分支，一旦任务完成，即可能回收。</li>
+</ul>
+<h2 id="分支指针（HEAD）"><a href="#分支指针（HEAD）" class="headerlink" title="分支指针（HEAD）"></a>分支指针（HEAD）</h2><p>Git中有一个HEAD指针，始终指向当前分支，如图可见，项目当前处在master分支，之前一共有三次提交：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-logs.png" alt="提交历史记录"></p>
+<p>上图可见，第一行显示了当前项目所有分支，<code>HEAD -&gt; master</code>表明当前所处分支为master，我们可以总结如下图：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-log.png" alt="branch"></p>
+<p>我们可以在项目根目录.git文件下找到一个HEAD文件：<code>vi .git/HEAD</code>,其内保存了指向当前分支最新提交的指针：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-head.png" alt="HEAD"></p>
+<p>该指针指向refs/heads/分支名文件，我们进入.git/refs/heads/目录，其下以分支名为文件名列出了所有分支：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-head-ref.png" alt="当前分支head"></p>
+<p>我们查看当前分支文件，执行<code>vi master</code>:</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-head-ref-master.png" alt="当前分支ref"></p>
+<p>可以看到，其内存储的就是当前分支的最新一次提交对象ID。</p>
+<h2 id="创建分支（git-branch-git-checkout-b）"><a href="#创建分支（git-branch-git-checkout-b）" class="headerlink" title="创建分支（git branch, git checkout -b）"></a>创建分支（git branch, git checkout -b）</h2><p>接下来，假设有一个需求A，我们创建一个分支work-a:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b 分支名</div></pre></td></tr></table></figure>
+<p><code>-b</code>参数声明为创建新分支</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-create.png" alt="创建新分支"></p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-new-head.png" alt="新分支HEAD"></p>
+<p>等价于以下两条指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git branch 分支名</div><div class="line">git checkout 分支名</div></pre></td></tr></table></figure>
+<h2 id="切换分支（git-checkout）"><a href="#切换分支（git-checkout）" class="headerlink" title="切换分支（git checkout）"></a>切换分支（git checkout）</h2><p><code>git checkout 分支名</code>表示切换到该分支，上文提到指定<code>-b</code>配置即说明创建新分支。</p>
+<p><strong>注：在切换分支前，一定确保当前分支的修改已经提交或者缓存。</strong></p>
+<h2 id="多分支并行"><a href="#多分支并行" class="headerlink" title="多分支并行"></a>多分支并行</h2><p>我们经常会遇到同时需要开发多个功能和需求，或者突然发现线上bug需要紧急处理，我们只需要提交当前分支修改，然后切换到主干分支，从其基础上再切出一个新分支fix-bug1:</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commit.png" alt="提交修改"></p>
+<p>可以看到，在work-a分支上我们新增了一次提交：<code>b287b8e22470b20cc98e6224a8023708b4cc6989</code>。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-create.png" alt="创建多分支"></p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-new-head.png" alt="多分支结构图"></p>
+<p>现在我们在fix-bug1分支上修复bug后，进行提交：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commit-log.png" alt="提交及历史"></p>
+<p>可以看到，在fix-bug1分支上多了一个提交：<code>ca270e6</code>，现在整个结构就变成如下图：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commits-struc.png" alt="结构图"></p>
+<h2 id="合并分支（git-merge）"><a href="#合并分支（git-merge）" class="headerlink" title="合并分支（git merge）"></a>合并分支（git merge）</h2><p>我们已经修复了某bug或完成了功能开发，这时要做的是把代码并入主干，，当然一般公司或团队都需要经过代码审查，才能并入主干，在此略过不谈，分支合并相关指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git merge 分支名</div></pre></td></tr></table></figure>
+<p>该指令告诉Git将指定分支合并到当前分支，当然是可能出现冲突的，我们按照指示解决冲突，即可。</p>
+<p>现在我们先切换到master分支，然后把fix-bug1分支并入主干：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-merge.png" alt="合并分支"></p>
+<p>可以看到执行<code>git merge</code>指令后，状态信息显示：</p>
+<ul>
+<li>第一行Updating，告诉我们提交记录更新至<code>ca270e6</code>;</li>
+<li>第二行Fast-forward，即快速推进，说明Git直接将当前分支推进到指向新提交对象;</li>
+<li>后面是merge的内容信息</li>
+</ul>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-merge-struc.png" alt="合并分之后结构"></p>
+<h4 id="非快速推进合并（NO-FAST-FORWARD）"><a href="#非快速推进合并（NO-FAST-FORWARD）" class="headerlink" title="非快速推进合并（NO FAST-FORWARD）"></a>非快速推进合并（NO FAST-FORWARD）</h4><p>现在，我们再次创建一个分支fix-bug2，并进行几次修改提交：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commits-log-2.png" alt="多次提交"></p>
+<p>多次提交后，状态如下：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commits-struc-2.png" alt="多次提交后结构"></p>
+<p>我们通过非快速推进方式合并分支进主干分支：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-no-ff-merge.png" alt="非快速推进方式合并"></p>
+<p>如上图，指定<code>--no-ff</code>即声明进行非快速推进合并，第二行的<code>Merge made by the &#39;recursive&#39; strategy</code>表明通过非快速推进方式合并，我们发现除了分支上进行的提交记录外，Git创建了一个新的提交对象：<code>7a657a</code>,使用<br><code>git log --graph</code>指令查看其信息:</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-log-graph.png" alt="提交记录图"></p>
+<p>如图，快速推进方式合并入主干的fix-bug1分支的提交记录直接并入主线，且不会创建新的提交对象；而对于非快速推进方式合并的fix-bug2分支，其提交历史也都保存，但是并未进入主线，而是保存了一条支线，同时，在主线上创建一个新的提交对象。</p>
+<p>最后描述其结构如图：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-no-ff-merge-struc.png" alt="非快速推进合并后结构"></p>
+<h4 id="非快速推进与快速推进合并（FAST-FORWARD-amp-NO-FAST-FORWARD）"><a href="#非快速推进与快速推进合并（FAST-FORWARD-amp-NO-FAST-FORWARD）" class="headerlink" title="非快速推进与快速推进合并（FAST-FORWARD &amp; NO FAST-FORWARD）"></a>非快速推进与快速推进合并（FAST-FORWARD &amp; NO FAST-FORWARD）</h4><p>从上例，对比一下两种方式合并分支的异同：</p>
+<ul>
+<li>提交对象都会保存；</li>
+<li>报存提交对象方式不同：快速推进方式是直接在主线（合并主分支）上，添加这些提交对象，即直接移动HEAD指针；而非快速推进方式是将提交对象保存在支线，然后在主线新建一个提交对象，修改HEAD指针及新建提交对象的指针，而且此新建提交对象有两个父提交对象（即有两个parent指针）。</li>
+<li>合并后分支指向不同：快速推进合并后，两个分支将同时指向最新提交对象，而非快速推进合并后，合并主分支指向新建的提交对象，另一分支指向不变。</li>
+</ul>
+<p>我们查看一下新创建提交对象：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-no-ff-merge-commit.png" alt="新创建提交对象"></p>
+<p>可以看到该提交对象中有两个指针指向父提交对象，一个指向主线中的父提交对象，一个指向fix-bug2分支合并而来的支线父提交对象。</p>
+<h4 id="三路合并（THREE-WAY-MERGE）"><a href="#三路合并（THREE-WAY-MERGE）" class="headerlink" title="三路合并（THREE-WAY MERGE）"></a>三路合并（THREE-WAY MERGE）</h4><p>除了之前提到的两种合并的情况，其实还存在这样一种情况，就是现在假如我完成了work-a分支的开发，需要将其并入主干，我们能看到当前master主干分支已经推进到<code>7a6576</code>了，而work-a分支指向<code>b287b8</code>,两者有共同祖先提交对象<code>6d50f6</code>,我们将其合并：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-three-way-merge.png" alt="三路合并"></p>
+<p>上图第二行表明此次是通过非快速推进方式合并，我们查看提交对象记录图：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-three-way-merge-graph.png" alt="三路合并提交对象记录图"></p>
+<p>结构如图：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-three-way-merge-struc.png" alt="三路合并结构图"></p>
+<p>我们发现，三路合并结构是在需要合并的两个分支的最新提交对象的基础上，创建一个新提交对象(4ae14b)，将合并主分支（即执行合并指令时，当前所处分支）的HEAD指针前移指向该提交对象，该提交对象有两个父提交对象，分别为合并前待合并分支的最新提交对象（即b287b8和7a657a）。</p>
+<p>关于三路合并需要明确：</p>
+<ul>
+<li>三路合并其实是一种非快速推进合并方式；</li>
+<li>三路合并的前提是两个分支有共同祖先提交对象；</li>
+</ul>
+<h2 id="分支冲突（conflict）"><a href="#分支冲突（conflict）" class="headerlink" title="分支冲突（conflict）"></a>分支冲突（conflict）</h2><p>在合并分支，不可避免会发生冲突，当我们在两个分支对同一文件同一部分进行不同修改后，发起合并时就会提示有冲突，假设我们有work-b分支，在其基础上切出新分支work-b-1，然后在两分支上分别对README.md文件同一部分进行不同修改并提交，然后将work-b-1分支合并到work-b分支：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-merge-conflict.png" alt="合并时提示冲突"></p>
+<p>发现README.md文件有冲突，查看该文件：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-merge-conflict-info.png" alt="查看冲突"></p>
+<p>如上图，列出了两个分支的不同修改，HEAD表明当前分支的修改内容，下面是work-b-1分支的修改，我们选择需要保留的内容，删除其他无关信息和内容，然后保存该文件，查看当前状态：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-merge-status.png" alt="查看状态"></p>
+<p>根据提示，解决冲突后提交：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-merge-conflict-commit.png" alt="解决冲突"></p>
+<h2 id="查看分支"><a href="#查看分支" class="headerlink" title="查看分支"></a>查看分支</h2><p>对于创建过但并未删除的分支，我们可以查看分支列表，依然使用<code>git branch</code>指令，不传入任何参数：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-list.png" alt="分支列表"></p>
+<p>图中列出了所有分支，前面带星号的表示当前分支，当然我们还可以查看指明最新提交信息的分支列表，可以添加<code>-v</code>参数：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-list-details.png" alt="分支详情列表"></p>
+<h4 id="筛选分支"><a href="#筛选分支" class="headerlink" title="筛选分支"></a>筛选分支</h4><p>除了可以查看所有分支列表，Git还支持筛选已合并或未合并至当前分支的所有分支：</p>
+<ul>
+<li><code>--merged</code>参数指明筛选已合并分支；</li>
+<li><code>--no-merged</code>参数指明筛选未合并分支。</li>
+</ul>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-either-merged.png" alt="筛选分支"></p>
+<h2 id="删除分支（git-branch-d）"><a href="#删除分支（git-branch-d）" class="headerlink" title="删除分支（git branch -d）"></a>删除分支（git branch -d）</h2><p>当分支合并入主干后，也许我们不再需要那个分支了，我们需要将其删除，使用指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -d 分支名</div></pre></td></tr></table></figure>
+<p>之前介绍到使用<code>git branch</code>是创建新分支，而指定<code>-d</code>参数，说明需要删除该分支：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-delete.png" alt="删除分支"></p>
+<h2 id="远程分支（remote-branch）"><a href="#远程分支（remote-branch）" class="headerlink" title="远程分支（remote branch）"></a>远程分支（remote branch）</h2><p>我们注意到，前文所讲述的分支都是存在本地的，即本地分支，还需要了解远程分支，如[remote]/[branch]这种形式，表示是远端主机的某分支，<a href="http://blog.codingplayboy.com/2017/03/21/git_remote/" target="_blank" rel="external">关于远端主机详情请查看</a>,其实远程分支和本地分支基本理论概念还是相同的，区别是有些指令不同而已：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b test origin/develop</div></pre></td></tr></table></figure>
+<p>以上指令即从远程分支(远端主机origin上的develop分支)切出新的本地分支test分支。</p>
+<h4 id="跟踪分支（TRACKING-BRANCH）"><a href="#跟踪分支（TRACKING-BRANCH）" class="headerlink" title="跟踪分支（TRACKING BRANCH）"></a>跟踪分支（TRACKING BRANCH）</h4><p>前文已经介绍了本地分支和远程分支的概念及操作，那么这两类分支之间应该有某种关系将他们关联起来，本地项目都需要与远端主机仓库同步（pull &amp; push）,当我们从一个远程分支切出（创建）一个本地分支时，这个分支就叫跟踪分支（tracking branch）,而远程分支叫上游分支（upstream branch）。</p>
+<p>当我们克隆一个远端仓库时，会默认创建一个跟踪分支master，其上游分支就是<code>远端主机别名/master</code>。</p>
+<h6 id="创建跟踪分支"><a href="#创建跟踪分支" class="headerlink" title="创建跟踪分支"></a>创建跟踪分支</h6><p>创建跟踪分支指令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b 本地分支名 远端主机别名/远程分支名</div></pre></td></tr></table></figure>
+<p>当然也可以不指定分支名，使用远程分支同名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout --track 远端主机别名/远程分支名</div></pre></td></tr></table></figure>
+<h6 id="修改跟踪关系"><a href="#修改跟踪关系" class="headerlink" title="修改跟踪关系"></a>修改跟踪关系</h6><p>有时候，可能需要为本地分支设置其上游分支，添加<code>-u</code>参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -u 远端主机别名/远程分支名</div></pre></td></tr></table></figure>
+<p>以上指令就指明当前分支跟踪某远端主机的远程分支。</p>
+<h6 id="查看跟踪分支（git-branch-vv）"><a href="#查看跟踪分支（git-branch-vv）" class="headerlink" title="查看跟踪分支（git branch -vv）"></a>查看跟踪分支（git branch -vv）</h6><p>使用以下指令查看分支的上游分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -vv</div></pre></td></tr></table></figure>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-tracking-branch.png" alt="跟踪分支列表"></p>
+<p>上图输出信息第二行表明master分支跟踪远程origin/master分支，ahead 7表明本地有7个提交未推到服务器，其他分支不是跟踪分支，没有上游分支。</p>
+<h6 id="删除远程分支"><a href="#删除远程分支" class="headerlink" title="删除远程分支"></a>删除远程分支</h6><p>对于不再需要的远程分支，是可以删除的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin --delete test</div></pre></td></tr></table></figure>
+<p>以上指令删除远端主机origin的test分支，但是在垃圾回收之前，Git服务器仍然会保留分支数据，我们可以很方便的恢复数据，之后会详细介绍。</p>
+<h2 id="变基（rebase）"><a href="#变基（rebase）" class="headerlink" title="变基（rebase）"></a>变基（rebase）</h2><p>Git中有两种方式整合不同分支的修改：第一种是前文介绍的合并（merge），另一种就是本节的主题变基（rebase）。</p>
+<p>变基其实与前文提到的三路合并（three-way merge）颇有渊源：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-three-way-merge-struc.png" alt="三路合并结构图"></p>
+<p>如图work-a分支与主干master分支合并后，创建一个新提交对象，我们还可以通过变基完成两个分支的修改整合，由于work-a分支已合并到master分支，我们在work-a分支再提交一次修改<code>e0ae7dc</code>,然后我们将work-a分支对master分支进行变基：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-conflict.png" alt="分支变基"></p>
+<p>执行变基时，由于两个分支对同一文件同一部分进行了不同修改，会提示冲突，需要解决冲突，我们修改文件解决冲突，然后查看状态：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-conflict-status.png" alt="解决冲突后变基状态"></p>
+<p>上图，第一行<code>rebase in progress; onto 4ae14b3</code>说明当前分支针对<code>4ae14b3</code>快照进行变基，第三到第五行分别说明：</p>
+<ul>
+<li>第三行：解决冲突然后执行<code>git rebase --continue</code>指令继续变基；</li>
+<li>第四行：执行<code>git rebase --skip</code>指令，跳过解决冲突；</li>
+<li>第五行：执行<code>git rebase --abort</code>指令，终止变基，回到分支变基前状态。</li>
+</ul>
+<p>下面第6到第八行说明：</p>
+<ul>
+<li>第七行：使用<code>git reset HEAD &lt;file&gt;</code>指令撤销某文件变更；</li>
+<li>第八行：使用<code>git add &lt;file&gt;</code>指令标记冲突为已解决状态。</li>
+</ul>
+<p>最后一行<code>no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code>，说明尚未标记冲突，需要使用指令标记变更，在继续执行变基：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-conflict-continue.png" alt="解决冲突继续变基"></p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-graph.png" alt="变基后历史记录图"></p>
+<p>如上图，变基后，在主线上创建新提交对象<code>640b83</code>,并修改work-a分支指针指向该提交对象：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-struc.png" alt="变基后结构图"></p>
+<p>之后我们可以正常的合并：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-merge.png" alt="变基后合并"></p>
+<p>如图，主线分支更新提交对象到<code>640b83a</code>，第二行<code>Fast-forward</code>说明此次合并属于快速推进合并方式，结构如下：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-merge-struc.png" alt="变基合并后结构图"></p>
+<h4 id="三路合并与变基"><a href="#三路合并与变基" class="headerlink" title="三路合并与变基"></a>三路合并与变基</h4><p>基于上例，三路合并，整合修改变更后会保留分支的原始提交记录，新创建提交对象有两个父提交对象，一个在主线上，一个在待合并分支上；而变基则不能保留待合并分支的原始提交记录，主线上新建的提交对象只有一个位于主线上的父提交对象。更多变基相关内容计划单独出文介绍。</p>
+<p>至于到底选用哪种方式整合变更，变基还是合并，这个一直有争论，没有哪一种方式绝对合理，我们只需要把握一个原则：无论变基还是合并，你应该只操作本地历史记录，任何已经推到服务器并入主干的内容和提交历史不应该更改。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Git/">Git</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/04/10/tomcat-principle/" title="Tomcat组成与工作原理" itemprop="url">Tomcat组成与工作原理</a>
   </h1>
   <p class="article-author">By
@@ -628,6 +835,10 @@
 		
 			
 				<li><a href="/tags/MySql/" title="MySql">MySql<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>1</sup></a></li>
 			
 		
 		</ul>
