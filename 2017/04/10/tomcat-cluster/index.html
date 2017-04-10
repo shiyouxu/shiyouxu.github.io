@@ -4,19 +4,34 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Lost Youth</title>
+    <title>Tomcat 集群实现源码级别剖析 | Lost Youth</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="xiaoyou">
     
 
     
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Lost Youth">
-<meta property="og:url" content="http://yoursite.com/index.html">
+    <meta name="description" content="随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息队列中间件、数据存储中间件等等。Web容器负责的工作可能越来越少，但是它确实必不可少的部分，它负责接收用户请求并分别调用各个服">
+<meta name="keywords" content="Java Tomcat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tomcat 集群实现源码级别剖析">
+<meta property="og:url" content="http://yoursite.com/2017/04/10/tomcat-cluster/index.html">
 <meta property="og:site_name" content="Lost Youth">
+<meta property="og:description" content="随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息队列中间件、数据存储中间件等等。Web容器负责的工作可能越来越少，但是它确实必不可少的部分，它负责接收用户请求并分别调用各个服">
+<meta property="og:image" content="https://dn-mhke0kuv.qbox.me/a9b44bc2c80c51ff2c9b">
+<meta property="og:image" content="https://dn-mhke0kuv.qbox.me/a3295de3966d8aaa3a6e">
+<meta property="og:image" content="https://dn-mhke0kuv.qbox.me/556abf9fe7d1f6858aec">
+<meta property="og:image" content="https://dn-mhke0kuv.qbox.me/7d3ad124d7eb4283a1b1">
+<meta property="og:image" content="https://dn-mhke0kuv.qbox.me/f25aeb27f76ea5f59158">
+<meta property="og:image" content="https://dn-mhke0kuv.qbox.me/b178398c32fb99aff138">
+<meta property="og:image" content="https://dn-mhke0kuv.qbox.me/2057f1bf22f7d2a46416">
+<meta property="og:image" content="https://dn-mhke0kuv.qbox.me/3f6783cb34ab87bcc945">
+<meta property="og:image" content="https://dn-mhke0kuv.qbox.me/7efdf6159df520f96c73">
+<meta property="og:updated_time" content="2017-04-10T00:57:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lost Youth">
+<meta name="twitter:title" content="Tomcat 集群实现源码级别剖析">
+<meta name="twitter:description" content="随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息队列中间件、数据存储中间件等等。Web容器负责的工作可能越来越少，但是它确实必不可少的部分，它负责接收用户请求并分别调用各个服">
+<meta name="twitter:image" content="https://dn-mhke0kuv.qbox.me/a9b44bc2c80c51ff2c9b">
 
     
     <link rel="alternative" href="/atom.xml" title="Lost Youth" type="application/atom+xml">
@@ -72,12 +87,10 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/2017/04/10/tomcat-cluster/" title="Tomcat 集群实现源码级别剖析" itemprop="url">Tomcat 集群实现源码级别剖析</a>
@@ -91,9 +104,16 @@
     
   </p>
 </header>
-    <div class="article-content">
-        
-        <p>随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息队列中间件、数据存储中间件等等。Web容器负责的工作可能越来越少，但是它确实必不可少的部分，它负责接收用户请求并分别调用各个服务最后响应。可以说目前最受欢迎的web容器是用Java写的tomcat小猫，由于生产上的tomcat考虑负载均衡及高可用性，它一般以集群模式运行，所以这篇文章主要探讨的是tomcat的集群功能如何实现且生产部署如何选型。</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#集群增量会话管理器——DeltaManager"><span class="toc-number">1.</span> <span class="toc-text">集群增量会话管理器——DeltaManager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群备份会话管理器——BackupManager"><span class="toc-number">2.</span> <span class="toc-text">集群备份会话管理器——BackupManager</span></a></li></ol>
+		
+		</div>
+		
+		<p>随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息队列中间件、数据存储中间件等等。Web容器负责的工作可能越来越少，但是它确实必不可少的部分，它负责接收用户请求并分别调用各个服务最后响应。可以说目前最受欢迎的web容器是用Java写的tomcat小猫，由于生产上的tomcat考虑负载均衡及高可用性，它一般以集群模式运行，所以这篇文章主要探讨的是tomcat的集群功能如何实现且生产部署如何选型。</p>
 <p>如果说一个web应用不涉及会话的话，那么做集群是相当简单的，因为节点都是无状态的，集群内各个节点无需互相通信，只需要将各个请求均匀分配到集群节点即可。但基本所有web应用都会使用会话机制，所以做web应用集群时整个难点在于会话数据的同步，当然你可以通过一些策略规避复杂的额数据同步操作，例如把会话信息保存在分布式缓存或数据库中统一集中管理，避免了tomcat集群之间的通信。但这种方式也有不足，要额外引入数据库或缓存服务，同时也要保证它们的高可用性，增加了机器和维护成本。本文假设不使用统一管理会话的模式而是将会话交由tomcat自身集群管理。</p>
 <h2 id="集群增量会话管理器——DeltaManager"><a href="#集群增量会话管理器——DeltaManager" class="headerlink" title="集群增量会话管理器——DeltaManager"></a>集群增量会话管理器——DeltaManager</h2><p>tomcat集群节点自身完成各自的数据同步，不管访问到哪个节点都能找到对应的会话，如下图，客户端第一次访问生成会话，tomcat自身会将会话增量信息同步到其他节点上，而且是每次请求完成都会同步此次请求过程中对session的所有操作，这样一来下一次请求到集群中任意节点都能找到响应的会话信息，且能保证信息的及时性。</p>
 <p><img src="https://dn-mhke0kuv.qbox.me/a9b44bc2c80c51ff2c9b" alt=""></p>
@@ -141,14 +161,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public Object remove(Object key) &#123;</div><div class="line"> ①删除本地此MapEntry对象。</div><div class="line"> ②广播其他节点删除此MapEntry对象。</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>通过上面三个方法已经很清晰描述了新的Map是如何进行跨节点的增删改查的，BackupManager会话管理器就是通过这个新的Map进行会话管理。</p>
 <p>以上即是tomcat集群机制源码基本的剖析，两种都有各自的优缺点，全节点模式是两两互相复制的，一旦集群节点数量及访问量大起来，将导致大量的会话信息需要互相复制同步，很容易导致网络阻塞，而且这些同步操作很可能会成为整体性能的瓶颈，根据经验，此种方案在实际生产上推荐的集群节点个数为3-6个，无法组建更大的集群，而且冗余了大量的数据，利用率不高。而会话备份模式则大大减少了网络流量和逻辑操作，可构建较大的集群，生产上可以组成十个以上的节点，虽然这种模式支持更大的集群，但它也有自己的缺点，例如它只有一个数据备份，假如刚好源数据和备份数据所在的机器同时宕掉了，则没办法恢复数据，不过刚好同时宕机的机率很小很小。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 
@@ -161,200 +176,43 @@
 
 
 
-
-<div class="comments-count">
+	<div class="article-share" id="share">
 	
-</div>
+	  <div data-url="http://yoursite.com/2017/04/10/tomcat-cluster/" data-title="Tomcat 集群实现源码级别剖析 | Lost Youth" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
 
 </footer>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/04/04/mysql-7-join/" title="Mysql的七种join" itemprop="url">Mysql的七种join</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
-		
-  <p class="article-time">
-    <time datetime="2017-04-04T09:56:00.000Z" itemprop="datePublished"> Published 2017-04-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="Mysql的七种join"><a href="#Mysql的七种join" class="headerlink" title="Mysql的七种join"></a>Mysql的七种join</h1><blockquote>
-<p>对于SQL的Join，在学习起来可能是比较乱的。我们知道，SQL的Join语法有很多inner的，有outer的，有left的，有时候，对于Select出来的结果集是什么样子有点不是很清楚。Coding Horror上有一篇文章（实在不清楚为什么Coding Horror也被墙）通过 文氏图 Venn diagrams解释了SQL的Join。</p>
-</blockquote>
-<h1 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h1><p>在这里呢我们先来建立两张有外键关联的张表。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">CREATE DATABASE db0206;</div><div class="line">USE db0206;</div><div class="line"></div><div class="line">CREATE TABLE `db0206`.`tbl_dept`(  </div><div class="line">  `id` INT(11) NOT NULL AUTO_INCREMENT,</div><div class="line">  `deptName` VARCHAR(30),</div><div class="line">  `locAdd` VARCHAR(40),</div><div class="line">  PRIMARY KEY (`id`)</div><div class="line">) ENGINE=INNODB CHARSET=utf8;</div><div class="line"></div><div class="line">CREATE TABLE `db0206`.`tbl_emp`(  </div><div class="line">  `id` INT(11) NOT NULL AUTO_INCREMENT,</div><div class="line">  `name` VARCHAR(20),</div><div class="line">  `deptId` INT(11),</div><div class="line">  PRIMARY KEY (`id`),</div><div class="line">  FOREIGN KEY (`deptId`) REFERENCES `db0206`.`tb_dept`(`id`)</div><div class="line">) ENGINE=INNODB CHARSET=utf8;</div><div class="line">/*插入数据*/</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;RD&apos;,11);</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;HR&apos;,12);</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;MK&apos;,13);</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;MIS&apos;,14);</div><div class="line">INSERT INTO tbl_dept(deptName,locAdd) VALUES(&apos;FD&apos;,15);</div><div class="line"></div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;z3&apos;,1);</div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;z4&apos;,1);</div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;z5&apos;,1);</div><div class="line"></div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;w5&apos;,2);</div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;w6&apos;,2);</div><div class="line"></div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;s7&apos;,3);</div><div class="line"></div><div class="line">INSERT INTO tbl_emp(NAME,deptId) VALUES(&apos;s8&apos;,4);</div></pre></td></tr></table></figure>
-<h1 id="文氏图与SQL语句的编写以及查询结果"><a href="#文氏图与SQL语句的编写以及查询结果" class="headerlink" title="文氏图与SQL语句的编写以及查询结果"></a>文氏图与SQL语句的编写以及查询结果</h1><h2 id="内连接"><a href="#内连接" class="headerlink" title="内连接"></a>内连接</h2><h3 id="内连接文氏图"><a href="#内连接文氏图" class="headerlink" title="内连接文氏图"></a>内连接文氏图</h3><p><img src="media/14906669823269/14906671067372.png" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果"><a href="#执行的sql语句以及执行的查询结果" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
-<li>执行的sql语句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a inner join tbl_emp b on a.id=b.deptId;</div></pre></td></tr></table></figure>
-<ul>
-<li>查询结果<br>  <img src="media/14906669823269/14906671283981.png" alt=""></li>
-</ul>
-<h2 id="左外连接"><a href="#左外连接" class="headerlink" title="左外连接"></a>左外连接</h2><h3 id="左外连接文氏图"><a href="#左外连接文氏图" class="headerlink" title="左外连接文氏图"></a>左外连接文氏图</h3><p><img src="media/14906669823269/14906671404628.png" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-1"><a href="#执行的sql语句以及执行的查询结果-1" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
-<li>执行的sql语句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a left join tbl_emp b on a.id=b.deptId;</div></pre></td></tr></table></figure>
-<ul>
-<li>查询结果<br> <img src="media/14906669823269/14906671491566.png" alt=""></li>
-</ul>
-<h2 id="右外连接"><a href="#右外连接" class="headerlink" title="右外连接"></a>右外连接</h2><h3 id="右外连接文氏图"><a href="#右外连接文氏图" class="headerlink" title="右外连接文氏图"></a>右外连接文氏图</h3><p><img src="media/14906669823269/14906671586536.jpg" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-2"><a href="#执行的sql语句以及执行的查询结果-2" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
-<li>执行的sql语句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a right join tbl_emp b on a.id=b.deptId;</div></pre></td></tr></table></figure>
-<ul>
-<li>查询结果<br>  <img src="media/14906669823269/14906671715548.png" alt=""></li>
-</ul>
-<h2 id="左连接"><a href="#左连接" class="headerlink" title="左连接"></a>左连接</h2><h3 id="左连接文氏图"><a href="#左连接文氏图" class="headerlink" title="左连接文氏图"></a>左连接文氏图</h3><p><img src="media/14906669823269/14906671817769.png" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-3"><a href="#执行的sql语句以及执行的查询结果-3" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
-<li>执行的sql语句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">elect * from tbl_dept a left join tbl_emp b on a.id=b.deptId where b.deptId is null;</div></pre></td></tr></table></figure>
-<ul>
-<li>查询结果</li>
-</ul>
-<p><img src="media/14906669823269/14906671960016.png" alt=""></p>
-<h2 id="右连接"><a href="#右连接" class="headerlink" title="右连接"></a>右连接</h2><h3 id="右连接文氏图"><a href="#右连接文氏图" class="headerlink" title="右连接文氏图"></a>右连接文氏图</h3><p><img src="media/14906669823269/14906672122367.jpg" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-4"><a href="#执行的sql语句以及执行的查询结果-4" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
-<li>执行的sql语句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a right join tbl_emp b on a.id=b.deptId where a.id is null;</div></pre></td></tr></table></figure>
-<ul>
-<li>查询结果</li>
-</ul>
-<p><img src="media/14906669823269/14906672303744.png" alt=""></p>
-<h2 id="全连接"><a href="#全连接" class="headerlink" title="全连接"></a>全连接</h2><h3 id="全连接文氏图"><a href="#全连接文氏图" class="headerlink" title="全连接文氏图"></a>全连接文氏图</h3><p><img src="media/14906669823269/14906672393192.png" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-5"><a href="#执行的sql语句以及执行的查询结果-5" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
-<li>执行的sql语句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a right join tbl_emp b on a.id=b.deptId </div><div class="line">union </div><div class="line">select * from tbl_dept a left join tbl_emp b on a.id=b.deptId;</div></pre></td></tr></table></figure>
-<ul>
-<li>查询结果<br> <img src="media/14906669823269/14906672485581.png" alt=""></li>
-</ul>
-<h2 id="两张表中都没有出现的数据集"><a href="#两张表中都没有出现的数据集" class="headerlink" title="两张表中都没有出现的数据集"></a>两张表中都没有出现的数据集</h2><h3 id="文氏图"><a href="#文氏图" class="headerlink" title="文氏图"></a>文氏图</h3><p><img src="media/14906669823269/14906672571414.jpg" alt=""></p>
-<h4 id="执行的sql语句以及执行的查询结果-6"><a href="#执行的sql语句以及执行的查询结果-6" class="headerlink" title="执行的sql语句以及执行的查询结果"></a>执行的sql语句以及执行的查询结果</h4><ul>
-<li>执行的sql语句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from tbl_dept a right join tbl_emp b on a.id=b.deptId where a.id is null union select * from tbl_dept a left join tbl_emp b on a.id=b.deptId where b.deptId is null;</div></pre></td></tr></table></figure>
-<ul>
-<li>查询结果</li>
-</ul>
-<p><img src="media/14906669823269/SouthEast." alt="这里写图片描述"></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/MySql/">MySql</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
+   	       
+	</article>
 	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/04/04/hello-world/" title="Hello World" itemprop="url">Hello World</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
-		
-  <p class="article-time">
-    <time datetime="2017-04-04T09:08:51.000Z" itemprop="datePublished"> Published 2017-04-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/04/04/mysql-7-join/" title="Mysql的七种join">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Mysql的七种join</span>
+</a>
 </div>
 
 
+</nav>
 
-
-<div class="comments-count">
 	
-</div>
 
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-</div>
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#集群增量会话管理器——DeltaManager"><span class="toc-number">1.</span> <span class="toc-text">集群增量会话管理器——DeltaManager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群备份会话管理器——BackupManager"><span class="toc-number">2.</span> <span class="toc-text">集群备份会话管理器——BackupManager</span></a></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
@@ -500,12 +358,89 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
@@ -576,4 +511,4 @@ var _hmt = _hmt || [];
 <!-- Tiny_search End -->
 
   </body>
- </html>
+</html>
