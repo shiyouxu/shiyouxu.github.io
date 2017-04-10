@@ -44,7 +44,7 @@
 				<h1 class="site-name"><a href="/" title="Lost Youth">Lost Youth</a></h1>
 				<h2 class="blog-motto"></h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -62,7 +62,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:yoursite.com">
 					</form>
 					
@@ -80,6 +80,167 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/04/10/rocket-in-practice-1/" title="RocketMQ实战（一）" itemprop="url">RocketMQ实战（一）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
+		
+  <p class="article-time">
+    <time datetime="2017-04-10T14:58:00.000Z" itemprop="datePublished"> 發表於 2017-04-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><strong>阿里巴巴有2大核心的分布式技术，一个是OceanBase，另一个就是RocketMQ。在实际项目中已经领教过RocketMQ的强大，本人计划写一个RocketMQ实战系列，将涵盖RocketMQ的简介，环境搭建，初步使用、API详解、架构分析、管理员集群操作等知识。</strong></p>
+<h1 id="What-is-RocketMQ"><a href="#What-is-RocketMQ" class="headerlink" title="What is RocketMQ?"></a>What is RocketMQ?</h1><p>RocketMQ作为一款分布式的消息中间件（阿里的说法是不遵循任何规范的，所以不能完全用JMS的那一套东西来看它），经历了Metaq1.x、Metaq2.x的发展和淘宝双十一的洗礼，在功能和性能上远超ActiveMQ。</p>
+<blockquote>
+<p><strong>1.要知道RocketMQ原生就是支持分布式的，而ActiveMQ原生存在单点性。</strong></p>
+<p><strong>2.RocketMQ可以保证严格的消息顺序，而ActiveMQ无法保证！</strong></p>
+<p><strong>3.RocketMQ提供亿级消息的堆积能力，这不是重点，重点是堆积了亿级的消息后，依然保持写入低延迟！</strong></p>
+<p><strong>4.丰富的消息拉取模式（Push or Pull）</strong></p>
+<p><strong>Push好理解，比如在消费者端设置Listener回调；而Pull，控制权在于应用，即应用需要主动的调用拉消息方法从Broker获取消息，这里面存在一个消费位置记录的问题（如果不记录，会导致消息重复消费）。</strong></p>
+<p><strong>5.在Metaq1.x/2.x的版本中，分布式协调采用的是Zookeeper，而RocketMQ自己实现了一个NameServer，更加轻量级，性能更好！</strong></p>
+<p><strong>6.消息失败重试机制、高效的订阅者水平扩展能力、强大的API、事务机制等等（后续详细介绍）</strong></p>
+</blockquote>
+<h1 id="初步理解Producer-Consumer-Group"><a href="#初步理解Producer-Consumer-Group" class="headerlink" title="初步理解Producer/Consumer Group"></a>初步理解Producer/Consumer Group</h1><p>ActiveMQ中并没有Group这个概念，而在RocketMQ中理解Group的机制很重要。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>Group机制</p>
+<blockquote>
+<p><strong>想过没有，通过Group机制，让RocketMQ天然的支持消息负载均衡！</strong></p>
+<p><strong>比如某个Topic有9条消息，其中一个Consumer Group有3个实例（3个进程 OR 3台机器），那么每个实例将均摊3条消息！（注意RocketMQ只有一种模式，即发布订阅模式。）</strong></p>
+</blockquote>
+<h1 id="install-RocketMQ"><a href="#install-RocketMQ" class="headerlink" title="install RocketMQ"></a>install RocketMQ</h1><blockquote>
+<p><strong>RocketMQ的Broker集群部署模式还挺多的，比如单Master模式、多Master模式、多Master多Slave模式（异步复制）、多Master多Slave模式（同步双写）等。明确个概念，RocketMQ Slave不可以写，可以读，类似于MySQL的主从机制。</strong></p>
+<p><strong>单Master模式：
+</strong></p>
+<p><strong>无需多言，一旦单个broker重启或宕机，一切都结束了！很显然，线上不可以使用。</strong></p>
+<p><strong>多Master模式：</strong></p>
+<p><strong>全是Master，没有Slave。当然，一个broker宕机了，应用是无影响的，缺点在于宕机的Master上未被消费的消息在Master没有恢复之前不可以订阅。</strong></p>
+<p><strong>多Master多Slave模式（异步复制）：</strong></p>
+<p><strong>多对Master-Slave，高可用！采用异步复制的方式，主备之间短暂延迟，MS级别。Master宕机，消费者可以从Slave上进行消费，不受影响，但是Master的宕机，会导致丢失掉极少量的消息。</strong></p>
+<p><strong>多Master多Slave模式（同步双写）：</strong></p>
+<p><strong>和上面的区别点在于采用的是同步方式，也就是在Master/Slave都写成功的前提下，向应用返回成功，可见不论是数据，还是服务都没有单点，都非常可靠！缺点在于同步的性能比异步稍低。</strong></p>
+</blockquote>
+<p>这里我将采用2个Master的方式进行搭建演示，会了双Master，其他的将很简单。（多Master在实际中也是非常常用的，如果并发非常大，考虑多Master多Slave模式）</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>双Master模式架构</p>
+<blockquote>
+<p>在192.168.99.121/122机器上各一个NameServer、Master进程。</p>
+</blockquote>
+<p>以192.168.99.121为例：</p>
+<p><strong>第一步，修改/etc/hosts文件</strong></p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>hosts配置</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>确保相互之间可以ping通</p>
+<p><strong>第二步，解压并创建存储路径</strong></p>
+<blockquote>
+<p><strong>tar -xvf alibaba-rocketmq-3.2.6.tar.gz
+</strong></p>
+<p><strong>mkdir -p alibaba-rocketmq/store/{commitlog,consumequeue,index}</strong></p>
+</blockquote>
+<p><strong>第三步，配置文件
+</strong></p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>broker-x.properties</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>配置项</p>
+<blockquote>
+<p>上面已经将实际中常用的配置项给出来了！</p>
+</blockquote>
+<p><strong>第四步，修改日志配置文件</strong></p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>注意到logback.*.xml配置文件中：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>需要替换${user.name}</p>
+<p>可以使用sed进行替换：</p>
+<blockquote>
+<p><strong>sed -i ‘s#${user.home}#/software/alibaba-rocketmq#g’ *.xml
+</strong></p>
+</blockquote>
+<p><strong>第五步，修改启动脚本中的JVM参数</strong></p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>vim runbroker.sh/rumserver.sh</p>
+<blockquote>
+<p><strong>注意，在这里我将JVM的堆的初始化和最大大小统一设置为1G，并将新生代大小设置为512M。主要是考虑到我的虚拟机内存，实际上在线上是可以走默认的4G堆内存的。</strong></p>
+</blockquote>
+<p><strong>第六步，启动NameServer</strong></p>
+<blockquote>
+<p><strong>nohup sh mqnamesrv &amp;
+</strong></p>
+</blockquote>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>NameServer</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>nameserver启动日志</p>
+<p><strong>第七步，启动broker-X</strong></p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>启动broker</p>
+<p>注意观察日志：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>broker.log</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>进程与端口</p>
+<p><strong>第八步：RocketMQ Console</strong></p>
+<blockquote>
+<p>把rocketmq-console.war部署到Tomcat下即可。</p>
+</blockquote>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>解压WAR包</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>在解压WAR包后的CLASS下更改config.properties</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>好久不见，TOM猫</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
+<p>rocketmq管控台</p>
+<blockquote>
+<p><strong>这个管控台实际上还是比较简陋的，我们使用比较多的是mqadmin操作命令，后续会介绍。</strong></p>
+</blockquote>
+<p><strong>OK，到这里，双Master的搭建已经完成了！</strong></p>
+<p><strong>本篇博客到此为止，下期再见，晚安！</strong></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/RocketMQ/">RocketMQ</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/04/10/head-first-git-branch/" title="Git由浅入深之分支管理" itemprop="url">Git由浅入深之分支管理</a>
   </h1>
   <p class="article-author">By
@@ -87,7 +248,7 @@
 		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
 		
   <p class="article-time">
-    <time datetime="2017-04-10T14:50:00.000Z" itemprop="datePublished"> Published 2017-04-10</time>
+    <time datetime="2017-04-10T14:50:00.000Z" itemprop="datePublished"> 發表於 2017-04-10</time>
     
   </p>
 </header>
@@ -294,7 +455,7 @@
 		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
 		
   <p class="article-time">
-    <time datetime="2017-04-10T14:44:00.000Z" itemprop="datePublished"> Published 2017-04-10</time>
+    <time datetime="2017-04-10T14:44:00.000Z" itemprop="datePublished"> 發表於 2017-04-10</time>
     
   </p>
 </header>
@@ -546,7 +707,7 @@
 		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
 		
   <p class="article-time">
-    <time datetime="2017-04-10T00:56:00.000Z" itemprop="datePublished"> Published 2017-04-10</time>
+    <time datetime="2017-04-10T00:56:00.000Z" itemprop="datePublished"> 發表於 2017-04-10</time>
     
   </p>
 </header>
@@ -648,7 +809,7 @@
 		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
 		
   <p class="article-time">
-    <time datetime="2017-04-04T09:56:00.000Z" itemprop="datePublished"> Published 2017-04-04</time>
+    <time datetime="2017-04-04T09:56:00.000Z" itemprop="datePublished"> 發表於 2017-04-04</time>
     
   </p>
 </header>
@@ -766,7 +927,7 @@
 		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
 		
   <p class="article-time">
-    <time datetime="2017-04-04T09:08:51.000Z" itemprop="datePublished"> Published 2017-04-04</time>
+    <time datetime="2017-04-04T09:08:51.000Z" itemprop="datePublished"> 發表於 2017-04-04</time>
     
   </p>
 </header>
@@ -813,10 +974,10 @@
 
 
 </div>
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
 <aside class="clearfix">
 
   
@@ -826,7 +987,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">標簽</p>
 		<ul class="clearfix">
 		
 			
@@ -841,12 +1002,16 @@
 				<li><a href="/tags/Git/" title="Git">Git<sup>1</sup></a></li>
 			
 		
+			
+				<li><a href="/tags/RocketMQ/" title="RocketMQ">RocketMQ<sup>1</sup></a></li>
+			
+		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情鏈接</p>
     <ul>
         
           <li>
@@ -868,11 +1033,11 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
 </div>
 
   <div class="weiboshow">
-  <p class="asidetitle">Weibo</p>
+  <p class="asidetitle">新浪微博</p>
     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
@@ -1022,7 +1187,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
