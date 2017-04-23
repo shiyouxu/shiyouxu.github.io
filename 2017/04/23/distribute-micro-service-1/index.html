@@ -1,0 +1,630 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>微服务业务开发三个难题－拆分、事务、查询（上） | Lost Youth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="xiaoyou">
+    
+
+    
+    <meta name="description" content="微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬件上而改善了应用的扩展性。 但微服务不是万能的。特别是在 领域模型、事务以及查询这几个地方，似乎总是不能适应拆分。或者说这几块">
+<meta name="keywords" content="微服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务业务开发三个难题－拆分、事务、查询（上）">
+<meta property="og:url" content="http://yoursite.com/2017/04/23/distribute-micro-service-1/index.html">
+<meta property="og:site_name" content="Lost Youth">
+<meta property="og:description" content="微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬件上而改善了应用的扩展性。 但微服务不是万能的。特别是在 领域模型、事务以及查询这几个地方，似乎总是不能适应拆分。或者说这几块">
+<meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929547973354.jpg">
+<meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929548257584.jpg">
+<meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929550233845.jpg">
+<meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929550352395.jpg">
+<meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929550548392.jpg">
+<meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929550682871.jpg">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/LsNc01I3kx7KjDuEky5DjPDrMPRyN3XWic6vAWBoV6Fn9MaZVFvLadxpO6HgWe3Z3JESLxWSnGicMebqQH8iavGyg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:updated_time" content="2017-04-23T13:50:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微服务业务开发三个难题－拆分、事务、查询（上）">
+<meta name="twitter:description" content="微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬件上而改善了应用的扩展性。 但微服务不是万能的。特别是在 领域模型、事务以及查询这几个地方，似乎总是不能适应拆分。或者说这几块">
+<meta name="twitter:image" content="http://oo77gy3uq.bkt.clouddn.com/14929547973354.jpg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lost Youth" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Lost Youth" title="Lost Youth"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lost Youth">Lost Youth</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/tools">Tools</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/04/23/distribute-micro-service-1/" title="微服务业务开发三个难题－拆分、事务、查询（上）" itemprop="url">微服务业务开发三个难题－拆分、事务、查询（上）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
+		
+  <p class="article-time">
+    <time datetime="2017-04-23T13:50:00.000Z" itemprop="datePublished"> Published 2017-04-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于作者"><span class="toc-number">1.</span> <span class="toc-text">关于作者</span></a></li></ol>
+		
+		</div>
+		
+		<p> 微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬件上而改善了应用的扩展性。</p>
+<p>但微服务不是万能的。特别是在 领域模型、事务以及查询这几个地方，似乎总是不能适应拆分。或者说这几块也是微服务需要专门处理的地方，相对于过去的单体架构。</p>
+<p>在这篇文章中，我会描述一种开发微服务的方法，这个方法可以解决这些问题。主要是通过领域模型设计，也就是DDD以及事件源（Event Sourcing）以及CQRS。让我们首先来看看开发人员在开发微服务的时候会遇到哪些问题吧。</p>
+<p><strong>微服务开发过程中的挑战</strong></p>
+<p>模块化在开发大型复杂的应用的时候是非常有必要的。</p>
+<p>现在许多应用大到一个人根本无法完成。而且复杂到光靠一个人去理解是不可能的。</p>
+<p>这种情况下，应用就必须被拆分成一个个模块。在单体应用中，模块被定义为比方一个java package。然而，这种做法在实践中并不是很理想，时间长了，单体应用就变得越来越庞大。微服务架构把服务作为一个模块单元。</p>
+<p>每个服务对应一个业务能力，这个业务能力是组织为了创造价值而需要的。例如，基于微服务的在线商店包括各种服务，包括订购服务（Order Service），客户服务（Customer Service），目录服务（Catalog Service）。<br><img src="http://oo77gy3uq.bkt.clouddn.com/14929547973354.jpg" alt=""></p>
+<p>每个服务都有一个不可渗透且很难违反的边界。也就是每个微服务要提供一种单独而独立的能力。这样的话，应用程序的模块化就更容易随时间保存。</p>
+<p>微服务架构还有其他优点。包括独立地部署服务，独立地扩展服务等等这些能力。相比单体来说。</p>
+<p>不幸的是，拆分并没有听起来那么容易。相当难。</p>
+<p>应用的领域模型，事务，查询这三个东西就是拆分过程中和拆分后你所面临的拆分难题。让我们来看看具体原因吧。</p>
+<p><strong>问题1 – 拆分领域模型</strong></p>
+<p>领域模型模式是实现复杂业务逻辑的一种非常好的方式。比如针对一个在线商店，领域模型将会包含这么几个类： Order, OrderLineItem, Customer 和 Product。在微服务架构中，Order和OrderLineItem类是Order Service的一部分；Customer是Customer Service的一部分；Product属于Catalog Service的一部分。<br><img src="http://oo77gy3uq.bkt.clouddn.com/14929548257584.jpg" alt=""></p>
+<p>拆分领域模型的挑战之一就是class们通常会引用一个或多个其他类。</p>
+<p>比如，Order类引用了该订单的客户Customer；OrderLineItem引用了该订单所订产品Product。</p>
+<p>对于这些想要横跨服务边界的引用，我们该怎么办呢？</p>
+<p>稍后你将会看到一个来自领域模型设计的概念：聚合（Aggregate）。我们通过聚合来解决这个问题。</p>
+<p><strong><em>微服务和数据库</em></strong></p>
+<p>**</p>
+<p>微服务架构的一个非常明显的功能就是一个服务所拥有的数据只能通过这个服务的API来访问。</p>
+<p>在一个电商网站中，比如，OrderService占有一个数据库，里边有一张表ORDERS；CustomerService也有自己的数据库包含表CUSTOMERS。</p>
+<p>通过这样的封装，微服务之间就解耦了。</p>
+<p>在开发期间，开发人员可以独立修改自己服务的数据库shema而不需要与其他服务的开发协调勾兑。</p>
+<p>在生产上，服务之间都是隔离的。比如，一个服务从来不会因为另外一个服务占有了数据库的锁而导致阻塞等待。</p>
+<p>不幸的是，这种数据库的拆分让管理数据的一致性以及不同服务间跨表查询变得困难。</p>
+<p><strong>问题2 – 跨服务分布式事务实现</strong></p>
+<p>一个传统的单体应用可以通过ACID事务来强制业务规则从而实现一致性。</p>
+<p>想象一下，比如，电商里的用户都有信用额度，就是在创建订单之前必须先看信用如何。</p>
+<p>应用程序必须确保潜在的多个并发尝试去创建订单不超过客户的信用限额。</p>
+<p>如果Orders和Customers都在同一个库中，那么就可以使用ACID事务来搞定：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">BEGIN</span> <span class="keyword">TRANSACTION</span></div><div class="line">…</div><div class="line"><span class="keyword">SELECT</span> ORDER_TOTAL</div><div class="line"> <span class="keyword">FROM</span> ORDERS <span class="keyword">WHERE</span> CUSTOMER_ID = ?</div><div class="line">…</div><div class="line"><span class="keyword">SELECT</span> CREDIT_LIMIT</div><div class="line"><span class="keyword">FROM</span> CUSTOMERS <span class="keyword">WHERE</span> CUSTOMER_ID = ?</div><div class="line">…</div><div class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> ORDERS …</div><div class="line">…</div><div class="line"><span class="keyword">COMMIT</span> <span class="keyword">TRANSACTION</span></div></pre></td></tr></table></figure>
+<p>不幸的是，在微服务架构中我们无法通过这种方式管理数据的一致性。</p>
+<p>ORDERS和CUSTOMERS表被不同的服务所拥有，只能通过各自的服务API访问。他们甚至可能在不同的数据库。</p>
+<p>一种比较常见的做法就是使用分布式事务来搞定，比如2PC等。但是这种做法对于现代应用来说也许不是一种可行的方案。CAP定理要求你必须在可用性和一致性之间选择，可用性通常是较好的选择。</p>
+<p>而且，许多现代技术，例如大多数NoSQL数据库，甚至不支持ACID事务，更不用说2PC。</p>
+<p>所以管理数据的一致性需要使用其他的方式。</p>
+<p>稍后你将会看到我们使用事件驱动架构中的一种技术叫事件源（event sourcing）来解决分布式事务。</p>
+<p><strong>问题3 -查询</strong></p>
+<p>管理数据一致性不是唯一的挑战。还有一个问题就是查询问题。</p>
+<p>在传统的单体应用中，我们通常使用join来实现跨表查询。</p>
+<p>比如，我们可以通过下面的sql轻松的查询出最近客户所订的大额订单：</p>
+<pre><code>SELECT *
+FROM CUSTOMER c, ORDER o
+WHERE
+   c.id = o.ID
+     AND o.ORDER_TOTAL &gt; 100000
+     AND o.STATE = &apos;SHIPPED&apos;
+     AND c.CREATION_DATE &gt; ?
+</code></pre><p>但我们无法在微服务架构中实现这样的查询。</p>
+<p>就像前面提到的那样，ORDERS与CUSTOMERS表分属不同的服务，只能通过服务API来访问。</p>
+<p>而且他们可能使用了不同的数据库。</p>
+<p>而且，即使你使用事件源（Event Sourcing ）处理查询问题可能更麻烦。</p>
+<p>稍后，你将会学习到一种解决方案就是通过一种叫CQRS（Command Query Responsibility Segregation）做法来解决分布式查询问题。</p>
+<p>但首先，让我们看看领域驱动设计（DDD）这个工具，在我们的微服务架构下基于领域模型开发业务逻辑是必要的。</p>
+<p><strong>DDD聚合是微服务的构建块</strong></p>
+<p>像你看到的那样，为了使用微服务架构成功的开发业务应用，我们必须去解决上面所说的那些问题。</p>
+<p>这几个问题的解决办法你可以去Eric Evans的书Domain-Driven Design中找得到。</p>
+<p>这本书，是2003年出版的，主要介绍了设计复杂软件的一些方法。这些方法对开发微服务也同样有用。</p>
+<p>尤其是领域驱动设计可以让你创建一个模块化的领域模型，这个领域模型可以被多个微服务所使用。 </p>
+<p><strong>什么是聚合？</strong></p>
+<p>在领域驱动设计中，Evans为领域模型定义了几个构建块。</p>
+<p>许多已经成为日常开发人员语言的一部分，包括entity，就是指一个具有唯一标识的持久化对象。value object，也就是VO，你经常听说的，是用来存放数据的，可以与数据库表对应，也可以不对应，有点类似用来传输数据的DTO。service,就是指包含业务逻辑的服务。但不应归类到entity或者value object。</p>
+<p>repository，表示一堆entity 的集合就是一个repository。</p>
+<p>构建块（building block），聚合（aggregate）常常被开发人员忽略，除了那些DDD爱好者，或者叫“狂热分子”。</p>
+<p><strong>然而，聚合（aggregate）被证明是开发微服务的关键，非常重要。</strong></p>
+<p>一个聚合（aggregate）就是一组domain的集合，可以被当作一个单元来处理。这里说的一个单元就是可以当做原子来处理。</p>
+<p>它包含了一个root entity以及可能还有一到多个关联的entity以及value object。</p>
+<p>比如，针对一个在线商店的domain model就会有几个聚合，比如Order和Customer。</p>
+<p>Order聚合又由一个root entity Order和一个以上的OrderLineItem value object组成，而且OrderLineItem还有可能关联有其他vo，比如快递地址（Address）以及支付账户信息PaymentInformation。</p>
+<p>Customer聚合又由一个root entity Customer和其他的vo比如DeliveryInfo 和PaymentInformation组成。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929550233845.jpg" alt=""></p>
+<p>使用聚合将领域模型（domain model）分散和参与到每个聚合中，这也使得领域模型更容易理解了。这也同时厘清了操作的scope，比如查询操作和删除操作等。</p>
+<p>一个聚合通常作为一个整体被从数据库中load出来。删除一个聚合，也就是删除了里边所有的object。</p>
+<p>然而，聚合的好处远远超出了模块化一个领域模型。  这是因为聚合必须遵守一定的规则。</p>
+<p><strong>聚合之间的引用必须使用主键</strong></p>
+<p><strong>第一个规则就是聚合通过id（例如主键）来引用而不是通过对象引用  。</strong></p>
+<p>比如，Order通过customerId来引用Customer，而不是引用Customer的对象。</p>
+<p>类似的，OrderLineItem通过productId来引用Product。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929550352395.jpg" alt=""></p>
+<p>这种做法与传统的object modeling非常的不同。虽然后者认为通过外键引用在领域模型中这样做看起来怪怪的。</p>
+<p>通过使用ID而不是object引用，意味着聚合是松耦合。你可以轻松地把不同的聚合放在不同的service。</p>
+<p>事实上，一个微服务的业务逻辑是由一个领域模型组成。这个领域模型是几个聚合的一个组合。比如，OrderService包含了Customer聚合。</p>
+<p><strong>一个事务只创建或更新一个聚合</strong></p>
+<p><strong>第二个规则就是聚合必须遵循一个事务只能对一个聚合进行创建或更新。</strong></p>
+<p>当我第一次看这些规则的时候，当时并没有什么感觉。因为那时候，我还在开发传统的单体应用，那种基于RDBMS的应用。所以事务可以更新任何的数据。今天，这些约束依然适用于微服务架构。它确保一个事务只被包含在一个微服务中。此约束还符合大多数NoSQL数据库的有限事务模型。</p>
+<p>当开发一个领域模型，一个很重要的事情就是你必须确定每个聚合得搞多大。</p>
+<p><strong>一方面，聚合理想情况下应该是小的</strong>。它通过分离关注点来改善模块化。</p>
+<p>这是更有效的，因为聚合通常被全部加载。</p>
+<p>此外，由于对每个聚合的更新是顺序发生的，因此使用细粒度聚合将增加应用程序可以处理的并发请求数，从而提高可扩展性。</p>
+<p>它还将改善用户体验，因为它降低了两个用户尝试更新同一聚合的可能性。</p>
+<p><strong>另一方面，因为聚合是事务的范围，您可能需要定义一个较大的聚合，以使特定的更新原子化。</strong></p>
+<p>例如，之前我描述了在在线商店领域模型中，Order和Customer是独立的聚合。</p>
+<p>另一种设计可以是把Orders作为Customer聚合的一部分。</p>
+<p>一个较大的Customer聚合的好处就是应用可以强制对于信用额度进行原子验证。这种方法的缺点是它将订单和客户管理功能组合到同一服务中。这也降低了可扩展性，因为更新同一客户的不同订单的事务将被顺序化。</p>
+<p>类似的，两个用户去尝试编辑同一个客户下的不同订单有可能会冲突。而且，随着订单数量的增加，加载一个Customer聚合的成本也会变得更昂贵。</p>
+<p><strong>由于这些问题，尽可能的把聚合细粒度是最好的。</strong></p>
+<p>即使一个事务只能创建和更新一个单独的聚合，微服务应用中也依然必须去管理聚合之间的一致性。</p>
+<p>在Order服务中必须验证一个新建的Order聚合将不超过Customer聚合的信用额度。</p>
+<p>这里有两种不同的解决一致性的方法。</p>
+<p>一个做法就是在单个事务中欺骗的创建和/或更新多个聚合。这种做法的前提是，所有的聚合都被一个服务所拥有并且这些聚合都被持久保存在同一个RDBMS中才有可能。</p>
+<p>另一个做法就是使用最终一致的事件驱动（event-driven）方法来维护聚合之间的一致性。</p>
+<p><strong>使用事件驱动来维护数据一致性</strong></p>
+<p><strong>
+</strong></p>
+<p>在现代应用中，对事务有各种约束，这使得难以在服务之间维持数据一致性。</p>
+<p>每个服务都有自己的私有的数据，这时候2PC的方案就变得不可行了。</p>
+<p>更重要的是，很多的应用使用的是NoSQL数据库，这些数据库根本就不支持本地ACID事务，更不用说分布式事务了。</p>
+<p>因此，现代应用程序必须使用事件驱动的，最终一致的事务模型。</p>
+<p><strong>什么是事件（Event）?</strong></p>
+<p>根据Merriam-Webster（一个单词网站），事件的意思就是：something that happens:</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929550548392.jpg" alt=""></p>
+<p>在本文中，我们将领域事件定义为聚合发生的事件。一个事件（event）通常表示一个状态的改变。现在还是拿电商系统举例，一个Order聚合。其状态更改事件包括订单已创建（Order Created），订单已取消（Order Cancelled），订单已下达（Order Shipped）。事件可以表示违反业务规则的动作，如客户（Customer）的信用额度。</p>
+<p><strong>使用**</strong>Event-Driven<strong>**架构</strong></p>
+<p>服务们使用事件来管理聚合之间的一致性，像下面这样的一个场景：一个聚合发布事件，比如，这个聚合的状态改变或者一次违反业务规则的尝试等等。</p>
+<p>其它聚合订阅这个事件，然后负责更新他们自己的状态。</p>
+<p>在线商店制创建一个订单（order）的时候验证客户（customer）信用额度使用下面一系列步骤：</p>
+<ol>
+<li><p>一个订单（Order）聚合创建，并且状态为<strong>NEW</strong>，发布一个OrderCreated 事件。</p>
+</li>
+<li><p>客户（Customer）消费这个OrderCreated事件，然后保存为这个订单保存信用值然后发布一个CreditReserved事件。</p>
+</li>
+<li><p>订单（Order）聚合消费CreditReserved事件，然后修改自己的状态为<strong>APPROVED</strong>。</p>
+</li>
+</ol>
+<p>如果信用检查由于资金不足而失败，则客户(Customer)聚合发布CreditLimitExceeded事件。</p>
+<p>这个事件不对应于一个状态的改变，而是表示一次违反业务规则的失败尝试。  订单（Order）聚合消费这个事件后，并将自己的状态更改为<strong>CANCELLED</strong>。</p>
+<p><strong>微服务架构可以比作事件驱动聚合的Web</strong></p>
+<p>在这个架构下，每个服务的业务逻辑都是由一个或多个聚合组成。</p>
+<p>一个事务只能包含一个服务，并且是更新或创建一个单独的聚合。也就是聚合内事务。</p>
+<p>服务们通过使用事件管理聚合之间的一致性。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929550682871.jpg" alt=""></p>
+<p>这种做法一个非常明显的好处就是一个个聚合变成了松散而解耦的构建块。</p>
+<p>他们可以被作为单体应用来部署或者作为一组服务来部署。</p>
+<p>这种情况下，在一个project开始的时候，你可以使用单体架构。</p>
+<p>之后，随着应用的体积和开发团队的规模的扩大，你就可以很容易的切换到微服务架构上来。</p>
+<p><strong>总结</strong></p>
+<p>微服务架构从功能上把一整个应用拆分成了一个个服务，每个服务又都对应一个业务能力。当我们开发基于微服务架构的业务应用的时候，一个关键的挑战就是事务、领域模型以及查询，这三个主要的麻烦都是拆分之后所带来的问题。你可以通过使用DDD聚合的概念来拆分领域模型。每个服务的业务逻辑是一个领域模型，然后这个领域模型是由一个或多个DDD聚合组成。</p>
+<p>在每个服务中，一个事务只能创建或更新一个单独的聚合。由于2PC对于现代应用来说并不是一个可行的解决方案，所以我们需要使用事件机制来去实现聚合之间的一致性（以及服务之间）。在下一集，我们会描述使用event sourcing来实现一个事件驱动的架构。我们也会向你展示在微服务架构下通过使用CQRS来实现查询。</p>
+<blockquote>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p><strong><img src="http://mmbiz.qpic.cn/mmbiz_jpg/LsNc01I3kx7KjDuEky5DjPDrMPRyN3XWic6vAWBoV6Fn9MaZVFvLadxpO6HgWe3Z3JESLxWSnGicMebqQH8iavGyg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="">Chris Richardson</strong>是一位开发人员和建筑师。 他是Java Champion和POJO in Action的作者，他描述了如何使用Spring和Hibernate等框架构建企业Java应用程序。 Chris也是原始CloudFoundry.com的创始人。 他与组织协商，改进他们如何开发和部署应用程序，并在他的第三个创业公司工作。 你可以在Twitter @crichardson和Eventuate上找到Chris。</p>
+</blockquote>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/微服务/">微服务</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2017/04/23/distribute-micro-service-1/" data-title="微服务业务开发三个难题－拆分、事务、查询（上） | Lost Youth" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/04/22/meituan-id/" title="Leaf——美团点评分布式ID生成系统">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Leaf——美团点评分布式ID生成系统</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/04/23/distribute-micro-service-2/"  title="微服务业务开发三个难题－拆分、事务、查询（下）">
+ <strong>下一篇：</strong><br/> 
+ <span>微服务业务开发三个难题－拆分、事务、查询（下）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于作者"><span class="toc-number">1.</span> <span class="toc-text">关于作者</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微服务/" title="微服务">微服务<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/唯一ID/" title="唯一ID">唯一ID<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySql/" title="MySql">MySql<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/RocketMQ/" title="RocketMQ">RocketMQ<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="xiaoyou">xiaoyou</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
