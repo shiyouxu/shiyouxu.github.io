@@ -15,13 +15,13 @@
 
 
 
-<meta name="description" content="上集我们阐述了使用微服务体系架构的关键障碍是领域模型，事务和查询，这三个障碍似乎和功能拆分具有天然的对抗。只要功能拆分了，就涉及这三个难题。 然后我们向你展示了一种解决方案就是将每个服务的业务逻辑实现为一组DDD聚合。然后每个事务只能更新或创建一个单独的聚合。然后通过事件来维护聚合（和服务）之间的数据一致性。 在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚">
+<meta name="description" content="在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，**事件源**是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为**命令查询责任分离（CQRS）**的方法来实现可扩展和高性能的查询。">
 <meta name="keywords" content="微服务">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微服务业务开发三个难题－拆分、事务、查询（下）">
 <meta property="og:url" content="http://yoursite.com/2017/04/23/distribute-micro-service-2/index.html">
 <meta property="og:site_name" content="Lost Youth">
-<meta property="og:description" content="上集我们阐述了使用微服务体系架构的关键障碍是领域模型，事务和查询，这三个障碍似乎和功能拆分具有天然的对抗。只要功能拆分了，就涉及这三个难题。 然后我们向你展示了一种解决方案就是将每个服务的业务逻辑实现为一组DDD聚合。然后每个事务只能更新或创建一个单独的聚合。然后通过事件来维护聚合（和服务）之间的数据一致性。 在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚">
+<meta property="og:description" content="在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，**事件源**是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为**命令查询责任分离（CQRS）**的方法来实现可扩展和高性能的查询。">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929552458911.jpg">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929552567780.jpg">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929552770649.jpg">
@@ -31,10 +31,10 @@
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929553705958.jpg">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929553811388.jpg">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/14929554011934.jpg">
-<meta property="og:updated_time" content="2017-04-23T13:50:57.000Z">
+<meta property="og:updated_time" content="2017-04-26T06:05:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务业务开发三个难题－拆分、事务、查询（下）">
-<meta name="twitter:description" content="上集我们阐述了使用微服务体系架构的关键障碍是领域模型，事务和查询，这三个障碍似乎和功能拆分具有天然的对抗。只要功能拆分了，就涉及这三个难题。 然后我们向你展示了一种解决方案就是将每个服务的业务逻辑实现为一组DDD聚合。然后每个事务只能更新或创建一个单独的聚合。然后通过事件来维护聚合（和服务）之间的数据一致性。 在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚">
+<meta name="twitter:description" content="在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，**事件源**是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为**命令查询责任分离（CQRS）**的方法来实现可扩展和高性能的查询。">
 <meta name="twitter:image" content="http://oo77gy3uq.bkt.clouddn.com/14929552458911.jpg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -434,7 +434,7 @@
         <p><span>本文标题:</span><a href="/2017/04/23/distribute-micro-service-2/">微服务业务开发三个难题－拆分、事务、查询（下）</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">xiaoyou</a></p>
         <p><span>发布时间:</span>2017-04-23, 21:50:00</p>
-        <p><span>最后更新:</span>2017-04-23, 21:50:57</p>
+        <p><span>最后更新:</span>2017-04-26, 14:05:57</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/04/23/distribute-micro-service-2/" title="微服务业务开发三个难题－拆分、事务、查询（下）">http://yoursite.com/2017/04/23/distribute-micro-service-2/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/04/23/distribute-micro-service-2/　　作者: xiaoyou" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

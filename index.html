@@ -288,14 +288,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        
-
-	<div class="row">
-    <embed src="http://oo77gy3uq.bkt.clouddn.com/MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
-
+              MySql 必知必会
+          
       
     </div>
     
@@ -308,6 +302,10 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySql/">MySql</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/04/26/mysql-bizhibimui/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -354,14 +352,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        
-
-	<div class="row">
-    <embed src="http://oo77gy3uq.bkt.clouddn.com/Java%208%E5%AE%9E%E6%88%98.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
-
+              Java8 In Action
+          
       
     </div>
     
@@ -374,6 +366,10 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java8/">Java8</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/04/26/java-8-in-action/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -420,312 +416,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>原文出处： <a href="http://listenzhangbin.com/post/2017/01/java8-learning-notes/" target="_blank" rel="external">Listen</a></p>
-<p>Java8是2014年发布的，至今也已经有快三年的时间了，之前虽然有学习过，但是学的比较零散，不成系统，而且也没有覆盖到Java8所有的特性。 由于公司已经使用了JDK1.8，所以工作中能使用Java8的机会还是很多的，因此决定来系统地学习一下Java8的新特性，这是对我最近学习Java8的一些记录， 以备在有些细节记不太清的时候可以查询。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/Java8-features.png" alt="Java8"></p>
-<p>先来一个概览，上图是我整理的Java8中的新特性，总的来看，大致上可以分成这么几个大块。</p>
-<h2 id="函数式接口"><a href="#函数式接口" class="headerlink" title="函数式接口"></a>函数式接口</h2><p>所谓的函数式接口就是只有一个抽象方法的接口，注意这里说的是抽象方法，因为Java8中加入了默认方法的特性，但是函数式接口是不关心接口中有没有默认方法的。 一般函数式接口可以使用<code>@FunctionalInterface</code>注解的形式来标注表示这是一个函数式接口，该注解标注与否对函数式接口没有实际的影响， 不过一般还是推荐使用该注解，就像使用<code>@Override</code>注解一样。JDK1.8中提供了一些函数式接口如下：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数式接口</th>
-<th style="text-align:center">函数描述符</th>
-<th style="text-align:center">原始类型特化</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
-<td style="text-align:center">T -&gt; boolean</td>
-<td style="text-align:center"><code>IntPredicate, LongPredicate, DoublePredicate</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>Consumer&lt;T&gt;</code></td>
-<td style="text-align:center">T -&gt; void</td>
-<td style="text-align:center"><code>IntConsumer, LongConsumer, DoubleConsumer</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>Function&lt;T,R&gt;</code></td>
-<td style="text-align:center">T -&gt; R</td>
-<td style="text-align:center"><code>IntFunction&lt;R&gt;, IntToDoubleFunction, IntToLongFunction,  LongFunction&lt;R&gt;, LongToDoubleFunction, LongToIntFunction,  DoubleFunction&lt;R&gt;, ToIntFunction&lt;T&gt;, ToDoubleFunction&lt;T&gt;,  ToLongFunction&lt;T&gt;</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>Supplier&lt;T&gt;</code></td>
-<td style="text-align:center">() -&gt; T</td>
-<td style="text-align:center"><code>BooleanSupplier, IntSupplier, LongSupplier, DoubleSupplier</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>UnaryOperator&lt;T&gt;</code></td>
-<td style="text-align:center">T -&gt; T</td>
-<td style="text-align:center"><code>IntUnaryOperator, LongUnaryOperator, DoubleUnaryOperator</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>BinaryOperator&lt;T&gt;</code></td>
-<td style="text-align:center">(T,T) -&gt; T</td>
-<td style="text-align:center"><code>IntBinaryOperator, LongBinaryOperator, DoubleBinaryOperator</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>BiPredicate&lt;L,R&gt;</code></td>
-<td style="text-align:center">(L,R) -&gt; boolean</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>BiConsumer&lt;T,U&gt;</code></td>
-<td style="text-align:center">(T,U) -&gt; void</td>
-<td style="text-align:center"><code>ObjIntConsumer&lt;T&gt;, ObjLongConsumer&lt;T&gt;, ObjDoubleConsumer&lt;T&gt;</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>BiFunction&lt;T,U,R&gt;</code></td>
-<td style="text-align:center">(T,U) -&gt; R</td>
-<td style="text-align:center"><code>ToIntBiFunction&lt;T,U&gt;, ToLongBiFunction&lt;T,U&gt;, ToDoubleBiFunction&lt;T,U&gt;</code></td>
-</tr>
-</tbody>
-</table>
-<p>上表中的原始类型特化指的是为了消除自动装箱和拆箱的性能开销，JDK1.8提供的针对基本类型的函数式接口。</p>
-<h2 id="Lambda表达式和方法引用"><a href="#Lambda表达式和方法引用" class="headerlink" title="Lambda表达式和方法引用"></a>Lambda表达式和方法引用</h2><p>有了函数式接口之后，就可以使用Lambda表达式和方法引用了。其实函数式接口的表中的函数描述符就是Lambda表达式，在函数式接口中Lambda表达式相当于匿名内部类的效果。 举个简单的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestLambda</span> </span>&#123;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable runnable)</span> </span>&#123;</div><div class="line"></div><div class="line">runnable.run();</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line"><span class="comment">//Java8之前</span></div><div class="line"></div><div class="line">execute(<span class="keyword">new</span> Runnable() &#123;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">		System.out.println(<span class="string">"run"</span>);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">//使用Lambda表达式</span></div><div class="line"></div><div class="line">execute(() -&gt; System.out.println(<span class="string">"run"</span>));</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可以看到，相比于使用匿名内部类的方式，Lambda表达式可以使用更少的代码但是有更清晰的表述。注意，Lambda表达式也不是完全等价于匿名内部类的， 两者的不同点在于<code>this</code>的指向和本地变量的屏蔽上。</p>
-<p>Lambda表达式还可以复合，把几个Lambda表达式串起来使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Predicate&lt;Apple&gt; redAndHeavyApple = redApple.and(a -&gt; a.getWeight() &gt; <span class="number">150</span>).or(a -&gt; “green”.equals(a.getColor()));</div></pre></td></tr></table></figure>
-<p>上面这行代码把两个Lambda表达式串了起来，含义是选择重量大于150或者绿色的苹果。</p>
-<p>方法引用可以看作Lambda表达式的更简洁的一种表达形式，使用<code>::</code>操作符，方法引用主要有三类：</p>
-<ol>
-<li>指向静态方法的方法引用(例如Integer的parseInt方法，写作<code>Integer::parseInt</code>)；</li>
-<li>指向任意类型实例方法的方法引用(例如String的length方法，写作<code>String::length</code>)；</li>
-<li>指向现有对象的实例方法的方法引用(例如假设你有一个本地变量localVariable用于存放Variable类型的对象，它支持实例方法getValue，那么可以写成<code>localVariable::getValue</code>)。</li>
-</ol>
-<p>举个方法引用的简单的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Function&lt;String, Integer&gt; stringToInteger = (String s) -&gt; Integer.parseInt(s);</div><div class="line"> </div><div class="line"><span class="comment">//使用方法引用</span></div><div class="line">Function&lt;String, Integer&gt; stringToInteger = Integer::parseInt;</div></pre></td></tr></table></figure>
-<p>方法引用中还有一种特殊的形式，构造函数引用，假设一个类有一个默认的构造函数，那么使用方法引用的形式为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Supplier&lt;SomeClass&gt; c1 = SomeClass::<span class="keyword">new</span>;</div><div class="line">SomeClass s1 = c1.get();</div><div class="line"> </div><div class="line"><span class="comment">//等价于</span></div><div class="line"> </div><div class="line">Supplier&lt;SomeClass&gt; c1 = () -&gt; <span class="keyword">new</span> SomeClass();</div><div class="line">SomeClass s1 = c1.get();</div></pre></td></tr></table></figure>
-<p>如果是构造函数有一个参数的情况：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Function&lt;Integer, SomeClass&gt; c1 = SomeClass::<span class="keyword">new</span>;</div><div class="line">SomeClass s1 = c1.apply(<span class="number">100</span>);</div><div class="line"> </div><div class="line"><span class="comment">//等价于</span></div><div class="line"> </div><div class="line">Function&lt;Integer, SomeClass&gt; c1 = i -&gt; <span class="keyword">new</span> SomeClass(i);</div><div class="line">SomeClass s1 = c1.apply(<span class="number">100</span>);</div></pre></td></tr></table></figure>
-<h2 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h2><p>Stream可以分成串行流和并行流，并行流是基于Java7中提供的<code>ForkJoinPool</code>来进行任务的调度，达到并行的处理的目的。 集合是我们平时在进行Java编程时非常常用的API，使用Stream可以帮助更好的来操作集合。Stream提供了非常丰富的操作，包括筛选、切片、映射、查找、匹配、归约等等， 这些操作又可以分为中间操作和终端操作，中间操作会返回一个流，因此我们可以使用多个中间操作来作链式的调用，当使用了终端操作之后，那么这个流就被认为是被消费了， 每个流只能有一个终端操作。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//筛选后收集到一个List中</span></div><div class="line">List&lt;Apple&gt; vegetarianMenu = apples.stream().filter(Apple::isRed).collect(Collectors.toList());</div><div class="line"> </div><div class="line"><span class="comment">//筛选加去重</span></div><div class="line">List&lt;Integer&gt; numbers = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>);</div><div class="line">numbers.stream().filter(i -&gt; i % <span class="number">2</span> == <span class="number">0</span>).distinct().forEach(System.out::println);</div></pre></td></tr></table></figure>
-<p>以上都是一些简单的例子，Stream提供的API非常丰富，可以很好的满足我们的需求。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">操作</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">返回类型</th>
-<th style="text-align:center">使用的类型/函数式接口</th>
-<th style="text-align:center">函数描述符</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">filter</td>
-<td style="text-align:center">中间</td>
-<td style="text-align:center"><code>Stream&lt;T&gt;</code></td>
-<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
-<td style="text-align:center"><code>T -&gt; boolean</code></td>
-</tr>
-<tr>
-<td style="text-align:center">distinct</td>
-<td style="text-align:center">中间</td>
-<td style="text-align:center"><code>Stream&lt;T&gt;</code></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">skip</td>
-<td style="text-align:center">中间</td>
-<td style="text-align:center"><code>Stream&lt;T&gt;</code></td>
-<td style="text-align:center"><code>long</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">limit</td>
-<td style="text-align:center">中间</td>
-<td style="text-align:center"><code>Stream&lt;T&gt;</code></td>
-<td style="text-align:center"><code>long</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">map</td>
-<td style="text-align:center">中间</td>
-<td style="text-align:center"><code>Stream&lt;R&gt;</code></td>
-<td style="text-align:center"><code>Function&lt;T,R&gt;</code></td>
-<td style="text-align:center"><code>T -&gt; R</code></td>
-</tr>
-<tr>
-<td style="text-align:center">flatMap</td>
-<td style="text-align:center">中间</td>
-<td style="text-align:center"><code>Stream&lt;R&gt;</code></td>
-<td style="text-align:center"><code>Function&lt;T, Stream&lt;R&gt;&gt;</code></td>
-<td style="text-align:center"><code>T -&gt; Stream&lt;R&gt;</code></td>
-</tr>
-<tr>
-<td style="text-align:center">sorted</td>
-<td style="text-align:center">中间</td>
-<td style="text-align:center"><code>Stream&lt;R&gt;</code></td>
-<td style="text-align:center"><code>Comparator&lt;T&gt;</code></td>
-<td style="text-align:center"><code>(T,T) -&gt; int</code></td>
-</tr>
-<tr>
-<td style="text-align:center">anyMatch</td>
-<td style="text-align:center">终端</td>
-<td style="text-align:center"><code>boolean</code></td>
-<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
-<td style="text-align:center"><code>T -&gt; boolean</code></td>
-</tr>
-<tr>
-<td style="text-align:center">noneMatch</td>
-<td style="text-align:center">终端</td>
-<td style="text-align:center"><code>boolean</code></td>
-<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
-<td style="text-align:center"><code>T -&gt; boolean</code></td>
-</tr>
-<tr>
-<td style="text-align:center">allMatch</td>
-<td style="text-align:center">终端</td>
-<td style="text-align:center"><code>boolean</code></td>
-<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
-<td style="text-align:center"><code>T -&gt; boolean</code></td>
-</tr>
-<tr>
-<td style="text-align:center">findAny</td>
-<td style="text-align:center">终端</td>
-<td style="text-align:center"><code>Optional&lt;T&gt;</code></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">findFirst</td>
-<td style="text-align:center">终端</td>
-<td style="text-align:center"><code>Optional&lt;T&gt;</code></td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">forEach</td>
-<td style="text-align:center">终端</td>
-<td style="text-align:center"><code>void</code></td>
-<td style="text-align:center"><code>Consumer&lt;T&gt;</code></td>
-<td style="text-align:center"><code>T -&gt; void</code></td>
-</tr>
-<tr>
-<td style="text-align:center">collect</td>
-<td style="text-align:center">终端</td>
-<td style="text-align:center"><code>R</code></td>
-<td style="text-align:center"><code>Collector&lt;T,A,R&gt;</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">reduce</td>
-<td style="text-align:center">终端</td>
-<td style="text-align:center"><code>Optional&lt;T&gt;</code></td>
-<td style="text-align:center"><code>BinaryOperator&lt;T&gt;</code></td>
-<td style="text-align:center"><code>(T,T) -&gt; T</code></td>
-</tr>
-<tr>
-<td style="text-align:center">count</td>
-<td style="text-align:center">终端</td>
-<td style="text-align:center"><code>long</code></td>
-<td style="text-align:center"></td>
-</tr>
-</tbody>
-</table>
-<p>与函数式接口类似，Stream也提供了原始类型特化的流，比如说<code>IntStream</code>等：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//maoToInt转化为一个IntStream</span></div><div class="line"><span class="keyword">int</span> count = list.stream().mapToInt(list::getNumber).sum();</div></pre></td></tr></table></figure>
-<p>并行流与串行流的区别就在于将stream改成parallelStream，并行流会将流的操作拆分，放到线程池中去执行，但是并不是说使用并行流的性能一定好于串行的流， 恰恰相反，可能大多数时候使用串行流会有更好的性能，这是因为将任务提交到线程池，执行完之后再合并，这些本身都是有不小的开销的。关于并行流其实还有非常多的细节， 这里做一个抛砖引玉，有兴趣的同学可以在网上自行查找一些资料来学习。</p>
-<h2 id="默认方法"><a href="#默认方法" class="headerlink" title="默认方法"></a>默认方法</h2><p>默认方法出现的原因是为了对原有接口的扩展，有了默认方法之后就不怕因改动原有的接口而对已经使用这些接口的程序造成的代码不兼容的影响。 在Java8中也对一些接口增加了一些默认方法，比如<code>Map</code>接口等等。一般来说，使用默认方法的场景有两个：可选方法和行为的多继承。</p>
-<p>默认方法的使用相对来说比较简单，唯一要注意的点是如何处理默认方法的冲突。关于如何处理默认方法的冲突可以参考以下三条规则：</p>
-<ol>
-<li>类中的方法优先级最高。类或父类中声明的方法的优先级高于任何声明为默认方法的优先级。</li>
-<li>如果无法依据第一条规则进行判断，那么子接口的优先级更高：函数签名相同时，优先选择拥有最具体实现的默认方法的接口。即如果B继承了A，那么B就比A更具体。</li>
-<li>最后，如果还是无法判断，继承了多个接口的类必须通过显式覆盖和调用期望的方法，显式地选择使用哪一个默认方法的实现。那么如何显式地指定呢:</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">C</span> <span class="keyword">implements</span> <span class="title">B</span>, <span class="title">A</span> </span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span> </span>&#123;</div><div class="line">        B.<span class="keyword">super</span>().hello();    </div><div class="line">    &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>使用<code>X.super.m(..)</code>显式地调用希望调用的方法。</p>
-<h2 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h2><p>如果一个方法返回一个Object，那么我们在使用的时候总是要判断一下返回的结果是否为空，一般是这样的形式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (a != <span class="keyword">null</span>) &#123;</div><div class="line">    <span class="comment">//do something...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>但是简单的情况还好，如果复杂的情况下每一个都要去检查非常麻烦，而且写出来的代码也不好看、很臃肿，但是如果不检查就很容易遇到<code>NullPointerException</code>， Java8中的Optional就是为此而设计的。</p>
-<p>Optional一般使用在方法的返回值中，如果使用Optional来包装方法的返回值，这就表示方法的返回值可能为<code>null</code>，需要使用Optional提供的方法来检查，如果为null，还可以提供一个默认值。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建Optional对象</span></div><div class="line">Optional&lt;String&gt; opt = Optional.empty();</div><div class="line"> </div><div class="line"><span class="comment">//依据一个非空值创建Optional</span></div><div class="line">Optional&lt;String&gt; opt = Optional.of(<span class="string">"hello"</span>);</div><div class="line"> </div><div class="line"><span class="comment">//可接受null的Optional</span></div><div class="line">Optional&lt;String&gt; opt = Optional.ofNullable(<span class="keyword">null</span>);</div></pre></td></tr></table></figure>
-<p>除了以上这些方法外，Optional还提供了以下方法：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">方法</th>
-<th style="text-align:center">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">empty</td>
-<td style="text-align:center">返回一个空的Optional实例</td>
-</tr>
-<tr>
-<td style="text-align:center">filter</td>
-<td style="text-align:center">如果值存在并且满足提供的谓词，就返回包括该值的Optional对象；否则返回一个空的Optional对象</td>
-</tr>
-<tr>
-<td style="text-align:center">flatMap</td>
-<td style="text-align:center">如果值存在，就对该值执行提供的mapping函数调用，返回一个Optional类型的值，否则就返回一个空的Optional对象</td>
-</tr>
-<tr>
-<td style="text-align:center">get</td>
-<td style="text-align:center">如果该值存在，将该值用Optional封装返回，否则抛出一个NoSuchElementException异常</td>
-</tr>
-<tr>
-<td style="text-align:center">ifPresent</td>
-<td style="text-align:center">如果值存在，就执行使用该值的方法调用，否则返回false</td>
-</tr>
-<tr>
-<td style="text-align:center">isPresent</td>
-<td style="text-align:center">如果值存在就返回true，否则返回false</td>
-</tr>
-<tr>
-<td style="text-align:center">map</td>
-<td style="text-align:center">如果值存在，就对该值执行提供的mapping函数调用</td>
-</tr>
-<tr>
-<td style="text-align:center">of</td>
-<td style="text-align:center">将指定值用Optional封装之后返回，如果该值为null，抛出一个NullPointerException异常</td>
-</tr>
-<tr>
-<td style="text-align:center">ofNullable</td>
-<td style="text-align:center">将指定值用Optional封装之后返回，如果该值为null，则返回一个空的Optional对象</td>
-</tr>
-<tr>
-<td style="text-align:center">orElse</td>
-<td style="text-align:center">如果有值则将其返回，否则返回一个默认值</td>
-</tr>
-<tr>
-<td style="text-align:center">orElseGet</td>
-<td style="text-align:center">如果有值则将其返回，否则返回一个由指定的Supplier接口生成的值</td>
-</tr>
-<tr>
-<td style="text-align:center">orElseThrow</td>
-<td style="text-align:center">如果有值则将其返回，否则抛出一个由指定的Supplier接口生成的异常</td>
-</tr>
-</tbody>
-</table>
-<h2 id="CompletableFuture"><a href="#CompletableFuture" class="headerlink" title="CompletableFuture"></a>CompletableFuture</h2><p>在Java8之前，我们会使用JDK提供的<code>Future</code>接口来进行一些异步的操作，其实<code>CompletableFuture</code>也是实现了<code>Future</code>接口， 并且基于<code>ForkJoinPool</code>来执行任务，因此本质上来讲，<code>CompletableFuture</code>只是对原有API的封装， 而使用CompletableFuture与原来的Future的不同之处在于可以将两个Future组合起来，或者如果两个Future是有依赖关系的，可以等第一个执行完毕后再实行第二个等特性。</p>
-<p>先来看看基本的使用方式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Future&lt;Double&gt; <span class="title">getPriceAsync</span><span class="params">(<span class="keyword">final</span> String product)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> CompletableFuture&lt;Double&gt; futurePrice = <span class="keyword">new</span> CompletableFuture&lt;&gt;();</div><div class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</div><div class="line">        <span class="keyword">double</span> price = calculatePrice(product);</div><div class="line">        futurePrice.complete(price);  <span class="comment">//完成后使用complete方法，设置future的返回值</span></div><div class="line">    &#125;).start();</div><div class="line">    <span class="keyword">return</span> futurePrice;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>得到Future之后就可以使用get方法来获取结果，CompletableFuture提供了一些工厂方法来简化这些API，并且使用函数式编程的方式来使用这些API，例如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Future&lt;Double&gt; price = CompletableFuture.supplyAsync(() -&gt; calculatePrice(product));</div></pre></td></tr></table></figure>
-<p>代码是不是一下子简洁了许多呢。之前说了，CompletableFuture可以组合多个Future，不管是Future之间有依赖的，还是没有依赖的。 如果第二个请求依赖于第一个请求的结果，那么可以使用<code>thenCompose</code>方法来组合两个Future</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">findPriceAsync</span><span class="params">(String product)</span> </span>&#123;</div><div class="line">    List&lt;CompletableFutute&lt;String&gt;&gt; priceFutures = tasks.stream()</div><div class="line">    .map(task -&gt; CompletableFuture.supplyAsync(() -&gt; task.getPrice(product),executor))</div><div class="line">    .map(future -&gt; future.thenApply(Work::parse))</div><div class="line">    .map(future -&gt; future.thenCompose(work -&gt; CompletableFuture.supplyAsync(() -&gt; Count.applyCount(work), executor)))</div><div class="line">    .collect(Collectors.toList());</div><div class="line"> </div><div class="line">    <span class="keyword">return</span> priceFutures.stream().map(CompletableFuture::join).collect(Collectors.toList());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面这段代码使用了<code>thenCompose</code>来组合两个CompletableFuture。<code>supplyAsync</code>方法第二个参数接受一个自定义的Executor。 首先使用CompletableFuture执行一个任务，调用<code>getPrice</code>方法，得到一个Future，之后使用<code>thenApply</code>方法，将Future的结果应用<code>parse</code>方法， 之后再使用执行完<code>parse</code>之后的结果作为参数再执行一个<code>applyCount</code>方法，然后收集成一个<code>CompletableFuture&lt;String&gt;</code>的List， 最后再使用一个流，调用CompletableFuture的<code>join</code>方法，这是为了等待所有的异步任务执行完毕，获得最后的结果。</p>
-<p>注意，这里必须使用两个流，如果在一个流里调用<code>join</code>方法，那么由于Stream的延迟特性，所有的操作还是会串行的执行，并不是异步的。</p>
-<p>再来看一个两个Future之间没有依赖关系的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Future&lt;String&gt; futurePriceInUsd = CompletableFuture.supplyAsync(() -&gt; shop.getPrice(“price1”))</div><div class="line">                                    .thenCombine(CompletableFuture.supplyAsync(() -&gt; shop.getPrice(“price2”)), (s1, s2) -&gt; s1 + s2);</div></pre></td></tr></table></figure>
-<p>这里有两个异步的任务，使用<code>thenCombine</code>方法来组合两个Future，<code>thenCombine</code>方法的第二个参数就是用来合并两个Future方法返回值的操作函数。</p>
-<p>有时候，我们并不需要等待所有的异步任务结束，只需要其中的一个完成就可以了，CompletableFuture也提供了这样的方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//假设getStream方法返回一个Stream&lt;CompletableFuture&lt;String&gt;&gt;</span></div><div class="line">CompletableFuture[] futures = getStream(“listen”).map(f -&gt; f.thenAccept(System.out::println)).toArray(CompletableFuture[]::<span class="keyword">new</span>);</div><div class="line"><span class="comment">//等待其中的一个执行完毕</span></div><div class="line">CompletableFuture.anyOf(futures).join();</div></pre></td></tr></table></figure>
-<p>使用<code>anyOf</code>方法来响应CompletableFuture的completion事件。</p>
-<h2 id="新的时间和日期API"><a href="#新的时间和日期API" class="headerlink" title="新的时间和日期API"></a>新的时间和日期API</h2><p>Java8之前的时间和日期API并不好用，而且在线程安全性等方面也存在问题，一般会借助一些开源类库来解决时间处理的问题。在JDK1.8中新加入了时间和日期的API， 借助这些新的API基本可以不再需要开源类库的帮助来完成时间的处理了。</p>
-<p>Java8中加入了<code>LocalDateTime, LocalDate, LocalTime, Duration, Period, Instant, DateTimeFormatter</code>等等API，来看一些使用这些API的简单的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建日期</span></div><div class="line">LocalDate date = LocalDate.of(<span class="number">2017</span>,<span class="number">1</span>,<span class="number">21</span>); <span class="comment">//2017-01-21</span></div><div class="line"><span class="keyword">int</span> year = date.getYear() <span class="comment">//2017</span></div><div class="line">Month month = date.getMonth(); <span class="comment">//JANUARY</span></div><div class="line"><span class="keyword">int</span> day = date.getDayOfMonth(); <span class="comment">//21</span></div><div class="line">DayOfWeek dow = date.getDayOfWeek(); <span class="comment">//SATURDAY</span></div><div class="line"><span class="keyword">int</span> len = date.lengthOfMonth(); <span class="comment">//31(days in January)</span></div><div class="line"><span class="keyword">boolean</span> leap = date.isLeapYear(); <span class="comment">//false(not a leap year)</span></div><div class="line"> </div><div class="line"><span class="comment">//时间的解析和格式化</span></div><div class="line">LocalDate date = LocalDate.parse(“<span class="number">2017</span>-<span class="number">01</span>-<span class="number">21</span>”);</div><div class="line">LocalTime time = LocalTime.parse(“<span class="number">13</span>:<span class="number">45</span>:<span class="number">20</span>”);</div><div class="line"> </div><div class="line">LocalDateTime now = LocalDateTime.now();</div><div class="line">now.format(DateTimeFormatter.BASIC_ISO_DATE);</div><div class="line"> </div><div class="line"><span class="comment">//合并日期和时间</span></div><div class="line">LocalDateTime dt1 = LocalDateTime.of(<span class="number">2017</span>, Month.JANUARY, <span class="number">21</span>, <span class="number">18</span>, <span class="number">7</span>);</div><div class="line">LocalDateTime dt2 = LocalDateTime.of(localDate, time);</div><div class="line">LocalDateTime dt3 = localDate.atTime(<span class="number">13</span>,<span class="number">45</span>,<span class="number">20</span>);</div><div class="line">LocalDateTime dt4 = localDate.atTime(time);</div><div class="line">LocalDateTime dt5 = time.atDate(localDate);</div><div class="line"> </div><div class="line"><span class="comment">//操作日期</span></div><div class="line">LocalDate date1 = LocalDate.of(<span class="number">2014</span>,<span class="number">3</span>,<span class="number">18</span>); <span class="comment">//2014-3-18</span></div><div class="line">LocalDate date2 = date1.plusWeeks(<span class="number">1</span>); <span class="comment">//2014-3-25</span></div><div class="line">LocalDate date3 = date2.minusYears(<span class="number">3</span>); <span class="comment">//2011-3-25</span></div><div class="line">LocalDate date4 = date3.plus(<span class="number">6</span>, ChronoUnit.MONTHS); <span class="comment">//2011-09-25</span></div></pre></td></tr></table></figure>
-<p>可以发现，新的时间和日期API都是不可变的，并且是线程安全的，之前使用的比如<code>SimpleDateFormat</code>不是线程安全的， 现在可以使用<code>DateTimeFormatter</code>来代替，<code>DateTimeFormatter</code>是线程安全的。</p>
-<p>以上只是Java8提供的新时间和日期API的一部分，更多的内容可以参考官网文档，有了这些API，相信完全可以不再依赖开源的类库来进行时间的处理。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>以上只是对Java8的新特性进行了一个非常简单的介绍，由于近年来函数式编程很火，Java8也受函数式编程思想的影响，吸收了函数式编程好的地方， 很多新特性都是按照函数式编程来设计的。关于Java8还有非常多的细节没有提到，这些需要我们自行去学习，推荐一本学习Java8非常好的书籍——《Java8实战》， 看完这本书对Java8的使用可以有一个比较清楚的了解。</p>
-<p>现在已经是2017年了，据说今年会推出Java9，Java9会推出什么新特性，让我们拭目以待吧。</p>
-
+              Java8是2014年发布的，至今也已经有快三年的时间了，之前虽然有学习过，但是学的比较零散，不成系统，而且也没有覆盖到Java8所有的特性。 由于公司已经使用了JDK1.8，所以工作中能使用Java8的机会还是很多的，因此决定来系统地学习一下Java8的新特性，这是对我最近学习Java8的一些记录， 以备在有些细节记不太清的时候可以查询。
+          
       
     </div>
     
@@ -738,6 +430,10 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java8/">Java8</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/04/26/java-8-in-practice/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -784,123 +480,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p><a href="http://mp.weixin.qq.com/s?__biz=MzA5MzQ2NTY0OA==&amp;mid=2650796589&amp;idx=1&amp;sn=37e7bee10cb31e6698411a249eafc641&amp;chksm=88562f72bf21a6646bf09070a52cca41bbf458ecbde44b52d1712356f2ab881095c3e987cc1d&amp;scene=21#wechat_redirect" target="_blank" rel="external">上集</a>我们阐述了使用微服务体系架构的关键障碍是领域模型，事务和查询，这三个障碍似乎和功能拆分具有天然的对抗。只要功能拆分了，就涉及这三个难题。</p>
-<p>然后我们向你展示了一种解决方案就是将每个服务的业务逻辑实现为一组DDD聚合。然后每个事务只能更新或创建一个单独的聚合。然后通过事件来维护聚合（和服务）之间的数据一致性。</p>
-<p>在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，<strong>事件源</strong>是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为<strong>命令查询责任分离（CQRS）</strong>的方法来实现可扩展和高性能的查询。</p>
-<p><strong>可靠地更新状态和发布事件</strong></p>
-<p>从表面上看，使用事件来保持聚合之间的一致性似乎很简单。</p>
-<p>当一个服务创建或更新数据库的一个聚合时，它只是简单地发布一个事件。</p>
-<p>但是，这只是表象，其实还有一个核心问题就是：更新数据库和发布事件必须是原子的。否则，就会出现类似这样的情况：如果服务在更新数据库之后但在发布事件之前崩溃，则系统就出现了不一致的问题。</p>
-<p>传统的解决方案是一般都是使用分布式事务来搞，一个涉及数据库和消息broker的分布式事务。但是，由于上一集所述的原因，2PC不是一个可行的选择。</p>
-<p>其实除了2PC ，还有几种解决这个问题的方法。</p>
-<p>一种解决方案就是，<strong>应用程序可以通过向类似Kafka这样的消息中间件的broker发布一个事件来执行更新</strong>。然后一个消息consumer订阅这个事件，通过消费该事件然后最终更新数据库。这种方法可以确保数据库被更新并且事件被发布。</p>
-<p>但是缺点就是这种一致性模型过于复杂，至少有点复杂。而且应用程序不能够立即读取到自己刚刚的写入。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552458911.jpg" alt=""></p>
-<p><em>图1 - 通过发布事件到消息broker来更新数据库</em></p>
-<p>另一种做法就是，如图2所示，就是应用程序追加事务日志到数据库（a.k.a.commit log），将每个记录的更改转换为事件，然后把事件发布到消息broker。这种做法的一个重要好处就是应用程序本身不需要任何的改变。</p>
-<p>然而，一个缺点是，这种做法是一种底层（low-level）的事件，而不是上层业务事件。可能难以将上层业务事件（由于数据库更新的原因）从底层更改逆转到表中的行。</p>
-<blockquote>
-<p>原文：it can be difficult toreverse engineer the high-level business event - the reason for the databaseupdate - from the low-level changes to the rows in the tables.</p>
-</blockquote>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552567780.jpg" alt=""></p>
-<p><strong>图**</strong>2 -<strong> </strong>追加数据库事务日志**</p>
-<p>第三种解决方案就是，图3所示的这种，使用数据库表来作为一种临时性的message queue。当一个服务更新一个聚合，它会insert一个事件到EVENTS表，作为本地ACID事务的一部分。然后一个单独的进程轮询EVENTS表并将事件发布到消息broker。</p>
-<p>这种做法的好处就是service能够发布high-level的业务事件。</p>
-<p>缺点是这种做法容易出错，有这种潜在的可能，因为事件发布代码必须与业务逻辑同步。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552770649.jpg" alt=""></p>
-<p><strong>图**</strong>3 -<strong> </strong>使用数据库表作为<strong>**message queue</strong></p>
-<p>上面三种做法都有比较典型的缺点。</p>
-<p><strong>发布一个事件到**</strong>message broker<strong>**并稍后更新</strong>的做法总是不能提供一种read-your-writes的一致性，也就是只能保证最终一致。</p>
-<p><strong>追加事务日志</strong>提供了一致的读取，但却不能发布高级业务事件。</p>
-<p><strong>使用数据库表</strong>作为message queue提供了一致的读取并且可以发布high-level业务事件，但</p>
-<p>却对开发人员有依赖，就是开发人员得记得在状态发生改变的时候加上发布事件的逻辑。</p>
-<p>幸运的是，我们还有另外一种解决方案，那就是event sourcing，事件源。它是一种针对持久化和业务逻辑的一种以事件为中心方法，称为事件源。这里解释的不够清楚，稍后慢慢展开。</p>
-<p><strong>使用事件源来开发微服务</strong></p>
-<p>事件源（Event sourcing）是一种以事件为中心的持久化方法。这不是一个新的概念。</p>
-<p>我第一次了解到这个概念是在大概五年多以前，之后对这个新生事物一直充满了好奇，直到我开始开发微服务。接下来，你将会看到通过事件源来实现事件驱动的微服务架构是多么不错的一种方法。</p>
-<p>一个service通过event sourcing使用一系列的事件来持久化每个聚合。</p>
-<p>当创建或更新一个聚合的时候，这个service会在数据库里保存一个或多个事件，这种数据库里存储event的方式可以叫做是event store，以下我们就叫“事件数据库”。</p>
-<p>它通过加载这些事件并replay这些事件，从而实现更新聚合的当前状态。</p>
-<p>在函数式编程里，一个service通过执行一个函数式的fold或reduce来重构聚合，而不是事件。</p>
-<p>由于事件就是状态，所以你就不会再有原子地更新状态和发布事件的问题了。</p>
-<p>例如，比如订单服务（Order Service）。不是将每个订单作为一行存储在ORDERS表中，而是将每个订单聚合作为一系列的事件，比如订单已创建，订单已批准，订单已发货等持久化到EVENTS表中。图4显示了这些事件如何存储在基于SQL的事件数据库（event store）中。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552990545.jpg" alt=""></p>
-<p><strong>图**</strong>4 -<strong> </strong>使用事件源来持久化一个订单**</p>
-<p>每列的意思：</p>
-<ul>
-<li><p><strong>entity_type</strong> 和<strong>entity_id</strong> –唯一标识一个聚合</p>
-</li>
-<li><p><strong>event_id</strong> – 事件ID，唯一标识</p>
-</li>
-<li><p><strong>event_type</strong> – 事件类型</p>
-</li>
-<li><p><strong>event_data</strong> -事件属性的序列化JSON表示</p>
-</li>
-</ul>
-<p>一些事件包含大量数据。例如，订单创建（Order Created）事件包含完整订单，包括其订单项，付款信息和交货信息。其他事件，如订单出货（Order Shipped）事件，包含很少或没有数据，只是表示状态转换。</p>
-<p><strong>事件源（**</strong>Event Sourcing<strong>**）和发布事件</strong></p>
-<p>严格的讲，<strong>事件源只是简单的将聚合们作为事件进行了持久化</strong>。更直接的说，就是使用事件源来作为一种可靠的事件发布机制。保存一个事件是一个固有的原子操作，它可以确保事件数据库（event store）把事件传递给感兴趣的服务。</p>
-<p>例如，如果事件被存储在上面所示的EVENTS表中，订阅者可以简单地轮询表以查找新事件。更复杂的事件数据库（event store）将使用另一种做法，这种做法具有更高性能和可扩展性。例如，Eventuate Local使用追加事务日志的方式。它从MySQL replication流中读取插入到EVENTS表中的事件，并将它们发布到Apache Kafka。</p>
-<blockquote>
-<p>至于Eventuate Local是个什么鬼？你可以去github 搜搜。下面放一张图：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553153761.jpg" alt=""></p>
-</blockquote>
-<p><strong>使用**</strong>Snapshot<strong>**改善性能</strong></p>
-<p>订单（Order）聚合具有相对较少的状态转换，因此它只有少量的事件。</p>
-<p>所以，针对这些事件查询事件数据库（event store）并重构Order聚合，效率是不错的。然而，一些聚合有很多的事件。例如，客户（Customer）聚合可能有大量的预留信用（Credit Reserved）事件。随着时间的推移，加载和消费（fold）这些事件的效率会越来越低。</p>
-<p>一个常见的解决方案是定期保存聚合状态的快照（snapshot）。应用程序通过加载最近的快照然后从快照创建之后发生的那些事件开始来恢复聚合的状态。</p>
-<p>在函数式下，快照就是折叠（fold）的初始值。（原文：In functional terms, the snapshot is the initial value of thefold. ）如果聚合是一个简单，容易序列化的结构，则快照可以简单地是JSON序列化格式。更复杂的聚合可以使用Memento模式（Mementopattern）进行快照。至于这种设计模式具体是什么鬼，你可以自己查阅。</p>
-<p>在线商店示例中的客户（Customer）聚合具有非常简单的结构：客户的信息，他们的信用额度（credit limit）和他们的信用预留（credit reservations）。</p>
-<p>客户（Customer）的快照只是其状态的JSON序列化。图5展现了如何从与事件＃103的客户（Customer）的状态相对应的快照中重新创建一个客户（Customer）。客户服务（Customer Service）只需要加载快照和加载事件＃103后发生的事件。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553325815.jpg" alt=""></p>
-<p><strong>图**</strong>5 –<strong> </strong>使用快照来优化性能**</p>
-<p>客户服务（Customer Service）通过反序列化快照的JSON后加载并消费＃104到＃106的事件来重新创建那个客户（Customer）。</p>
-<p><strong>事件源实现</strong></p>
-<p><strong>事件数据库（event store）是数据库和消息borker的混合体</strong>。它是一个数据库，因为它有一个API，用于通过主键插入和检索聚合的事件。事件数据库（event store）也是消息broker，因为它具有用于订阅事件的API。</p>
-<p>有一些不同的方法来实现事件数据库（event store）。</p>
-<p><strong>一个做法是编写自己的事件源框架</strong>。例如，您可以在RDBMS中持久化事件。一种简单的，但性能略低的方式来发布事件，然后订阅者轮询事件的EVENTS表。</p>
-<p><strong>另一个做法是使用专用的事件数据库（event store）</strong>，它通常能够提供更丰富的功能以及更好的性能和可扩展性。“事件源”的开发者之一Greg Young有一个基于.NET的开源事件数据库，称为Event Store。 Lightbend，这个公司以前叫Typesafe，有一个叫Lagom的微服务框架，是基于事件源的。这里推荐一个我自己的创业项目，Eventuate，一个用于微服务的事件源框架，你可以把它作为一个云服务，你也可以把它认为是一个基于Kafka 或RDBMS的开源项目。</p>
-<p><strong>事件源的好处与缺点</strong></p>
-<p>事件源有好处也有缺点。</p>
-<p>事件源的一个主要优点是它可以在聚合的状态发生变化时可靠地发布事件。它为事件驱动的微服务架构打下了良好的基础。而且，由于每个事件都可以记录进行更改的用户的身份，因此事件源还提供了一个准确的审核日志。事件流可用于各种其他目的，包括向用户发送通知以及应用集成等等。</p>
-<p>事件源的另一个好处是它存储每个聚合的整个历史。你可以轻松实现检索聚合的过去状态的时态查询。要确定在给定时间点的聚合的状态，您只需消费（fold）直到该点为止发生的事件。例如，可以直接计算过去某个时间点客户的可用信用额。</p>
-<p>事件源也避免了O / R阻抗失衡的问题。这是因为它持久化了事件而不是聚合。事件通常具有简单，容易序列化的结构。服务（service）可以通过序列化其状态的记录来对复杂聚合进行快照。 Memento模式在聚合和它的序列化表示之间增加了一个中间层。</p>
-<blockquote>
-<p><strong><em>有关O/R impedance mismatch：</em></strong></p>
-<p>对象关系阻抗失衡（object-relational impedance mismatch ）是当关系数据库管理系统（RDBMS）由以面向对象的编程语言或风格编写的应用程序（或多个应用程序）服务时经常遇到的一组概念和技术困难，特别是因为对象或类定义必须映射到关系模式定义的数据库表。</p>
-</blockquote>
-<p>事件源当然不是完美的，它也有一些缺点。它是一个完全不一样的和而且你可能并不熟悉的编程模型，所以要花一些时间去学习。为了使现有应用程序使用事件源，你必须要重写业务逻辑。幸运的是，这是一个相当机械的转换，你可以在将应用程序迁移到微服务的时候做这件事情。</p>
-<p>事件源的另一个缺点是消息broker通常保证至少一次（at-least once）传递。非幂等的事件处理handler必须检测并丢弃那些重复的事件。事件源框架可以通过为每个事件分配单调递增的id来解决这个问题。事件处理handler然后可以通过对最大事件ID跟踪来检测重复事件。</p>
-<p>事件源的另一个局限就是事件（和快照！）的schema将随时间发展。  由于事件永久存储，当服务重建聚合时，服务可能需要折叠与多个schema版本对应的事件。  简化服务的一种方法是，当事件源框架从事件数据库（event store）加载它们时，将所有事件转换为最新版本的模式。因此，服务只需消费（fold）最新版本的事件。</p>
-<p>事件源的另一个缺点是查询事件数据库（event store）可能比较困难。让我们想象一下，例如，您需要找到信用额度较低的客户。你不能简单地写SELECT * FROM CUSTOMERWHERE CREDIT_LIMIT ？ AND c.CREATION_DATE&gt;？。因为根本就没有信用额度（CREDIT_LIMIT）这样的列。相反，你不得不使用嵌套SELECT的更复杂而且还可能无效的查询，通过处理和消费（fold）事件来计算信用额度。更糟糕的是，基于NoSQL的事件数据库（event store）通常只支持基于主键的查找。因此，必须使用“命令查询责任分离“（CQRS）的方法实施查询。CQRS 的全称：Command Query Responsibility Segregation。</p>
-<p>我们接下来的内容就是介绍CQRS。</p>
-<p><strong>使用**</strong>CQRS<strong>**实现查询</strong></p>
-<p>事件源是在微服务体系结构中实现高效查询的主要障碍。这还不是唯一的问题，还有比如你使用SQL去查找一些高价值订单的新客户。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> *</div><div class="line"><span class="keyword">FROM</span> CUSTOMER c, <span class="keyword">ORDER</span> o</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">   c.id = o.ID</div><div class="line">     <span class="keyword">AND</span> o.ORDER_TOTAL &gt; <span class="number">100000</span></div><div class="line">     <span class="keyword">AND</span> o.STATE = <span class="string">'SHIPPED'</span></div><div class="line">     <span class="keyword">AND</span> c.CREATION_DATE &gt; ?</div></pre></td></tr></table></figure>
-<p>在微服务架构中，你不能join CUSTOMER和ORDER这两张表。每个表由不同的服务所拥有，并且只能通过该服务的API访问。你不能编写连接多个服务所拥有的表的传统查询。事件源使事情变得更糟，阻碍你编写简单，直接的查询。让我们来看看在微服务架构中是如何实现类似查询的。</p>
-<p><strong>如何使用**</strong>CQRS**</p>
-<p><strong>实现查询的好方法是使用称为命令查询责任分离（CQRS）的体系结构模式： Command Query Responsibility Segregation。</strong>如名称所示，CQRS将应用程序分为两部分。第一部分是<strong>命令侧（command-side）</strong>，其处理命令（例如，HTTP POST，PUT和DELETE）以创建，更新和删除聚合。前提是这些聚合是使用事件源实现的。应用程序的第二部分是<strong>查询侧（query-side）</strong>，其通过查询聚合的一个或多个物化视图（materialized views）来处理查询（例如HTTP GET）。查询侧通过订阅由命令侧发布的事件来保持视图（view）与聚合（aggregate）同步。</p>
-<p>查询侧（query-side）视图可以使用任何类型的能满足需求的数据库来实现。根据需求，应用程序的查询端可能使用一个或多个以下数据库：</p>
-<p><strong>表**</strong>1.<strong> </strong>查询侧视图数据库选择**</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553705958.jpg" alt=""></p>
-<p>在很多场合，CQRS是一个以事件为基础（event-based）的综合体，比如使用RDBMS作为记录系统再使用比如Elasticsearch来处理文本查询。CQRS的查询侧可以使用其它类型的数据库，支持多种类型的数据库，不仅仅是文本搜索引擎。而且，它通过订阅事件准实时地去更新查询侧的视图。</p>
-<p>图6显示了应用于在线商店示例的CQRS模式。客户服务（Customer Service）和订单服务（Order Service）是命令端服务。它们提供用于创建和更新客户和订单的API。客户视图服务（Customer View Service）是查询侧服务。它提供了一个用于查询客户的API。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553811388.jpg" alt=""></p>
-<p><strong>图**</strong>6 –<strong> </strong>在线商店中使用<strong> </strong>CQRS**</p>
-<p>客户视图服务（Customer View Service）订阅命令端服务发布的客户（Customer）和订单（Order）事件。它更新那个用MongoDB实现的视图存储（view store）。该服务维护一个MongoDB文档集合，每个客户一个。每个文档都具有客户详细信息的属性。它还具有存储客户最近订单的属性。此集合支持各种查询，包括上面说到的那些查询。</p>
-<p><strong>CQRS**</strong>的好处和缺点**</p>
-<p>CQRS既有优点也有缺点。 CQRS的一个主要优点是它可以在微服务架构中实现查询，特别是使用事件源的架构。它使应用程序有效地支持一组不同的查询。另一个好处就是把命令侧和查询侧分离，达到了解耦的作用。</p>
-<p>CQRS也有一些缺点。一个缺点就是需要额外的工作来开发和维护这套系统。你需要开发和部署更新和查询视图的查询端服务。还有就是你需要部署视图数据库（view store）。</p>
-<p>CQRS的另一个缺点是处理命令侧和查询侧视图之间的“滞后”。查询层相比命令侧存在一定的时延。更新聚合，然后立即查询视图的客户端应用程序可能会看到聚合的以前版本。所以必须通过一些手法来避免暴露这些潜在的不一致性给用户。</p>
-<p><strong>总结</strong></p>
-<p><strong>
-</strong></p>
-<p>使用事件来维护服务之间的数据一致性时的主要挑战是原子级地更新数据库和发布事件。传统的解决方案是使用跨数据库和消息broker的分布式事务。然而，2PC不是现代应用的可行技术。<strong>更好的方法是使用事件源，这是一种以事件为中心的方法来处理业务逻辑设计和持久化。</strong></p>
-<p>微服务架构中的另一个挑战是查询。查询通常需要join由多个服务拥有的数据。但是，join不能再使用了，因为数据对每个服务都是私有的。使用事件源还使得更加难以有效地实现查询，因为当前状态没有被显式地存储。<strong>解决方案是使用命令查询责任分离（CQRS）并维护可以容易查询的聚合的一个或多个物化视图。</strong></p>
-<blockquote>
-<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p><strong><img src="http://oo77gy3uq.bkt.clouddn.com/14929554011934.jpg" alt="">Chris Richardson</strong>是一位开发人员和架构师。 他是Java Champion和POJO in Action的作者，他描述了如何使用Spring和Hibernate等框架构建企业Java应用程序。 Chris也是早期CloudFoundry.com的创始人。 他与组织协商，改进他们如何开发和部署应用程序，并在他的第三个创业公司工作。 你可以在Twitter @crichardson和Eventuate上找到Chris。</p>
-</blockquote>
-
+              在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，**事件源**是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为**命令查询责任分离（CQRS）**的方法来实现可扩展和高性能的查询。
+          
       
     </div>
     
@@ -913,6 +494,10 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/04/23/distribute-micro-service-2/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -959,149 +544,10 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p> 微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬件上而改善了应用的扩展性。</p>
-<p>但微服务不是万能的。特别是在 领域模型、事务以及查询这几个地方，似乎总是不能适应拆分。或者说这几块也是微服务需要专门处理的地方，相对于过去的单体架构。</p>
-<p>在这篇文章中，我会描述一种开发微服务的方法，这个方法可以解决这些问题。主要是通过领域模型设计，也就是DDD以及事件源（Event Sourcing）以及CQRS。让我们首先来看看开发人员在开发微服务的时候会遇到哪些问题吧。</p>
-<p><strong>微服务开发过程中的挑战</strong></p>
-<p>模块化在开发大型复杂的应用的时候是非常有必要的。</p>
-<p>现在许多应用大到一个人根本无法完成。而且复杂到光靠一个人去理解是不可能的。</p>
-<p>这种情况下，应用就必须被拆分成一个个模块。在单体应用中，模块被定义为比方一个java package。然而，这种做法在实践中并不是很理想，时间长了，单体应用就变得越来越庞大。微服务架构把服务作为一个模块单元。</p>
-<p>每个服务对应一个业务能力，这个业务能力是组织为了创造价值而需要的。例如，基于微服务的在线商店包括各种服务，包括订购服务（Order Service），客户服务（Customer Service），目录服务（Catalog Service）。<br><img src="http://oo77gy3uq.bkt.clouddn.com/14929547973354.jpg" alt=""></p>
-<p>每个服务都有一个不可渗透且很难违反的边界。也就是每个微服务要提供一种单独而独立的能力。这样的话，应用程序的模块化就更容易随时间保存。</p>
-<p>微服务架构还有其他优点。包括独立地部署服务，独立地扩展服务等等这些能力。相比单体来说。</p>
-<p>不幸的是，拆分并没有听起来那么容易。相当难。</p>
-<p>应用的领域模型，事务，查询这三个东西就是拆分过程中和拆分后你所面临的拆分难题。让我们来看看具体原因吧。</p>
-<p><strong>问题1 – 拆分领域模型</strong></p>
-<p>领域模型模式是实现复杂业务逻辑的一种非常好的方式。比如针对一个在线商店，领域模型将会包含这么几个类： Order, OrderLineItem, Customer 和 Product。在微服务架构中，Order和OrderLineItem类是Order Service的一部分；Customer是Customer Service的一部分；Product属于Catalog Service的一部分。<br><img src="http://oo77gy3uq.bkt.clouddn.com/14929548257584.jpg" alt=""></p>
-<p>拆分领域模型的挑战之一就是class们通常会引用一个或多个其他类。</p>
-<p>比如，Order类引用了该订单的客户Customer；OrderLineItem引用了该订单所订产品Product。</p>
-<p>对于这些想要横跨服务边界的引用，我们该怎么办呢？</p>
-<p>稍后你将会看到一个来自领域模型设计的概念：聚合（Aggregate）。我们通过聚合来解决这个问题。</p>
-<p><strong><em>微服务和数据库</em></strong></p>
-<p>**</p>
-<p>微服务架构的一个非常明显的功能就是一个服务所拥有的数据只能通过这个服务的API来访问。</p>
-<p>在一个电商网站中，比如，OrderService占有一个数据库，里边有一张表ORDERS；CustomerService也有自己的数据库包含表CUSTOMERS。</p>
-<p>通过这样的封装，微服务之间就解耦了。</p>
-<p>在开发期间，开发人员可以独立修改自己服务的数据库shema而不需要与其他服务的开发协调勾兑。</p>
-<p>在生产上，服务之间都是隔离的。比如，一个服务从来不会因为另外一个服务占有了数据库的锁而导致阻塞等待。</p>
-<p>不幸的是，这种数据库的拆分让管理数据的一致性以及不同服务间跨表查询变得困难。</p>
-<p><strong>问题2 – 跨服务分布式事务实现</strong></p>
-<p>一个传统的单体应用可以通过ACID事务来强制业务规则从而实现一致性。</p>
-<p>想象一下，比如，电商里的用户都有信用额度，就是在创建订单之前必须先看信用如何。</p>
-<p>应用程序必须确保潜在的多个并发尝试去创建订单不超过客户的信用限额。</p>
-<p>如果Orders和Customers都在同一个库中，那么就可以使用ACID事务来搞定：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">BEGIN</span> <span class="keyword">TRANSACTION</span></div><div class="line">…</div><div class="line"><span class="keyword">SELECT</span> ORDER_TOTAL</div><div class="line"> <span class="keyword">FROM</span> ORDERS <span class="keyword">WHERE</span> CUSTOMER_ID = ?</div><div class="line">…</div><div class="line"><span class="keyword">SELECT</span> CREDIT_LIMIT</div><div class="line"><span class="keyword">FROM</span> CUSTOMERS <span class="keyword">WHERE</span> CUSTOMER_ID = ?</div><div class="line">…</div><div class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> ORDERS …</div><div class="line">…</div><div class="line"><span class="keyword">COMMIT</span> <span class="keyword">TRANSACTION</span></div></pre></td></tr></table></figure>
-<p>不幸的是，在微服务架构中我们无法通过这种方式管理数据的一致性。</p>
-<p>ORDERS和CUSTOMERS表被不同的服务所拥有，只能通过各自的服务API访问。他们甚至可能在不同的数据库。</p>
-<p>一种比较常见的做法就是使用分布式事务来搞定，比如2PC等。但是这种做法对于现代应用来说也许不是一种可行的方案。CAP定理要求你必须在可用性和一致性之间选择，可用性通常是较好的选择。</p>
-<p>而且，许多现代技术，例如大多数NoSQL数据库，甚至不支持ACID事务，更不用说2PC。</p>
-<p>所以管理数据的一致性需要使用其他的方式。</p>
-<p>稍后你将会看到我们使用事件驱动架构中的一种技术叫事件源（event sourcing）来解决分布式事务。</p>
-<p><strong>问题3 -查询</strong></p>
-<p>管理数据一致性不是唯一的挑战。还有一个问题就是查询问题。</p>
-<p>在传统的单体应用中，我们通常使用join来实现跨表查询。</p>
-<p>比如，我们可以通过下面的sql轻松的查询出最近客户所订的大额订单：</p>
-<pre><code>SELECT *
-FROM CUSTOMER c, ORDER o
-WHERE
-   c.id = o.ID
-     AND o.ORDER_TOTAL &gt; 100000
-     AND o.STATE = &apos;SHIPPED&apos;
-     AND c.CREATION_DATE &gt; ?
-</code></pre><p>但我们无法在微服务架构中实现这样的查询。</p>
-<p>就像前面提到的那样，ORDERS与CUSTOMERS表分属不同的服务，只能通过服务API来访问。</p>
-<p>而且他们可能使用了不同的数据库。</p>
-<p>而且，即使你使用事件源（Event Sourcing ）处理查询问题可能更麻烦。</p>
-<p>稍后，你将会学习到一种解决方案就是通过一种叫CQRS（Command Query Responsibility Segregation）做法来解决分布式查询问题。</p>
-<p>但首先，让我们看看领域驱动设计（DDD）这个工具，在我们的微服务架构下基于领域模型开发业务逻辑是必要的。</p>
-<p><strong>DDD聚合是微服务的构建块</strong></p>
-<p>像你看到的那样，为了使用微服务架构成功的开发业务应用，我们必须去解决上面所说的那些问题。</p>
-<p>这几个问题的解决办法你可以去Eric Evans的书Domain-Driven Design中找得到。</p>
-<p>这本书，是2003年出版的，主要介绍了设计复杂软件的一些方法。这些方法对开发微服务也同样有用。</p>
-<p>尤其是领域驱动设计可以让你创建一个模块化的领域模型，这个领域模型可以被多个微服务所使用。 </p>
-<p><strong>什么是聚合？</strong></p>
-<p>在领域驱动设计中，Evans为领域模型定义了几个构建块。</p>
-<p>许多已经成为日常开发人员语言的一部分，包括entity，就是指一个具有唯一标识的持久化对象。value object，也就是VO，你经常听说的，是用来存放数据的，可以与数据库表对应，也可以不对应，有点类似用来传输数据的DTO。service,就是指包含业务逻辑的服务。但不应归类到entity或者value object。</p>
-<p>repository，表示一堆entity 的集合就是一个repository。</p>
-<p>构建块（building block），聚合（aggregate）常常被开发人员忽略，除了那些DDD爱好者，或者叫“狂热分子”。</p>
-<p><strong>然而，聚合（aggregate）被证明是开发微服务的关键，非常重要。</strong></p>
-<p>一个聚合（aggregate）就是一组domain的集合，可以被当作一个单元来处理。这里说的一个单元就是可以当做原子来处理。</p>
-<p>它包含了一个root entity以及可能还有一到多个关联的entity以及value object。</p>
-<p>比如，针对一个在线商店的domain model就会有几个聚合，比如Order和Customer。</p>
-<p>Order聚合又由一个root entity Order和一个以上的OrderLineItem value object组成，而且OrderLineItem还有可能关联有其他vo，比如快递地址（Address）以及支付账户信息PaymentInformation。</p>
-<p>Customer聚合又由一个root entity Customer和其他的vo比如DeliveryInfo 和PaymentInformation组成。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929550233845.jpg" alt=""></p>
-<p>使用聚合将领域模型（domain model）分散和参与到每个聚合中，这也使得领域模型更容易理解了。这也同时厘清了操作的scope，比如查询操作和删除操作等。</p>
-<p>一个聚合通常作为一个整体被从数据库中load出来。删除一个聚合，也就是删除了里边所有的object。</p>
-<p>然而，聚合的好处远远超出了模块化一个领域模型。  这是因为聚合必须遵守一定的规则。</p>
-<p><strong>聚合之间的引用必须使用主键</strong></p>
-<p><strong>第一个规则就是聚合通过id（例如主键）来引用而不是通过对象引用  。</strong></p>
-<p>比如，Order通过customerId来引用Customer，而不是引用Customer的对象。</p>
-<p>类似的，OrderLineItem通过productId来引用Product。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929550352395.jpg" alt=""></p>
-<p>这种做法与传统的object modeling非常的不同。虽然后者认为通过外键引用在领域模型中这样做看起来怪怪的。</p>
-<p>通过使用ID而不是object引用，意味着聚合是松耦合。你可以轻松地把不同的聚合放在不同的service。</p>
-<p>事实上，一个微服务的业务逻辑是由一个领域模型组成。这个领域模型是几个聚合的一个组合。比如，OrderService包含了Customer聚合。</p>
-<p><strong>一个事务只创建或更新一个聚合</strong></p>
-<p><strong>第二个规则就是聚合必须遵循一个事务只能对一个聚合进行创建或更新。</strong></p>
-<p>当我第一次看这些规则的时候，当时并没有什么感觉。因为那时候，我还在开发传统的单体应用，那种基于RDBMS的应用。所以事务可以更新任何的数据。今天，这些约束依然适用于微服务架构。它确保一个事务只被包含在一个微服务中。此约束还符合大多数NoSQL数据库的有限事务模型。</p>
-<p>当开发一个领域模型，一个很重要的事情就是你必须确定每个聚合得搞多大。</p>
-<p><strong>一方面，聚合理想情况下应该是小的</strong>。它通过分离关注点来改善模块化。</p>
-<p>这是更有效的，因为聚合通常被全部加载。</p>
-<p>此外，由于对每个聚合的更新是顺序发生的，因此使用细粒度聚合将增加应用程序可以处理的并发请求数，从而提高可扩展性。</p>
-<p>它还将改善用户体验，因为它降低了两个用户尝试更新同一聚合的可能性。</p>
-<p><strong>另一方面，因为聚合是事务的范围，您可能需要定义一个较大的聚合，以使特定的更新原子化。</strong></p>
-<p>例如，之前我描述了在在线商店领域模型中，Order和Customer是独立的聚合。</p>
-<p>另一种设计可以是把Orders作为Customer聚合的一部分。</p>
-<p>一个较大的Customer聚合的好处就是应用可以强制对于信用额度进行原子验证。这种方法的缺点是它将订单和客户管理功能组合到同一服务中。这也降低了可扩展性，因为更新同一客户的不同订单的事务将被顺序化。</p>
-<p>类似的，两个用户去尝试编辑同一个客户下的不同订单有可能会冲突。而且，随着订单数量的增加，加载一个Customer聚合的成本也会变得更昂贵。</p>
-<p><strong>由于这些问题，尽可能的把聚合细粒度是最好的。</strong></p>
-<p>即使一个事务只能创建和更新一个单独的聚合，微服务应用中也依然必须去管理聚合之间的一致性。</p>
-<p>在Order服务中必须验证一个新建的Order聚合将不超过Customer聚合的信用额度。</p>
-<p>这里有两种不同的解决一致性的方法。</p>
-<p>一个做法就是在单个事务中欺骗的创建和/或更新多个聚合。这种做法的前提是，所有的聚合都被一个服务所拥有并且这些聚合都被持久保存在同一个RDBMS中才有可能。</p>
-<p>另一个做法就是使用最终一致的事件驱动（event-driven）方法来维护聚合之间的一致性。</p>
-<p><strong>使用事件驱动来维护数据一致性</strong></p>
-<p><strong>
-</strong></p>
-<p>在现代应用中，对事务有各种约束，这使得难以在服务之间维持数据一致性。</p>
-<p>每个服务都有自己的私有的数据，这时候2PC的方案就变得不可行了。</p>
-<p>更重要的是，很多的应用使用的是NoSQL数据库，这些数据库根本就不支持本地ACID事务，更不用说分布式事务了。</p>
-<p>因此，现代应用程序必须使用事件驱动的，最终一致的事务模型。</p>
-<p><strong>什么是事件（Event）?</strong></p>
-<p>根据Merriam-Webster（一个单词网站），事件的意思就是：something that happens:</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929550548392.jpg" alt=""></p>
-<p>在本文中，我们将领域事件定义为聚合发生的事件。一个事件（event）通常表示一个状态的改变。现在还是拿电商系统举例，一个Order聚合。其状态更改事件包括订单已创建（Order Created），订单已取消（Order Cancelled），订单已下达（Order Shipped）。事件可以表示违反业务规则的动作，如客户（Customer）的信用额度。</p>
-<p><strong>使用**</strong>Event-Driven<strong>**架构</strong></p>
-<p>服务们使用事件来管理聚合之间的一致性，像下面这样的一个场景：一个聚合发布事件，比如，这个聚合的状态改变或者一次违反业务规则的尝试等等。</p>
-<p>其它聚合订阅这个事件，然后负责更新他们自己的状态。</p>
-<p>在线商店制创建一个订单（order）的时候验证客户（customer）信用额度使用下面一系列步骤：</p>
-<ol>
-<li><p>一个订单（Order）聚合创建，并且状态为<strong>NEW</strong>，发布一个OrderCreated 事件。</p>
-</li>
-<li><p>客户（Customer）消费这个OrderCreated事件，然后保存为这个订单保存信用值然后发布一个CreditReserved事件。</p>
-</li>
-<li><p>订单（Order）聚合消费CreditReserved事件，然后修改自己的状态为<strong>APPROVED</strong>。</p>
-</li>
-</ol>
-<p>如果信用检查由于资金不足而失败，则客户(Customer)聚合发布CreditLimitExceeded事件。</p>
-<p>这个事件不对应于一个状态的改变，而是表示一次违反业务规则的失败尝试。  订单（Order）聚合消费这个事件后，并将自己的状态更改为<strong>CANCELLED</strong>。</p>
-<p><strong>微服务架构可以比作事件驱动聚合的Web</strong></p>
-<p>在这个架构下，每个服务的业务逻辑都是由一个或多个聚合组成。</p>
-<p>一个事务只能包含一个服务，并且是更新或创建一个单独的聚合。也就是聚合内事务。</p>
-<p>服务们通过使用事件管理聚合之间的一致性。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929550682871.jpg" alt=""></p>
-<p>这种做法一个非常明显的好处就是一个个聚合变成了松散而解耦的构建块。</p>
-<p>他们可以被作为单体应用来部署或者作为一组服务来部署。</p>
-<p>这种情况下，在一个project开始的时候，你可以使用单体架构。</p>
-<p>之后，随着应用的体积和开发团队的规模的扩大，你就可以很容易的切换到微服务架构上来。</p>
-<p><strong>总结</strong></p>
-<p>微服务架构从功能上把一整个应用拆分成了一个个服务，每个服务又都对应一个业务能力。当我们开发基于微服务架构的业务应用的时候，一个关键的挑战就是事务、领域模型以及查询，这三个主要的麻烦都是拆分之后所带来的问题。你可以通过使用DDD聚合的概念来拆分领域模型。每个服务的业务逻辑是一个领域模型，然后这个领域模型是由一个或多个DDD聚合组成。</p>
-<p>在每个服务中，一个事务只能创建或更新一个单独的聚合。由于2PC对于现代应用来说并不是一个可行的解决方案，所以我们需要使用事件机制来去实现聚合之间的一致性（以及服务之间）。在下一集，我们会描述使用event sourcing来实现一个事件驱动的架构。我们也会向你展示在微服务架构下通过使用CQRS来实现查询。</p>
-<blockquote>
-<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p><strong><img src="http://mmbiz.qpic.cn/mmbiz_jpg/LsNc01I3kx7KjDuEky5DjPDrMPRyN3XWic6vAWBoV6Fn9MaZVFvLadxpO6HgWe3Z3JESLxWSnGicMebqQH8iavGyg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="">Chris Richardson</strong>是一位开发人员和建筑师。 他是Java Champion和POJO in Action的作者，他描述了如何使用Spring和Hibernate等框架构建企业Java应用程序。 Chris也是原始CloudFoundry.com的创始人。 他与组织协商，改进他们如何开发和部署应用程序，并在他的第三个创业公司工作。 你可以在Twitter @crichardson和Eventuate上找到Chris。</p>
-</blockquote>
-
+              微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬件上而改善了应用的扩展性。
+但微服务不是万能的。特别是在 领域模型、事务以及查询这几个地方，似乎总是不能适应拆分。或者说这几块也是微服务需要专门处理的地方，相对于过去的单体架构。
+在这篇文章中，我会描述一种开发微服务的方法，这个方法可以解决这些问题。主要是通过领域模型设计，也就是DDD以及事件源（Event Sourcing）以及CQRS。让我们首先来看看开发人员在开发微服务的时候会遇到哪些问题吧。
+          
       
     </div>
     
@@ -1114,6 +560,10 @@ WHERE
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/04/23/distribute-micro-service-1/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -1160,121 +610,8 @@ WHERE
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p> 原文地址: <a href="http://tech.meituan.com/MT_Leaf.html" target="_blank" rel="external">http://tech.meituan.com/MT_Leaf.html</a></p>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一ID的系统是非常必要的。概括下来，那业务系统对ID号的要求有哪些呢？</p>
-<ol>
-<li>全局唯一性：不能出现重复的ID号，既然是唯一标识，这是最基本的要求。</li>
-<li>趋势递增：在MySQL InnoDB引擎中使用的是聚集索引，由于多数RDBMS使用B-tree的数据结构来存储索引数据，在主键的选择上面我们应该尽量使用有序的主键保证写入性能。</li>
-<li>单调递增：保证下一个ID一定大于上一个ID，例如事务版本号、IM增量消息、排序等特殊需求。</li>
-<li>信息安全：如果ID是连续的，恶意用户的扒取工作就非常容易做了，直接按照顺序下载指定URL即可；如果是订单号就更危险了，竞对可以直接知道我们一天的单量。所以在一些应用场景下，会需要ID无规则、不规则。</li>
-</ol>
-<p>上述123对应三类不同的场景，3和4需求还是互斥的，无法使用同一个方案满足。</p>
-<p>同时除了对ID号码自身的要求，业务还对ID号生成系统的可用性要求极高，想象一下，如果ID生成系统瘫痪，整个美团点评支付、优惠券发券、骑手派单等关键动作都无法执行，这就会带来一场灾难。</p>
-<p>由此总结下一个ID生成系统应该做到如下几点：</p>
-<ol>
-<li>平均延迟和TP999延迟都要尽可能低；</li>
-<li>可用性5个9；</li>
-<li>高QPS。</li>
-</ol>
-<h1 id="常见方法介绍"><a href="#常见方法介绍" class="headerlink" title="常见方法介绍"></a>常见方法介绍</h1><h3 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h3><p>UUID(Universally Unique Identifier)的标准型式包含32个16进制数字，以连字号分为五段，形式为8-4-4-4-12的36个字符，示例：<code>550e8400-e29b-41d4-a716-446655440000</code>，到目前为止业界一共有5种方式生成UUID，详情见IETF发布的UUID规范 <a href="http://www.ietf.org/rfc/rfc4122.txt" target="_blank" rel="external">A Universally Unique IDentifier (UUID) URN Namespace</a>。</p>
-<p>优点：</p>
-<ul>
-<li>性能非常高：本地生成，没有网络消耗。</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>不易于存储：UUID太长，16字节128位，通常以36长度的字符串表示，很多场景不适用。</li>
-<li><p>信息不安全：基于MAC地址生成UUID的算法可能会造成MAC地址泄露，这个漏洞曾被用于寻找梅丽莎病毒的制作者位置。</p>
-</li>
-<li><p>ID作为主键时在特定的环境会存在一些问题，比如做DB主键的场景下，UUID就非常不适用：</p>
-<p>  ① MySQL官方有明确的建议主键要尽量越短越好[4]，36个字符长度的UUID不符合要求。</p>
-<blockquote>
-<p>All indexes other than the clustered index are known as secondary indexes. In InnoDB, each record in a secondary index contains the primary key columns for the row, as well as the columns specified for the secondary index. InnoDB uses this primary key value to search for the row in the clustered index.<strong> <em>If the primary key is long, the secondary indexes use more space, so it is advantageous to have a short primary key</em></strong>.</p>
-</blockquote>
-<p>  ② 对MySQL索引不利：如果作为数据库主键，在InnoDB引擎下，UUID的无序性可能会引起数据位置频繁变动，严重影响性能。</p>
-</li>
-</ul>
-<h3 id="类snowflake方案"><a href="#类snowflake方案" class="headerlink" title="类snowflake方案"></a>类snowflake方案</h3><p>这种方案大致来说是一种以划分命名空间（UUID也算，由于比较常见，所以单独分析）来生成ID的一种算法，这种方案把64-bit分别划分成多段，分开来标示机器、时间等，比如在snowflake中的64-bit分别表示如下图（图片来自网络）所示：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/image1.png" alt="image"></p>
-<p>41-bit的时间可以表示（1L There are no two identical leaves in the world</p>
-<blockquote>
-<p>“世界上没有两片相同的树叶”</p>
-</blockquote>
-<p>综合对比上述几种方案，每种方案都不完全符合我们的要求。所以Leaf分别在上述第二种和第三种方案上做了相应的优化，实现了Leaf-segment和Leaf-snowflake方案。</p>
-<h3 id="Leaf-segment数据库方案"><a href="#Leaf-segment数据库方案" class="headerlink" title="Leaf-segment数据库方案"></a>Leaf-segment数据库方案</h3><p>第一种Leaf-segment方案，在使用数据库的方案上，做了如下改变：</p>
-<ul>
-<li>原方案每次获取ID都得读写一次数据库，造成数据库压力大。改为利用proxy server批量获取，每次获取一个segment(step决定大小)号段的值。用完之后再去数据库获取新的号段，可以大大的减轻数据库的压力。</li>
-<li>各个业务不同的发号需求用biz_tag字段来区分，每个biz-tag的ID获取相互隔离，互不影响。如果以后有性能需求需要对数据库扩容，不需要上述描述的复杂的扩容操作，只需要对biz_tag分库分表就行。</li>
-</ul>
-<p>数据库表设计如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">+-------------+--------------+------+-----+-------------------+-----------------------------+</div><div class="line">| Field       | Type         | Null | Key | Default           | Extra                       |</div><div class="line">+-------------+--------------+------+-----+-------------------+-----------------------------+</div><div class="line">| biz_tag     | varchar(128) | NO   | PRI |                   |                             |</div><div class="line">| max_id      | bigint(20)   | NO   |     | 1                 |                             |</div><div class="line">| step        | int(11)      | NO   |     | NULL              |                             |</div><div class="line">| desc        | varchar(256) | YES  |     | NULL              |                             |</div><div class="line">| update_time | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |</div><div class="line">+-------------+--------------+------+-----+-------------------+-----------------------------+</div></pre></td></tr></table></figure>
-<p>重要字段说明：biz_tag用来区分业务，max_id表示该biz_tag目前所被分配的ID号段的最大值，step表示每次分配的号段长度。原来获取ID每次都需要写数据库，现在只需要把step设置得足够大，比如1000。那么只有当1000个号被消耗完了之后才会去重新读写一次数据库。读写数据库的频率从1减小到了1/step，大致架构如下图所示：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/image3.png" alt="image"></p>
-<p>test_tag在第一台Leaf机器上是1~1000的号段，当这个号段用完时，会去加载另一个长度为step=1000的号段，假设另外两台号段都没有更新，这个时候第一台机器新加载的号段就应该是3001~4000。同时数据库对应的biz_tag这条数据的max_id会从3000被更新成4000，更新号段的SQL语句如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Begin</div><div class="line">UPDATE table SET max_id=max_id+step WHERE biz_tag=xxx</div><div class="line">SELECT tag, max_id, step FROM table WHERE biz_tag=xxx</div><div class="line">Commit</div></pre></td></tr></table></figure>
-<p>这种模式有以下优缺点：</p>
-<p>优点：</p>
-<ul>
-<li>Leaf服务可以很方便的线性扩展，性能完全能够支撑大多数业务场景。</li>
-<li>ID号码是趋势递增的8byte的64位数字，满足上述数据库存储的主键要求。</li>
-<li>容灾性高：Leaf服务内部有号段缓存，即使DB宕机，短时间内Leaf仍能正常对外提供服务。</li>
-<li>可以自定义max_id的大小，非常方便业务从原有的ID方式上迁移过来。</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>ID号码不够随机，能够泄露发号数量的信息，不太安全。</li>
-<li>TP999数据波动大，当号段使用完之后还是会hang在更新数据库的I/O上，tg999数据会出现偶尔的尖刺。</li>
-<li>DB宕机会造成整个系统不可用。</li>
-</ul>
-<h3 id="双buffer优化"><a href="#双buffer优化" class="headerlink" title="双buffer优化"></a>双buffer优化</h3><p>对于第二个缺点，Leaf-segment做了一些优化，简单的说就是：</p>
-<p>Leaf 取号段的时机是在号段消耗完的时候进行的，也就意味着号段临界点的ID下发时间取决于下一次从DB取回号段的时间，并且在这期间进来的请求也会因为DB号段没有取回来，导致线程阻塞。如果请求DB的网络和DB的性能稳定，这种情况对系统的影响是不大的，但是假如取DB的时候网络发生抖动，或者DB发生慢查询就会导致整个系统的响应时间变慢。</p>
-<p>为此，我们希望DB取号段的过程能够做到无阻塞，不需要在DB取号段的时候阻塞请求线程，即当号段消费到某个点时就异步的把下一个号段加载到内存中。而不需要等到号段用尽的时候才去更新号段。这样做就可以很大程度上的降低系统的TP999指标。详细实现如下图所示：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/image4.png" alt="image"></p>
-<p>采用双buffer的方式，Leaf服务内部有两个号段缓存区segment。当前号段已下发10%时，如果下一个号段未更新，则另启一个更新线程去更新下一个号段。当前号段全部下发完后，如果下个号段准备好了则切换到下个号段为当前segment接着下发，循环往复。</p>
-<ul>
-<li><p>每个biz-tag都有消费速度监控，通常推荐segment长度设置为服务高峰期发号QPS的600倍（10分钟），这样即使DB宕机，Leaf仍能持续发号10-20分钟不受影响。</p>
-</li>
-<li><p>每次请求来临时都会判断下个号段的状态，从而更新此号段，所以偶尔的网络抖动不会影响下个号段的更新。</p>
-</li>
-</ul>
-<h3 id="Leaf高可用容灾"><a href="#Leaf高可用容灾" class="headerlink" title="Leaf高可用容灾"></a>Leaf高可用容灾</h3><p>对于第三点“DB可用性”问题，我们目前采用一主两从的方式，同时分机房部署，Master和Slave之间采用<strong>半同步方式[5]</strong>同步数据。同时使用公司Atlas数据库中间件(已开源，改名为<a href="http://tech.meituan.com/dbproxy-introduction.html" target="_blank" rel="external">DBProxy</a>)做主从切换。当然这种方案在一些情况会退化成异步模式，甚至在<strong>非常极端</strong>情况下仍然会造成数据不一致的情况，但是出现的概率非常小。如果你的系统要保证100%的数据强一致，可以选择使用“类Paxos算法”实现的强一致MySQL方案，如MySQL 5.7前段时间刚刚GA的<a href="https://dev.mysql.com/doc/refman/5.7/en/group-replication.html" target="_blank" rel="external">MySQL Group Replication</a>。但是运维成本和精力都会相应的增加，根据实际情况选型即可。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/image6.png" alt="image"></p>
-<p>同时Leaf服务分IDC部署，内部的服务化框架是“MTthrift RPC”。服务调用的时候，根据负载均衡算法会优先调用同机房的Leaf服务。在该IDC内Leaf服务不可用的时候才会选择其他机房的Leaf服务。同时服务治理平台OCTO还提供了针对服务的过载保护、一键截流、动态流量分配等对服务的保护措施。</p>
-<h1 id="Leaf-snowflake方案"><a href="#Leaf-snowflake方案" class="headerlink" title="Leaf-snowflake方案"></a>Leaf-snowflake方案</h1><p>Leaf-segment方案可以生成趋势递增的ID，同时ID号是可计算的，不适用于订单ID生成场景，比如竞对在两天中午12点分别下单，通过订单id号相减就能大致计算出公司一天的订单量，这个是不能忍受的。面对这一问题，我们提供了 Leaf-snowflake方案。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/snowflake-workerid.png" alt="image"></p>
-<p>Leaf-snowflake方案完全沿用snowflake方案的bit位设计，即是“1+41+10+12”的方式组装ID号。对于workerID的分配，当服务集群数量较小的情况下，完全可以手动配置。Leaf服务规模较大，动手配置成本太高。所以使用Zookeeper持久顺序节点的特性自动对snowflake节点配置wokerID。Leaf-snowflake是按照下面几个步骤启动的：</p>
-<ol>
-<li>启动Leaf-snowflake服务，连接Zookeeper，在leaf_forever父节点下检查自己是否已经注册过（是否有该顺序子节点）。</li>
-<li>如果有注册过直接取回自己的workerID（zk顺序节点生成的int类型ID号），启动服务。</li>
-<li>如果没有注册过，就在该父节点下面创建一个持久顺序节点，创建成功后取回顺序号当做自己的workerID号，启动服务。</li>
-</ol>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/fallback.png" alt="image"></p>
-<h3 id="弱依赖ZooKeeper"><a href="#弱依赖ZooKeeper" class="headerlink" title="弱依赖ZooKeeper"></a>弱依赖ZooKeeper</h3><p>除了每次会去ZK拿数据以外，也会在本机文件系统上缓存一个workerID文件。当ZooKeeper出现问题，恰好机器出现问题需要重启时，能保证服务能够正常启动。这样做到了对三方组件的弱依赖。一定程度上提高了SLA</p>
-<h3 id="解决时钟问题"><a href="#解决时钟问题" class="headerlink" title="解决时钟问题"></a>解决时钟问题</h3><p>因为这种方案依赖时间，如果机器的时钟发生了回拨，那么就会有可能生成重复的ID号，需要解决时钟回退的问题。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/snowflake.flow.png" alt="image"></p>
-<p>参见上图整个启动流程图，服务启动时首先检查自己是否写过ZooKeeper leaf_forever节点：</p>
-<ol>
-<li>若写过，则用自身系统时间与leaf_forever/${self}节点记录时间做比较，若小于leaf_forever/${self}时间则认为机器时间发生了大步长回拨，服务启动失败并报警。</li>
-<li>若未写过，证明是新服务节点，直接创建持久节点leaf_forever/${self}并写入自身系统时间，接下来综合对比其余Leaf节点的系统时间来判断自身系统时间是否准确，具体做法是取leaf_temporary下的所有临时节点(所有运行中的Leaf-snowflake节点)的服务IP：Port，然后通过RPC请求得到所有节点的系统时间，计算sum(time)/nodeSize。</li>
-<li>若abs( 系统时间-sum(time)/nodeSize ) </li>
-</ol>
-<p>由于强依赖时钟，对时间的要求比较敏感，在机器工作时NTP同步也会造成秒级别的回退，建议可以直接关闭NTP同步。要么在时钟回拨的时候直接不提供服务直接返回ERROR_CODE，等时钟追上即可。<strong>或者做一层重试，然后上报报警系统，更或者是发现有时钟回拨之后自动摘除本身节点并报警</strong>，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">//发生了回拨，此刻时间小于上次发号时间</div><div class="line">if (timestamp &lt; lastTimestamp) &#123;</div><div class="line"></div><div class="line">           long offset = lastTimestamp - timestamp;</div><div class="line">           if (offset &lt;= 5) &#123;</div><div class="line">               try &#123;</div><div class="line">                   //时间偏差大小小于5ms，则等待两倍时间</div><div class="line">                   wait(offset &lt;&lt; 1);//wait</div><div class="line">                   timestamp = timeGen();</div><div class="line">                   if (timestamp &lt; lastTimestamp) &#123;</div><div class="line">                      //还是小于，抛异常并上报</div><div class="line">                       throwClockBackwardsEx(timestamp);</div><div class="line">                     &#125;    </div><div class="line">               &#125; catch (InterruptedException e) &#123;  </div><div class="line">                  throw  e;</div><div class="line">               &#125;</div><div class="line">           &#125; else &#123;</div><div class="line">               //throw</div><div class="line">               throwClockBackwardsEx(timestamp);</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">//分配ID</div></pre></td></tr></table></figure>
-<p><strong>从上线情况来看，在2017年闰秒出现那一次出现过部分机器回拨，由于Leaf-snowflake的策略保证，成功避免了对业务造成的影响。</strong></p>
-<h1 id="Leaf现状"><a href="#Leaf现状" class="headerlink" title="Leaf现状"></a>Leaf现状</h1><p>Leaf在美团点评公司内部服务包含金融、支付交易、餐饮、外卖、酒店旅游、猫眼电影等众多业务线。目前Leaf的性能在4C8G的机器上QPS能压测到近5w/s，TP999 1ms，已经能够满足大部分的业务的需求。每天提供亿数量级的调用量，作为公司内部公共的基础技术设施，必须保证高SLA和高性能的服务，我们目前还仅仅达到了及格线，还有很多提高的空间。</p>
-<h1 id="作者简介"><a href="#作者简介" class="headerlink" title="作者简介"></a>作者简介</h1><p>照东，美团点评基础架构团队成员，主要参与<a href="http://tech.meituan.com/mt-mtrace.html" target="_blank" rel="external">美团大型分布式链路跟踪系统Mtrace</a>和美团点评分布式ID生成系统Leaf的开发工作。曾就职于阿里巴巴，2016年7月加入美团。</p>
-<p>最后做一个招聘广告：如果你对大规模分布式环境下的服务治理、分布式会话链追踪等系统感兴趣，诚挚欢迎投递简历至：zhangjinlu#meituan.com。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
-<li>施瓦茨. 高性能MySQL[M]. 电子工业出版社, 2010:162-171.</li>
-<li><a href="https://zh.wikipedia.org/wiki/%E9%80%9A%E7%94%A8%E5%94%AF%E4%B8%80%E8%AF%86%E5%88%AB%E7%A0%81" target="_blank" rel="external">维基百科：UUID</a>.</li>
-<li><a href="https://github.com/twitter/snowflake" target="_blank" rel="external">snowflake</a>.</li>
-<li><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-index-types.html" target="_blank" rel="external">MySQL: Clustered and Secondary Indexes</a>.</li>
-<li><a href="https://dev.mysql.com/doc/refman/5.5/en/replication-semisync.html" target="_blank" rel="external">半同步复制 Semisynchronous Replication</a>.</li>
-</ol>
-<p><strong>不想错过技术博客更新？想给文章评论、和作者互动？第一时间获取技术沙龙信息？</strong></p>
-<p><strong>请关注我们的官方微信公众号“美团点评技术团队”。现在就拿出手机，扫一扫：</strong></p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/qrcode_for_gh.jpg" alt="公众号二维码"></p>
-
+              在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一ID的系统是非常必要的。概括下来，那业务系统对ID号的要求有哪些呢？
+          
       
     </div>
     
@@ -1287,6 +624,10 @@ WHERE
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/唯一ID/">唯一ID</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/04/22/meituan-id/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -1333,105 +674,8 @@ WHERE
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p><strong>阿里巴巴有2大核心的分布式技术，一个是OceanBase，另一个就是RocketMQ。在实际项目中已经领教过RocketMQ的强大，本人计划写一个RocketMQ实战系列，将涵盖RocketMQ的简介，环境搭建，初步使用、API详解、架构分析、管理员集群操作等知识。</strong></p>
-<h1 id="What-is-RocketMQ"><a href="#What-is-RocketMQ" class="headerlink" title="What is RocketMQ?"></a>What is RocketMQ?</h1><p>RocketMQ作为一款分布式的消息中间件（阿里的说法是不遵循任何规范的，所以不能完全用JMS的那一套东西来看它），经历了Metaq1.x、Metaq2.x的发展和淘宝双十一的洗礼，在功能和性能上远超ActiveMQ。</p>
-<blockquote>
-<p><strong>1.要知道RocketMQ原生就是支持分布式的，而ActiveMQ原生存在单点性。</strong></p>
-<p><strong>2.RocketMQ可以保证严格的消息顺序，而ActiveMQ无法保证！</strong></p>
-<p><strong>3.RocketMQ提供亿级消息的堆积能力，这不是重点，重点是堆积了亿级的消息后，依然保持写入低延迟！</strong></p>
-<p><strong>4.丰富的消息拉取模式（Push or Pull）</strong></p>
-<p><strong>Push好理解，比如在消费者端设置Listener回调；而Pull，控制权在于应用，即应用需要主动的调用拉消息方法从Broker获取消息，这里面存在一个消费位置记录的问题（如果不记录，会导致消息重复消费）。</strong></p>
-<p><strong>5.在Metaq1.x/2.x的版本中，分布式协调采用的是Zookeeper，而RocketMQ自己实现了一个NameServer，更加轻量级，性能更好！</strong></p>
-<p><strong>6.消息失败重试机制、高效的订阅者水平扩展能力、强大的API、事务机制等等（后续详细介绍）</strong></p>
-</blockquote>
-<h1 id="初步理解Producer-Consumer-Group"><a href="#初步理解Producer-Consumer-Group" class="headerlink" title="初步理解Producer/Consumer Group"></a>初步理解Producer/Consumer Group</h1><p>ActiveMQ中并没有Group这个概念，而在RocketMQ中理解Group的机制很重要。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>Group机制</p>
-<blockquote>
-<p><strong>想过没有，通过Group机制，让RocketMQ天然的支持消息负载均衡！</strong></p>
-<p><strong>比如某个Topic有9条消息，其中一个Consumer Group有3个实例（3个进程 OR 3台机器），那么每个实例将均摊3条消息！（注意RocketMQ只有一种模式，即发布订阅模式。）</strong></p>
-</blockquote>
-<h1 id="install-RocketMQ"><a href="#install-RocketMQ" class="headerlink" title="install RocketMQ"></a>install RocketMQ</h1><blockquote>
-<p><strong>RocketMQ的Broker集群部署模式还挺多的，比如单Master模式、多Master模式、多Master多Slave模式（异步复制）、多Master多Slave模式（同步双写）等。明确个概念，RocketMQ Slave不可以写，可以读，类似于MySQL的主从机制。</strong></p>
-<p><strong>单Master模式：
-</strong></p>
-<p><strong>无需多言，一旦单个broker重启或宕机，一切都结束了！很显然，线上不可以使用。</strong></p>
-<p><strong>多Master模式：</strong></p>
-<p><strong>全是Master，没有Slave。当然，一个broker宕机了，应用是无影响的，缺点在于宕机的Master上未被消费的消息在Master没有恢复之前不可以订阅。</strong></p>
-<p><strong>多Master多Slave模式（异步复制）：</strong></p>
-<p><strong>多对Master-Slave，高可用！采用异步复制的方式，主备之间短暂延迟，MS级别。Master宕机，消费者可以从Slave上进行消费，不受影响，但是Master的宕机，会导致丢失掉极少量的消息。</strong></p>
-<p><strong>多Master多Slave模式（同步双写）：</strong></p>
-<p><strong>和上面的区别点在于采用的是同步方式，也就是在Master/Slave都写成功的前提下，向应用返回成功，可见不论是数据，还是服务都没有单点，都非常可靠！缺点在于同步的性能比异步稍低。</strong></p>
-</blockquote>
-<p>这里我将采用2个Master的方式进行搭建演示，会了双Master，其他的将很简单。（多Master在实际中也是非常常用的，如果并发非常大，考虑多Master多Slave模式）</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>双Master模式架构</p>
-<blockquote>
-<p>在192.168.99.121/122机器上各一个NameServer、Master进程。</p>
-</blockquote>
-<p>以192.168.99.121为例：</p>
-<h3 id="第一步，修改-etc-hosts文件"><a href="#第一步，修改-etc-hosts文件" class="headerlink" title="第一步，修改/etc/hosts文件"></a><strong>第一步，修改/etc/hosts文件</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>hosts配置</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>确保相互之间可以ping通</p>
-<h3 id="第二步，解压并创建存储路径"><a href="#第二步，解压并创建存储路径" class="headerlink" title="第二步，解压并创建存储路径"></a><strong>第二步，解压并创建存储路径</strong></h3><blockquote>
-<p><strong>tar -xvf alibaba-rocketmq-3.2.6.tar.gz
-</strong></p>
-<p><strong>mkdir -p alibaba-rocketmq/store/{commitlog,consumequeue,index}</strong></p>
-</blockquote>
-<h3 id="第三步，配置文件"><a href="#第三步，配置文件" class="headerlink" title="第三步，配置文件"></a><strong>第三步，配置文件</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>broker-x.properties</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>配置项</p>
-<blockquote>
-<p>上面已经将实际中常用的配置项给出来了！</p>
-</blockquote>
-<h3 id="第四步，修改日志配置文件"><a href="#第四步，修改日志配置文件" class="headerlink" title="第四步，修改日志配置文件"></a><strong>第四步，修改日志配置文件</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>注意到logback.*.xml配置文件中：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>需要替换${user.name}</p>
-<p>可以使用sed进行替换：</p>
-<blockquote>
-<p><strong>sed -i ‘s#${user.home}#/software/alibaba-rocketmq#g’ *.xml
-</strong></p>
-</blockquote>
-<h3 id="第五步，修改启动脚本中的JVM参数"><a href="#第五步，修改启动脚本中的JVM参数" class="headerlink" title="第五步，修改启动脚本中的JVM参数"></a><strong>第五步，修改启动脚本中的JVM参数</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>vim runbroker.sh/rumserver.sh</p>
-<blockquote>
-<p><strong>注意，在这里我将JVM的堆的初始化和最大大小统一设置为1G，并将新生代大小设置为512M。主要是考虑到我的虚拟机内存，实际上在线上是可以走默认的4G堆内存的。</strong></p>
-</blockquote>
-<h3 id="第六步，启动NameServer"><a href="#第六步，启动NameServer" class="headerlink" title="第六步，启动NameServer"></a><strong>第六步，启动NameServer</strong></h3><blockquote>
-<p><strong>nohup sh mqnamesrv &amp;
-</strong></p>
-</blockquote>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>NameServer</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>nameserver启动日志</p>
-<h3 id="第七步，启动broker-X"><a href="#第七步，启动broker-X" class="headerlink" title="第七步，启动broker-X"></a><strong>第七步，启动broker-X</strong></h3><p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>启动broker</p>
-<p>注意观察日志：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>broker.log</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>进程与端口</p>
-<h3 id="第八步：RocketMQ-Console"><a href="#第八步：RocketMQ-Console" class="headerlink" title="第八步：RocketMQ Console"></a><strong>第八步：RocketMQ Console</strong></h3><blockquote>
-<p>把rocketmq-console.war部署到Tomcat下即可。</p>
-</blockquote>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>解压WAR包</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>在解压WAR包后的CLASS下更改config.properties</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>好久不见，TOM猫</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/1240." alt=""></p>
-<p>rocketmq管控台</p>
-<blockquote>
-<p><strong>这个管控台实际上还是比较简陋的，我们使用比较多的是mqadmin操作命令，后续会介绍。</strong></p>
-</blockquote>
-<p><strong>OK，到这里，双Master的搭建已经完成了！</strong></p>
-<p><strong>本篇博客到此为止，下期再见，晚安！</strong></p>
-
+              阿里巴巴有2大核心的分布式技术，一个是OceanBase，另一个就是RocketMQ。在实际项目中已经领教过RocketMQ的强大，本人计划写一个RocketMQ实战系列，将涵盖RocketMQ的简介，环境搭建，初步使用、API详解、架构分析、管理员集群操作等知识。
+          
       
     </div>
     
@@ -1444,6 +688,10 @@ WHERE
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RocketMQ/">RocketMQ</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/04/10/rocket-in-practice-1/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -1490,160 +738,8 @@ WHERE
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>几乎所有的版本控制系统都以分支的方式进行操作，分支是独立于项目主线的一条支线，我们可以在不影响主线代码的情况下，在分支下进行工作。对于传统的一些版本控制工具来说，我们通常需要花费比较多的时间拷贝主线代码，创建一个分支，并且对分支的管理效率也越来越不令人满意，而如今备受推崇的Git确实名副其实，Git中的分支非常轻量，我们可以随时随意创建任意数量的新分支，几乎感觉不到什么延时，而且对分支的操作也很高效，如，切换分支，暂存内容，分支合并，分支提交等。</p>
-<h2 id="Git分支的与众不同"><a href="#Git分支的与众不同" class="headerlink" title="Git分支的与众不同"></a>Git分支的与众不同</h2><p>上一节我们提到相对于其他大多数版本控制系统，Git分支是轻量且高效的，为什么呢？答案在前几篇已经有提到：传统的版本控制系统存储的数据是文件的变更，而Git则是存储一系列的文件快照（snapshot）。</p>
-<p>Git分支的这些特性，使得分支对我们几乎没有什么限制，一般针对每一个功能或需求都可以随意创建分支，而在传统的版本控制系统，这样几乎是不现实的。</p>
-<p>当我们向服务器提交数据时，Git会存储一个提交对象（commit object），这个存储对象包括一系列有用信息，<a href="http://blog.codingplayboy.com/2017/03/23/git_internal/" target="_blank" rel="external">详见上一篇中提交对象</a>。</p>
-<h2 id="Git主干分支（master）"><a href="#Git主干分支（master）" class="headerlink" title="Git主干分支（master）"></a>Git主干分支（master）</h2><p>master，有主人，大师的意思，在Git是通常作为主干分支，Git初始化仓库时，默认创建的分支名就是master，就像默认的远端主机别名是origin一样，大多数人不会修改它，这并不说明它与别的分支有什么区别，你可以随意修改名称。</p>
-<h2 id="分支类型"><a href="#分支类型" class="headerlink" title="分支类型"></a>分支类型</h2><p>在Git中，除了默认的master主干分支，我们创建的每一个分支，一般可分为两种：</p>
-<ul>
-<li>长运行分支（Long-Running branch）:与master并行，长期存在使用的分支，如用以测试项目稳定性或作为主分支；</li>
-<li>主题分支（topic branch）：针对每一个需求或功能或bug而暂时创建的分支，一旦任务完成，即可能回收。</li>
-</ul>
-<h2 id="分支指针（HEAD）"><a href="#分支指针（HEAD）" class="headerlink" title="分支指针（HEAD）"></a>分支指针（HEAD）</h2><p>Git中有一个HEAD指针，始终指向当前分支，如图可见，项目当前处在master分支，之前一共有三次提交：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-logs.png" alt="提交历史记录"></p>
-<p>上图可见，第一行显示了当前项目所有分支，<code>HEAD -&gt; master</code>表明当前所处分支为master，我们可以总结如下图：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-log.png" alt="branch"></p>
-<p>我们可以在项目根目录.git文件下找到一个HEAD文件：<code>vi .git/HEAD</code>,其内保存了指向当前分支最新提交的指针：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-head.png" alt="HEAD"></p>
-<p>该指针指向refs/heads/分支名文件，我们进入.git/refs/heads/目录，其下以分支名为文件名列出了所有分支：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-head-ref.png" alt="当前分支head"></p>
-<p>我们查看当前分支文件，执行<code>vi master</code>:</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-head-ref-master.png" alt="当前分支ref"></p>
-<p>可以看到，其内存储的就是当前分支的最新一次提交对象ID。</p>
-<h2 id="创建分支（git-branch-git-checkout-b）"><a href="#创建分支（git-branch-git-checkout-b）" class="headerlink" title="创建分支（git branch, git checkout -b）"></a>创建分支（git branch, git checkout -b）</h2><p>接下来，假设有一个需求A，我们创建一个分支work-a:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b 分支名</div></pre></td></tr></table></figure>
-<p><code>-b</code>参数声明为创建新分支</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-create.png" alt="创建新分支"></p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-new-head.png" alt="新分支HEAD"></p>
-<p>等价于以下两条指令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git branch 分支名</div><div class="line">git checkout 分支名</div></pre></td></tr></table></figure>
-<h2 id="切换分支（git-checkout）"><a href="#切换分支（git-checkout）" class="headerlink" title="切换分支（git checkout）"></a>切换分支（git checkout）</h2><p><code>git checkout 分支名</code>表示切换到该分支，上文提到指定<code>-b</code>配置即说明创建新分支。</p>
-<p><strong>注：在切换分支前，一定确保当前分支的修改已经提交或者缓存。</strong></p>
-<h2 id="多分支并行"><a href="#多分支并行" class="headerlink" title="多分支并行"></a>多分支并行</h2><p>我们经常会遇到同时需要开发多个功能和需求，或者突然发现线上bug需要紧急处理，我们只需要提交当前分支修改，然后切换到主干分支，从其基础上再切出一个新分支fix-bug1:</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commit.png" alt="提交修改"></p>
-<p>可以看到，在work-a分支上我们新增了一次提交：<code>b287b8e22470b20cc98e6224a8023708b4cc6989</code>。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-create.png" alt="创建多分支"></p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-new-head.png" alt="多分支结构图"></p>
-<p>现在我们在fix-bug1分支上修复bug后，进行提交：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commit-log.png" alt="提交及历史"></p>
-<p>可以看到，在fix-bug1分支上多了一个提交：<code>ca270e6</code>，现在整个结构就变成如下图：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commits-struc.png" alt="结构图"></p>
-<h2 id="合并分支（git-merge）"><a href="#合并分支（git-merge）" class="headerlink" title="合并分支（git merge）"></a>合并分支（git merge）</h2><p>我们已经修复了某bug或完成了功能开发，这时要做的是把代码并入主干，，当然一般公司或团队都需要经过代码审查，才能并入主干，在此略过不谈，分支合并相关指令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git merge 分支名</div></pre></td></tr></table></figure>
-<p>该指令告诉Git将指定分支合并到当前分支，当然是可能出现冲突的，我们按照指示解决冲突，即可。</p>
-<p>现在我们先切换到master分支，然后把fix-bug1分支并入主干：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-merge.png" alt="合并分支"></p>
-<p>可以看到执行<code>git merge</code>指令后，状态信息显示：</p>
-<ul>
-<li>第一行Updating，告诉我们提交记录更新至<code>ca270e6</code>;</li>
-<li>第二行Fast-forward，即快速推进，说明Git直接将当前分支推进到指向新提交对象;</li>
-<li>后面是merge的内容信息</li>
-</ul>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-merge-struc.png" alt="合并分之后结构"></p>
-<h4 id="非快速推进合并（NO-FAST-FORWARD）"><a href="#非快速推进合并（NO-FAST-FORWARD）" class="headerlink" title="非快速推进合并（NO FAST-FORWARD）"></a>非快速推进合并（NO FAST-FORWARD）</h4><p>现在，我们再次创建一个分支fix-bug2，并进行几次修改提交：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commits-log-2.png" alt="多次提交"></p>
-<p>多次提交后，状态如下：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-commits-struc-2.png" alt="多次提交后结构"></p>
-<p>我们通过非快速推进方式合并分支进主干分支：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-no-ff-merge.png" alt="非快速推进方式合并"></p>
-<p>如上图，指定<code>--no-ff</code>即声明进行非快速推进合并，第二行的<code>Merge made by the &#39;recursive&#39; strategy</code>表明通过非快速推进方式合并，我们发现除了分支上进行的提交记录外，Git创建了一个新的提交对象：<code>7a657a</code>,使用<br><code>git log --graph</code>指令查看其信息:</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-log-graph.png" alt="提交记录图"></p>
-<p>如图，快速推进方式合并入主干的fix-bug1分支的提交记录直接并入主线，且不会创建新的提交对象；而对于非快速推进方式合并的fix-bug2分支，其提交历史也都保存，但是并未进入主线，而是保存了一条支线，同时，在主线上创建一个新的提交对象。</p>
-<p>最后描述其结构如图：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-no-ff-merge-struc.png" alt="非快速推进合并后结构"></p>
-<h4 id="非快速推进与快速推进合并（FAST-FORWARD-amp-NO-FAST-FORWARD）"><a href="#非快速推进与快速推进合并（FAST-FORWARD-amp-NO-FAST-FORWARD）" class="headerlink" title="非快速推进与快速推进合并（FAST-FORWARD &amp; NO FAST-FORWARD）"></a>非快速推进与快速推进合并（FAST-FORWARD &amp; NO FAST-FORWARD）</h4><p>从上例，对比一下两种方式合并分支的异同：</p>
-<ul>
-<li>提交对象都会保存；</li>
-<li>报存提交对象方式不同：快速推进方式是直接在主线（合并主分支）上，添加这些提交对象，即直接移动HEAD指针；而非快速推进方式是将提交对象保存在支线，然后在主线新建一个提交对象，修改HEAD指针及新建提交对象的指针，而且此新建提交对象有两个父提交对象（即有两个parent指针）。</li>
-<li>合并后分支指向不同：快速推进合并后，两个分支将同时指向最新提交对象，而非快速推进合并后，合并主分支指向新建的提交对象，另一分支指向不变。</li>
-</ul>
-<p>我们查看一下新创建提交对象：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-no-ff-merge-commit.png" alt="新创建提交对象"></p>
-<p>可以看到该提交对象中有两个指针指向父提交对象，一个指向主线中的父提交对象，一个指向fix-bug2分支合并而来的支线父提交对象。</p>
-<h4 id="三路合并（THREE-WAY-MERGE）"><a href="#三路合并（THREE-WAY-MERGE）" class="headerlink" title="三路合并（THREE-WAY MERGE）"></a>三路合并（THREE-WAY MERGE）</h4><p>除了之前提到的两种合并的情况，其实还存在这样一种情况，就是现在假如我完成了work-a分支的开发，需要将其并入主干，我们能看到当前master主干分支已经推进到<code>7a6576</code>了，而work-a分支指向<code>b287b8</code>,两者有共同祖先提交对象<code>6d50f6</code>,我们将其合并：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-three-way-merge.png" alt="三路合并"></p>
-<p>上图第二行表明此次是通过非快速推进方式合并，我们查看提交对象记录图：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-three-way-merge-graph.png" alt="三路合并提交对象记录图"></p>
-<p>结构如图：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-three-way-merge-struc.png" alt="三路合并结构图"></p>
-<p>我们发现，三路合并结构是在需要合并的两个分支的最新提交对象的基础上，创建一个新提交对象(4ae14b)，将合并主分支（即执行合并指令时，当前所处分支）的HEAD指针前移指向该提交对象，该提交对象有两个父提交对象，分别为合并前待合并分支的最新提交对象（即b287b8和7a657a）。</p>
-<p>关于三路合并需要明确：</p>
-<ul>
-<li>三路合并其实是一种非快速推进合并方式；</li>
-<li>三路合并的前提是两个分支有共同祖先提交对象；</li>
-</ul>
-<h2 id="分支冲突（conflict）"><a href="#分支冲突（conflict）" class="headerlink" title="分支冲突（conflict）"></a>分支冲突（conflict）</h2><p>在合并分支，不可避免会发生冲突，当我们在两个分支对同一文件同一部分进行不同修改后，发起合并时就会提示有冲突，假设我们有work-b分支，在其基础上切出新分支work-b-1，然后在两分支上分别对README.md文件同一部分进行不同修改并提交，然后将work-b-1分支合并到work-b分支：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-merge-conflict.png" alt="合并时提示冲突"></p>
-<p>发现README.md文件有冲突，查看该文件：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-merge-conflict-info.png" alt="查看冲突"></p>
-<p>如上图，列出了两个分支的不同修改，HEAD表明当前分支的修改内容，下面是work-b-1分支的修改，我们选择需要保留的内容，删除其他无关信息和内容，然后保存该文件，查看当前状态：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-merge-status.png" alt="查看状态"></p>
-<p>根据提示，解决冲突后提交：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-merge-conflict-commit.png" alt="解决冲突"></p>
-<h2 id="查看分支"><a href="#查看分支" class="headerlink" title="查看分支"></a>查看分支</h2><p>对于创建过但并未删除的分支，我们可以查看分支列表，依然使用<code>git branch</code>指令，不传入任何参数：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-list.png" alt="分支列表"></p>
-<p>图中列出了所有分支，前面带星号的表示当前分支，当然我们还可以查看指明最新提交信息的分支列表，可以添加<code>-v</code>参数：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-list-details.png" alt="分支详情列表"></p>
-<h4 id="筛选分支"><a href="#筛选分支" class="headerlink" title="筛选分支"></a>筛选分支</h4><p>除了可以查看所有分支列表，Git还支持筛选已合并或未合并至当前分支的所有分支：</p>
-<ul>
-<li><code>--merged</code>参数指明筛选已合并分支；</li>
-<li><code>--no-merged</code>参数指明筛选未合并分支。</li>
-</ul>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-either-merged.png" alt="筛选分支"></p>
-<h2 id="删除分支（git-branch-d）"><a href="#删除分支（git-branch-d）" class="headerlink" title="删除分支（git branch -d）"></a>删除分支（git branch -d）</h2><p>当分支合并入主干后，也许我们不再需要那个分支了，我们需要将其删除，使用指令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -d 分支名</div></pre></td></tr></table></figure>
-<p>之前介绍到使用<code>git branch</code>是创建新分支，而指定<code>-d</code>参数，说明需要删除该分支：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-delete.png" alt="删除分支"></p>
-<h2 id="远程分支（remote-branch）"><a href="#远程分支（remote-branch）" class="headerlink" title="远程分支（remote branch）"></a>远程分支（remote branch）</h2><p>我们注意到，前文所讲述的分支都是存在本地的，即本地分支，还需要了解远程分支，如[remote]/[branch]这种形式，表示是远端主机的某分支，<a href="http://blog.codingplayboy.com/2017/03/21/git_remote/" target="_blank" rel="external">关于远端主机详情请查看</a>,其实远程分支和本地分支基本理论概念还是相同的，区别是有些指令不同而已：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b test origin/develop</div></pre></td></tr></table></figure>
-<p>以上指令即从远程分支(远端主机origin上的develop分支)切出新的本地分支test分支。</p>
-<h4 id="跟踪分支（TRACKING-BRANCH）"><a href="#跟踪分支（TRACKING-BRANCH）" class="headerlink" title="跟踪分支（TRACKING BRANCH）"></a>跟踪分支（TRACKING BRANCH）</h4><p>前文已经介绍了本地分支和远程分支的概念及操作，那么这两类分支之间应该有某种关系将他们关联起来，本地项目都需要与远端主机仓库同步（pull &amp; push）,当我们从一个远程分支切出（创建）一个本地分支时，这个分支就叫跟踪分支（tracking branch）,而远程分支叫上游分支（upstream branch）。</p>
-<p>当我们克隆一个远端仓库时，会默认创建一个跟踪分支master，其上游分支就是<code>远端主机别名/master</code>。</p>
-<h6 id="创建跟踪分支"><a href="#创建跟踪分支" class="headerlink" title="创建跟踪分支"></a>创建跟踪分支</h6><p>创建跟踪分支指令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b 本地分支名 远端主机别名/远程分支名</div></pre></td></tr></table></figure>
-<p>当然也可以不指定分支名，使用远程分支同名：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout --track 远端主机别名/远程分支名</div></pre></td></tr></table></figure>
-<h6 id="修改跟踪关系"><a href="#修改跟踪关系" class="headerlink" title="修改跟踪关系"></a>修改跟踪关系</h6><p>有时候，可能需要为本地分支设置其上游分支，添加<code>-u</code>参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -u 远端主机别名/远程分支名</div></pre></td></tr></table></figure>
-<p>以上指令就指明当前分支跟踪某远端主机的远程分支。</p>
-<h6 id="查看跟踪分支（git-branch-vv）"><a href="#查看跟踪分支（git-branch-vv）" class="headerlink" title="查看跟踪分支（git branch -vv）"></a>查看跟踪分支（git branch -vv）</h6><p>使用以下指令查看分支的上游分支：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -vv</div></pre></td></tr></table></figure>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-tracking-branch.png" alt="跟踪分支列表"></p>
-<p>上图输出信息第二行表明master分支跟踪远程origin/master分支，ahead 7表明本地有7个提交未推到服务器，其他分支不是跟踪分支，没有上游分支。</p>
-<h6 id="删除远程分支"><a href="#删除远程分支" class="headerlink" title="删除远程分支"></a>删除远程分支</h6><p>对于不再需要的远程分支，是可以删除的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin --delete test</div></pre></td></tr></table></figure>
-<p>以上指令删除远端主机origin的test分支，但是在垃圾回收之前，Git服务器仍然会保留分支数据，我们可以很方便的恢复数据，之后会详细介绍。</p>
-<h2 id="变基（rebase）"><a href="#变基（rebase）" class="headerlink" title="变基（rebase）"></a>变基（rebase）</h2><p>Git中有两种方式整合不同分支的修改：第一种是前文介绍的合并（merge），另一种就是本节的主题变基（rebase）。</p>
-<p>变基其实与前文提到的三路合并（three-way merge）颇有渊源：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branchs-three-way-merge-struc.png" alt="三路合并结构图"></p>
-<p>如图work-a分支与主干master分支合并后，创建一个新提交对象，我们还可以通过变基完成两个分支的修改整合，由于work-a分支已合并到master分支，我们在work-a分支再提交一次修改<code>e0ae7dc</code>,然后我们将work-a分支对master分支进行变基：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-conflict.png" alt="分支变基"></p>
-<p>执行变基时，由于两个分支对同一文件同一部分进行了不同修改，会提示冲突，需要解决冲突，我们修改文件解决冲突，然后查看状态：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-conflict-status.png" alt="解决冲突后变基状态"></p>
-<p>上图，第一行<code>rebase in progress; onto 4ae14b3</code>说明当前分支针对<code>4ae14b3</code>快照进行变基，第三到第五行分别说明：</p>
-<ul>
-<li>第三行：解决冲突然后执行<code>git rebase --continue</code>指令继续变基；</li>
-<li>第四行：执行<code>git rebase --skip</code>指令，跳过解决冲突；</li>
-<li>第五行：执行<code>git rebase --abort</code>指令，终止变基，回到分支变基前状态。</li>
-</ul>
-<p>下面第6到第八行说明：</p>
-<ul>
-<li>第七行：使用<code>git reset HEAD &lt;file&gt;</code>指令撤销某文件变更；</li>
-<li>第八行：使用<code>git add &lt;file&gt;</code>指令标记冲突为已解决状态。</li>
-</ul>
-<p>最后一行<code>no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code>，说明尚未标记冲突，需要使用指令标记变更，在继续执行变基：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-conflict-continue.png" alt="解决冲突继续变基"></p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-graph.png" alt="变基后历史记录图"></p>
-<p>如上图，变基后，在主线上创建新提交对象<code>640b83</code>,并修改work-a分支指针指向该提交对象：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-struc.png" alt="变基后结构图"></p>
-<p>之后我们可以正常的合并：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-merge.png" alt="变基后合并"></p>
-<p>如图，主线分支更新提交对象到<code>640b83a</code>，第二行<code>Fast-forward</code>说明此次合并属于快速推进合并方式，结构如下：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/git-branch-rebase-merge-struc.png" alt="变基合并后结构图"></p>
-<h4 id="三路合并与变基"><a href="#三路合并与变基" class="headerlink" title="三路合并与变基"></a>三路合并与变基</h4><p>基于上例，三路合并，整合修改变更后会保留分支的原始提交记录，新创建提交对象有两个父提交对象，一个在主线上，一个在待合并分支上；而变基则不能保留待合并分支的原始提交记录，主线上新建的提交对象只有一个位于主线上的父提交对象。更多变基相关内容计划单独出文介绍。</p>
-<p>至于到底选用哪种方式整合变更，变基还是合并，这个一直有争论，没有哪一种方式绝对合理，我们只需要把握一个原则：无论变基还是合并，你应该只操作本地历史记录，任何已经推到服务器并入主干的内容和提交历史不应该更改。</p>
-
+              几乎所有的版本控制系统都以分支的方式进行操作，分支是独立于项目主线的一条支线，我们可以在不影响主线代码的情况下，在分支下进行工作。对于传统的一些版本控制工具来说，我们通常需要花费比较多的时间拷贝主线代码，创建一个分支，并且对分支的管理效率也越来越不令人满意，而如今备受推崇的Git确实名副其实，Git中的分支非常轻量，我们可以随时随意创建任意数量的新分支，几乎感觉不到什么延时，而且对分支的操作也很高效，如，切换分支，暂存内容，分支合并，分支提交等。
+          
       
     </div>
     
@@ -1656,6 +752,10 @@ WHERE
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/04/10/head-first-git-branch/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -1766,55 +866,8 @@ WHERE
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息队列中间件、数据存储中间件等等。Web容器负责的工作可能越来越少，但是它确实必不可少的部分，它负责接收用户请求并分别调用各个服务最后响应。可以说目前最受欢迎的web容器是用Java写的tomcat小猫，由于生产上的tomcat考虑负载均衡及高可用性，它一般以集群模式运行，所以这篇文章主要探讨的是tomcat的集群功能如何实现且生产部署如何选型。</p>
-<p>如果说一个web应用不涉及会话的话，那么做集群是相当简单的，因为节点都是无状态的，集群内各个节点无需互相通信，只需要将各个请求均匀分配到集群节点即可。但基本所有web应用都会使用会话机制，所以做web应用集群时整个难点在于会话数据的同步，当然你可以通过一些策略规避复杂的额数据同步操作，例如把会话信息保存在分布式缓存或数据库中统一集中管理，避免了tomcat集群之间的通信。但这种方式也有不足，要额外引入数据库或缓存服务，同时也要保证它们的高可用性，增加了机器和维护成本。本文假设不使用统一管理会话的模式而是将会话交由tomcat自身集群管理。</p>
-<h2 id="集群增量会话管理器——DeltaManager"><a href="#集群增量会话管理器——DeltaManager" class="headerlink" title="集群增量会话管理器——DeltaManager"></a>集群增量会话管理器——DeltaManager</h2><p>tomcat集群节点自身完成各自的数据同步，不管访问到哪个节点都能找到对应的会话，如下图，客户端第一次访问生成会话，tomcat自身会将会话增量信息同步到其他节点上，而且是每次请求完成都会同步此次请求过程中对session的所有操作，这样一来下一次请求到集群中任意节点都能找到响应的会话信息，且能保证信息的及时性。</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/a9b44bc2c80c51ff2c9b" alt=""></p>
-<p>这就是tomcat默认的集群会话管理器——DeltaManager。它主要用于集群中各个节点之间会话状态的同步维护。DeltaManager的职责是将某节点的会话该变同步到集群内其他成员节点上，它属于全节点复制模式，所谓全节点复制是指集群中某个节点的状态变化后需要同步到集群中剩余的节点，非全节点方式可能只是同步到其中某个或若干节点。在集群中全节点会话复制的一个大致步骤如下图所示，客户端发起一个请求，假设通过一定的负载均衡设备分发策略分到其中一个结点node1，如果还未存在session对象的话web容器将会创建一个会话对象，接着执行一些逻辑处理，在对客户端响应之前有个重要的事情是要把session对象同步到集群中其他节点上，最后再响应客户端。当客户端第二次发起请求时，假如分发到node3节点上，由于同步了node1的session会话，所以在执行逻辑时并不会取不到session的值。如果删除某个会话对象则要同时通知其他节点把相应会话删除，如果修改了某个会话的某些属性也同样要更新到其他节点的会话中。</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/a3295de3966d8aaa3a6e" alt=""></p>
-<p>DeltaManager其实就是一个会话同步通信解决方案，除了具备上面提到的全节点复制外，它还有具有只复制会话增量的特性，增量是以一个完整请求为周期，即会将一个请求过程中所有会话修改量在响应前进行集群同步。往下看Tomcat具体实现方案。</p>
-<p>为区分不同的动作必须要先定义好各种事件，例如会话创建事件、会话访问事件、会话失效事件、获取所有会话事件、会话增量事件、会话ID改变事件等等，实际上tomcat集群会有9种事件，集群根据这些不同的事件就可以彼此进行通信，接收方对不同事件做不同的操作。如下图，例如node1节点创建完一个会话后，即向其他三个节点发送EVT_SESSION_CREATED事件，其他三个节点接收到此事件后则各自在自己本地创建一个会话，会话包含了两个很重要的属性——会话ID和创建时间，这两个属性都必须由node1节点跟着EVT_SESSION_CREATED一起发送出去，本地会话创建成功后即完成了会话创建同步工作，此时你通过会话ID查找集群中任意一个节点都可以找到对应的会话。同样对于会话访问事件，node1向其他节点发送EVT_SESSION_ACCESSED事件及会话ID，其他节点根据会话ID找到对应会话并更新会话最后访问时间，以免被认为是过期会话而被清理。类似的还有会话失效事件（同步集群销毁某会话）、会话ID改变事件（同步集群更改会话ID）等等操作。</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/556abf9fe7d1f6858aec" alt=""></p>
-<p>Tomcat使用SessionMessageImpl类定义了各种集群通信事件及操作方法，在整个集群通信过程中就是按照此类定义好的事件进行通信，SessionMessageImpl包含的事件如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&#123; </div><div class="line">EVT_SESSION_CREATED、</div><div class="line">EVT_SESSION_EXPIRED、</div><div class="line">EVT_SESSION_ACCESSED、</div><div class="line">EVT_GET_ALL_SESSIONS、</div><div class="line">EVT_SESSION_DELTA、</div><div class="line">EVT_ALL_SESSION_DATA、</div><div class="line">EVT_ALL_SESSION_TRANSFERCOMPLETE、</div><div class="line">EVT_CHANGE_SESSION_ID、</div><div class="line">EVT_ALL_SESSION_NOCONTEXTMANAGER </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>，除此之外它继承了序列化接口（方便序列化）、集群消息接口（集群的操作）、会话消息接口（事件定义及会话操作）。</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/7d3ad124d7eb4283a1b1" alt=""></p>
-<p>集群增量会话管理器DeltaManager可以说是通过SessionMessageImpl消息来管理DeltaSession，即根据SessionMessageImpl里面的事件响应不同的操作。DeltaManager存在一个messageDataReceived(ClusterMessage cmsg)方法，此方法会在本节点接收到其他节点发送过来的消息后被调用，且传入的参数为ClusterMessage类型，可转化为SessionMessage类型，然后根据SessionMessage定义的9种事件做不同处理。其中有一个事件需要关注的是EVT_SESSION_DELTA，它是对会话增量同步处理的事件，某个节点在一个完整的请求过程中对某会话相关属性的所有操作被抽象到了DeltaRequest对象中，而DeltaRequest被序列化后会放到SessionMessage中，所以EVT_SESSION_DELTA事件处理逻辑就是从SessionMessage获取并反序列化出DeltaRequest对象，再将DeltaRequest包含的对某个会话的所有操作同步到本地该会话中，至此完成会话增量同步。</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/f25aeb27f76ea5f59158" alt=""></p>
-<p>总的来说DeltaManager就是DeltaSession的管理器，它提供了会话增量的同步方式而不是全量同步，极大提高了同步效率。</p>
-<h2 id="集群备份会话管理器——BackupManager"><a href="#集群备份会话管理器——BackupManager" class="headerlink" title="集群备份会话管理器——BackupManager"></a>集群备份会话管理器——BackupManager</h2><p>全节点复制的网络流量随节点数量增加呈平方趋势增长，也正是因为这个因素导致无法构建较大规模的集群，为了使集群节点能更加大，首要解决的就是数据复制时流量增长的问题，于是tomcat提出了另外一种会话管理方式，每个会话只会有一个备份，它使会话备份的网络流量随节点数量的增加呈线性趋势增长，大大减少了网络流量和逻辑操作，可构建较大的集群。</p>
-<p>下面看看这种方式具体的工作机制，集群一般是通过负载均衡对外提供整体服务，所有节点被隐藏在后端组成一个整体。前面各种模式的实现都无需负载均衡协助，所以图中都把负载均衡省略了。最常见的负载方式是前面用apache拖所有节点，它支持将类似“326257DA6DB76F8D2E38F2C4540D1DEA.tomcat1”的会话id进行分解，定位到tomcat集群中以tomcat1命名的节点上（这种方式称为Session Stick，由apache jk模块实现）。</p>
-<p>每个会话存在一个原件和一个备份，且备份与原件不会保存在同一个节点上，如下图，例如当客户端发起请求后通过负载均衡被分发到tomcat1实例节点上，生成一个包含.tomcat1后缀的会话标识，并且tomcat1节点根据一定策略选出此次会话对象备份的节点，然后将包含了{会话id，备份ip}的信息发送给tomcat2、tomcat3、tomcat4，如图中虚线所示，这样每个节点都有一个会话id、备份ip列表，即每个节点都有每个会话的备份ip地址。</p>
-<p>完成上面一步后就是将会话内容备份到备份节点上，假如tomcat1的s1、s2两个会话的备份地址为tomcat2，则把会话对象备份到tomcat2中，类似的有tomcat2把s3会话备份到tomcat4，tomcat4把s4、s5两个对话备份到tomcat3，这样集群中所有的会话都已经有了一份备份。当tomcat1一直不出故障，由于Session Stick技术客户端将一直访问到tomcat1节点上，保证一直能获取到会话。而当tomcat1出故障了，这时tomcat也提供了一个failover机制，apache感知到后端集群tomcat1节点被移除了，这时它会把请求随机分配到其他任意节点上，接下去会有两种情况：</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/b178398c32fb99aff138" alt=""></p>
-<ul>
-<li>刚好分到了备份节点tomcat2上，此时仍能获取到s1会话，除此之外，tomcat2还要另外做的事是将这个s1会话标记为原件且继续选取一个备份地址备份s1会话，这样一来又有了备份。</li>
-<li>假如分到了非备份节点tomcat3，此时肯定找不到s1会话，于是它将向集群所有节点发问，“请问谁有s1会话的备份ip地址信息？”，因为只有tomcat2有s1的备份地址信息，它接收到询问后应答告知tomcat3节点s1会话的备份在tomcat2，根据这个信息就能查到s1会话了，并且tomcat3在自己本地生成s1会话并标为原件，tomcat2上的副本不变，这样一来同样能找到s1会话，正常完整整个请求处理。</li>
-</ul>
-<p>接着分析Tomcat对上面机制详细的实现，正常情况下为了支持高效的并发操作，tomcat的所有会话集使用ConcurrentHashMap结构保存，String类型是指SessionId，MapEntry则是对session、源节点成员及备份节点等的封装（详细的类结构如下图所示，备份节点虽然为数组类型，但实际情况我们只会设置一个备份节点），一般session对象由哪个节点生成则哪个节点为源节点，备份节点则为集群中其他任意一节点，所以MapEntry可以看成是包含了源节点和备份节点信息的会话对象。会话管理器其实就是对会话集操作的封装，从设计角度看，为了改变会话集的操作行为，只需继承ConcurrentHashMap类并重写其中一些方法即可实现，例如put、get、remove等等操作实现跨节点操作。于是tomcat的BackupManager对整个会话集的跨节点操作被封装到一个继承ConcurrentHashMap类的LazyReplicatedMap子类中，而要实现跨节点的操作要做的事很多，例如备份节点列表的维护、备份节点选择、通信协议、序列化&amp;反序列化及复杂的IO操作等等，弄清楚了LazyReplicatedMap的工作原理也就基本清楚BackupManager如何工作。</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/2057f1bf22f7d2a46416" alt=""></p>
-<p>每个节点都要维护一份集群节点信息列表供会话备份路由选择，信息列表的维护主要通过启动时向所有节点广播节点信息及心跳去维护，如下图左，n1启动时向其他节点广播自己的信息，其他节点收到信息后把n1添加到自己的列表，而n1则把n2、n3、n4添加到自己的列表，接着按某一时间间隔继续向其他节点发心跳，如下图右，假如n2未给n1响应信息，n1则把n2从自己的列表中删除。BackupManager使用经典的Round robin算法用于备份节点的选择，它属于平均分配算法，按顺序依次选择节点，例如集群一共有node1、node2、node3三个节点，node1将session1备份到node2，而session2则备份到node3。对于节点信息列表BackupManager是使用HashMap结构保存，Member是包含了节点信息属性的节点抽象，Long是指节点最新的存活时间，在做心跳时就是根据最新的存活时间和超时阀值判断节点是否失效。</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/3f6783cb34ab87bcc945" alt=""></p>
-<p>通信的协议及信息载体由MapMessage类定义，通信协议其实就是通信双方约定好的语义，定义的常量包括</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123; </div><div class="line">MSG_BACKUP、</div><div class="line">MSG_RETRIEVE_BACKUP、</div><div class="line">MSG_PROXY、</div><div class="line">MSG_REMOVE、</div><div class="line">MSG_STATE、</div><div class="line">MSG_START、</div><div class="line">MSG_STOP、</div><div class="line">MSG_INIT、</div><div class="line">MSG_COPY、</div><div class="line">MSG_STATE_COPY、</div><div class="line">MSG_ACCESS</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>，这里每个值都代表一个语义，例如MSG_BACKUP表示让接收方把接收到的会话对象进行备份、MSG_REMOVE则表示让接收方按照接收到的会话id把对应的会话删除等等。除此之外MapMessage类还包含valuedata(byte[])、keydata(byte[])、nodes(Member[])、primary(Member)，分别表示会话对象字节流、会话id字节流、备份节点、源节点。这样一来所有要素都有了，在备份操作中MapMessage对象就像组成一个句子：“本人会话id为keydata，会话值为valuedata，我的源节点为primary，我现在需要做备份操作”。</p>
-<p>另外，序列化&amp;反序列化工作交由jdk的ObjectInputStream、ObjectOutputStream去完成，而复杂的网络IO则交由tribes通信框架完成。</p>
-<p>关于源节点、备份节点、代理节点分别代表什么意思，每个集群每个会话只有一个源节点，一个备份节点，若干个代理节点。如下图，node1为源节点，表示会话对象由它创建，保存的是会话对象的原件；node3为备份节点，保存的是会话对象的备份件；node2和node4为代理节点，它们保存的仅仅是会话位置信息，例如备份节点node3的机器的ip。这样分类是为了提供failover能力，</p>
-<ol>
-<li>假如刚好源节点宕掉，请求落到备份节点则能获取到会话对象，此时备份节点变为源节点，再从node2、node4中选一个作为备份节点，并且把会话对象拷贝到新备份节点上；</li>
-<li>假如备份节点宕掉了，请求一样能从源节点获取到会话对象，但此时会从node2、node4中选一个新备份节点，并把会话对象拷贝到新备份节点上；</li>
-<li>假如代理节点宕掉了，一切没影响，正常工作。</li>
-</ol>
-<p><img src="https://dn-mhke0kuv.qbox.me/7efdf6159df520f96c73" alt=""></p>
-<p>搞清楚上面介绍的基本原理后再看看LazyReplicatedMap具体是如何实现将会话对象既在本地存储又跨节点备份。<br>首先看下如何它是如何通过调用put方法实现保存，<br>第一步，先实例化用于保存会话相关信息的MapEntry对象，传入的参数key为会话id，value为会话对象，设置当前结点为源节点；<br>第二步，判断会话集中是否已经包含了此会话，如已存在则要删除本地及备份节点上的会话；<br>第三步，使用Round robin算法选出一个备份节点，并赋值到MapEntry对象的备份节点属性；<br>第四步，组装包含MSG_BACKUP标识的MapMessage对象发到备份节点告诉备份节点要备份我传过来的这个会话信息；<br>第五步，组装包含MSG_PROXY标识的MapMessage对象发送到除备份节点外的其他节点，告诉他们“你们是代理，请把此会话的id、源节点、备份节点等信息记录下”；<br>第六步，把MapEntry对象放入本地缓存；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public Object put(Object key, Object value) &#123;</div><div class="line">  ①实例化MapEntry，将key和value传入，并设置源节点为目前节点。</div><div class="line">  ②判断本地内存是否已包含key，如是则不仅要本地remove掉，还要跨节点remove。</div><div class="line">  ③通过Round robin算法从MapMember中选择一个作为备份节点。</div><div class="line">  ④实例化一个包含MSG_BACKUP标识的MapMessage对象并发送给备份节点。</div><div class="line">  ⑤实例化一个包含MSG_PROXY标识的MapMessage对象并发送给除了备份节点外的其他（代理）节点。</div><div class="line">  ⑥put进本地缓存。</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其次，再看看它如何通过get实现获取会话对象操作：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public Object get(Object key) &#123;</div><div class="line"> ①获取本地的MapEntry对象，它或许直接包含了会话对象，或许包含了会话对象的存放位置信息。</div><div class="line"> ②判断本节点是否属于源节点，如为源节点则直接获取MapEntry对象里面的会话对象并返回。</div><div class="line"> ③判断本节点是否属于备份节点，若为备份节点则直接获取MapEntry对象里面的会话对象作为返回对象，并且还要将本节点升为源节点、重新选取一个新备份节点，把MapEntry对象拷贝到新备份节点。</div><div class="line"> ④判断本节点是否属于代理节点，若为代理节点则向其他节点发送会话对象拷贝请求，“集群中谁有此会话对象请发送给我”，把接收到的会话对象放到本节点并作为返回对象，最后将本节点升为源节点。</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>最后，看看删除会话对象remove操作的实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public Object remove(Object key) &#123;</div><div class="line"> ①删除本地此MapEntry对象。</div><div class="line"> ②广播其他节点删除此MapEntry对象。</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>通过上面三个方法已经很清晰描述了新的Map是如何进行跨节点的增删改查的，BackupManager会话管理器就是通过这个新的Map进行会话管理。</p>
-<p>以上即是tomcat集群机制源码基本的剖析，两种都有各自的优缺点，全节点模式是两两互相复制的，一旦集群节点数量及访问量大起来，将导致大量的会话信息需要互相复制同步，很容易导致网络阻塞，而且这些同步操作很可能会成为整体性能的瓶颈，根据经验，此种方案在实际生产上推荐的集群节点个数为3-6个，无法组建更大的集群，而且冗余了大量的数据，利用率不高。而会话备份模式则大大减少了网络流量和逻辑操作，可构建较大的集群，生产上可以组成十个以上的节点，虽然这种模式支持更大的集群，但它也有自己的缺点，例如它只有一个数据备份，假如刚好源数据和备份数据所在的机器同时宕掉了，则没办法恢复数据，不过刚好同时宕机的机率很小很小。</p>
-
+              随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息队列中间件、数据存储中间件等等。Web容器负责的工作可能越来越少，但是它确实必不可少的部分，它负责接收用户请求并分别调用各个服务最后响应。可以说目前最受欢迎的web容器是用Java写的tomcat小猫，由于生产上的tomcat考虑负载均衡及高可用性，它一般以集群模式运行，所以这篇文章主要探讨的是tomcat的集群功能如何实现且生产部署如何选型。
+          
       
     </div>
     
@@ -1827,6 +880,10 @@ WHERE
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/04/10/tomcat-cluster/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>

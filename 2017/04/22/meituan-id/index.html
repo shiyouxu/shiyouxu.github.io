@@ -15,13 +15,13 @@
 
 
 
-<meta name="description" content="原文地址: http://tech.meituan.com/MT_Leaf.html 背景在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一I">
+<meta name="description" content="在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一ID的系统是非常必要的。概括下来，那业务系统对ID号的要求有哪些呢？">
 <meta name="keywords" content="唯一ID">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leaf——美团点评分布式ID生成系统">
 <meta property="og:url" content="http://yoursite.com/2017/04/22/meituan-id/index.html">
 <meta property="og:site_name" content="Lost Youth">
-<meta property="og:description" content="原文地址: http://tech.meituan.com/MT_Leaf.html 背景在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一I">
+<meta property="og:description" content="在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一ID的系统是非常必要的。概括下来，那业务系统对ID号的要求有哪些呢？">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/image1.png">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/image3.png">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/image4.png">
@@ -30,10 +30,10 @@
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/fallback.png">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/snowflake.flow.png">
 <meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/qrcode_for_gh.jpg">
-<meta property="og:updated_time" content="2017-04-22T13:07:24.000Z">
+<meta property="og:updated_time" content="2017-04-26T06:06:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leaf——美团点评分布式ID生成系统">
-<meta name="twitter:description" content="原文地址: http://tech.meituan.com/MT_Leaf.html 背景在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一I">
+<meta name="twitter:description" content="在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一ID的系统是非常必要的。概括下来，那业务系统对ID号的要求有哪些呢？">
 <meta name="twitter:image" content="http://oo77gy3uq.bkt.clouddn.com/image1.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -431,7 +431,7 @@
         <p><span>本文标题:</span><a href="/2017/04/22/meituan-id/">Leaf——美团点评分布式ID生成系统</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">xiaoyou</a></p>
         <p><span>发布时间:</span>2017-04-22, 21:03:00</p>
-        <p><span>最后更新:</span>2017-04-22, 21:07:24</p>
+        <p><span>最后更新:</span>2017-04-26, 14:06:38</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/04/22/meituan-id/" title="Leaf——美团点评分布式ID生成系统">http://yoursite.com/2017/04/22/meituan-id/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/04/22/meituan-id/　　作者: xiaoyou" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

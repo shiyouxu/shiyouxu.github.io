@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-04-26T05:48:39.000Z</updated>
+  <updated>2017-04-26T06:05:02.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/04/26/mysql-bizhibimui/"/>
     <id>http://yoursite.com/2017/04/26/mysql-bizhibimui/</id>
     <published>2017-04-26T05:50:00.000Z</published>
-    <updated>2017-04-26T05:48:39.000Z</updated>
+    <updated>2017-04-26T06:05:02.000Z</updated>
     
     <content type="html"><![CDATA[
 
@@ -33,10 +33,7 @@
     
     <summary type="html">
     
-      
-
-	&lt;div class=&quot;row&quot;&gt;
-    &lt;embed src=&quot;http://oo77gy3uq.bkt.clouddn.com/MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A.pdf&quot; width=&quot;100%&quot; height=&quot;55
+      MySql 必知必会
     
     </summary>
     
@@ -50,7 +47,7 @@
     <link href="http://yoursite.com/2017/04/26/java-8-in-action/"/>
     <id>http://yoursite.com/2017/04/26/java-8-in-action/</id>
     <published>2017-04-26T05:50:00.000Z</published>
-    <updated>2017-04-26T05:46:06.000Z</updated>
+    <updated>2017-04-26T06:06:23.000Z</updated>
     
     <content type="html"><![CDATA[
 
@@ -63,10 +60,7 @@
     
     <summary type="html">
     
-      
-
-	&lt;div class=&quot;row&quot;&gt;
-    &lt;embed src=&quot;http://oo77gy3uq.bkt.clouddn.com/Java%208%E5%AE%9E%E6%88%98.pdf&quot; width=&quot;100%&quot; height=&quot;550&quot; type=&quot;applic
+      Java8 In Action
     
     </summary>
     
@@ -80,7 +74,7 @@
     <link href="http://yoursite.com/2017/04/26/java-8-in-practice/"/>
     <id>http://yoursite.com/2017/04/26/java-8-in-practice/</id>
     <published>2017-04-26T00:50:00.000Z</published>
-    <updated>2017-04-26T01:15:18.000Z</updated>
+    <updated>2017-04-26T06:06:30.000Z</updated>
     
     <content type="html"><![CDATA[<p>原文出处： <a href="http://listenzhangbin.com/post/2017/01/java8-learning-notes/" target="_blank" rel="external">Listen</a></p>
 <p>Java8是2014年发布的，至今也已经有快三年的时间了，之前虽然有学习过，但是学的比较零散，不成系统，而且也没有覆盖到Java8所有的特性。 由于公司已经使用了JDK1.8，所以工作中能使用Java8的机会还是很多的，因此决定来系统地学习一下Java8的新特性，这是对我最近学习Java8的一些记录， 以备在有些细节记不太清的时候可以查询。</p>
@@ -391,8 +385,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;原文出处： &lt;a href=&quot;http://listenzhangbin.com/post/2017/01/java8-learning-notes/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Listen&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Java8是2014年
+      Java8是2014年发布的，至今也已经有快三年的时间了，之前虽然有学习过，但是学的比较零散，不成系统，而且也没有覆盖到Java8所有的特性。 由于公司已经使用了JDK1.8，所以工作中能使用Java8的机会还是很多的，因此决定来系统地学习一下Java8的新特性，这是对我最近学习Java8的一些记录， 以备在有些细节记不太清的时候可以查询。
     
     </summary>
     
@@ -406,7 +399,7 @@
     <link href="http://yoursite.com/2017/04/23/distribute-micro-service-2/"/>
     <id>http://yoursite.com/2017/04/23/distribute-micro-service-2/</id>
     <published>2017-04-23T13:50:00.000Z</published>
-    <updated>2017-04-23T13:50:57.000Z</updated>
+    <updated>2017-04-26T06:05:57.000Z</updated>
     
     <content type="html"><![CDATA[<p><a href="http://mp.weixin.qq.com/s?__biz=MzA5MzQ2NTY0OA==&amp;mid=2650796589&amp;idx=1&amp;sn=37e7bee10cb31e6698411a249eafc641&amp;chksm=88562f72bf21a6646bf09070a52cca41bbf458ecbde44b52d1712356f2ab881095c3e987cc1d&amp;scene=21#wechat_redirect" target="_blank" rel="external">上集</a>我们阐述了使用微服务体系架构的关键障碍是领域模型，事务和查询，这三个障碍似乎和功能拆分具有天然的对抗。只要功能拆分了，就涉及这三个难题。</p>
 <p>然后我们向你展示了一种解决方案就是将每个服务的业务逻辑实现为一组DDD聚合。然后每个事务只能更新或创建一个单独的聚合。然后通过事件来维护聚合（和服务）之间的数据一致性。</p>
@@ -528,7 +521,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;http://mp.weixin.qq.com/s?__biz=MzA5MzQ2NTY0OA==&amp;amp;mid=2650796589&amp;amp;idx=1&amp;amp;sn=37e7bee10cb31e6698411a249eafc641&amp;amp;chksm=
+      在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，**事件源**是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为**命令查询责任分离（CQRS）**的方法来实现可扩展和高性能的查询。
     
     </summary>
     
@@ -542,7 +535,7 @@
     <link href="http://yoursite.com/2017/04/23/distribute-micro-service-1/"/>
     <id>http://yoursite.com/2017/04/23/distribute-micro-service-1/</id>
     <published>2017-04-23T13:50:00.000Z</published>
-    <updated>2017-04-23T13:50:57.000Z</updated>
+    <updated>2017-04-26T06:05:47.000Z</updated>
     
     <content type="html"><![CDATA[<p> 微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬件上而改善了应用的扩展性。</p>
 <p>但微服务不是万能的。特别是在 领域模型、事务以及查询这几个地方，似乎总是不能适应拆分。或者说这几块也是微服务需要专门处理的地方，相对于过去的单体架构。</p>
@@ -690,7 +683,9 @@ WHERE
     
     <summary type="html">
     
-      &lt;p&gt; 微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬
+      微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬件上而改善了应用的扩展性。
+但微服务不是万能的。特别是在 领域模型、事务以及查询这几个地方，似乎总是不能适应拆分。或者说这几块也是微服务需要专门处理的地方，相对于过去的单体架构。
+在这篇文章中，我会描述一种开发微服务的方法，这个方法可以解决这些问题。主要是通过领域模型设计，也就是DDD以及事件源（Event Sourcing）以及CQRS。让我们首先来看看开发人员在开发微服务的时候会遇到哪些问题吧。
     
     </summary>
     
@@ -704,7 +699,7 @@ WHERE
     <link href="http://yoursite.com/2017/04/22/meituan-id/"/>
     <id>http://yoursite.com/2017/04/22/meituan-id/</id>
     <published>2017-04-22T13:03:00.000Z</published>
-    <updated>2017-04-22T13:07:24.000Z</updated>
+    <updated>2017-04-26T06:06:38.000Z</updated>
     
     <content type="html"><![CDATA[<p> 原文地址: <a href="http://tech.meituan.com/MT_Leaf.html" target="_blank" rel="external">http://tech.meituan.com/MT_Leaf.html</a></p>
 <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一ID的系统是非常必要的。概括下来，那业务系统对ID号的要求有哪些呢？</p>
@@ -824,8 +819,7 @@ WHERE
     
     <summary type="html">
     
-      &lt;p&gt; 原文地址: &lt;a href=&quot;http://tech.meituan.com/MT_Leaf.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://tech.meituan.com/MT_Leaf.html&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=
+      在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增长，对数据分库分表后需要有一个唯一ID来标识一条数据或消息，数据库的自增ID显然不能满足需求；特别一点的如订单、骑手、优惠券也都需要有唯一ID做标识。此时一个能够生成全局唯一ID的系统是非常必要的。概括下来，那业务系统对ID号的要求有哪些呢？
     
     </summary>
     
@@ -839,7 +833,7 @@ WHERE
     <link href="http://yoursite.com/2017/04/10/rocket-in-practice-1/"/>
     <id>http://yoursite.com/2017/04/10/rocket-in-practice-1/</id>
     <published>2017-04-10T14:58:00.000Z</published>
-    <updated>2017-04-10T15:01:47.000Z</updated>
+    <updated>2017-04-26T06:04:51.000Z</updated>
     
     <content type="html"><![CDATA[<p><strong>阿里巴巴有2大核心的分布式技术，一个是OceanBase，另一个就是RocketMQ。在实际项目中已经领教过RocketMQ的强大，本人计划写一个RocketMQ实战系列，将涵盖RocketMQ的简介，环境搭建，初步使用、API详解、架构分析、管理员集群操作等知识。</strong></p>
 <h1 id="What-is-RocketMQ"><a href="#What-is-RocketMQ" class="headerlink" title="What is RocketMQ?"></a>What is RocketMQ?</h1><p>RocketMQ作为一款分布式的消息中间件（阿里的说法是不遵循任何规范的，所以不能完全用JMS的那一套东西来看它），经历了Metaq1.x、Metaq2.x的发展和淘宝双十一的洗礼，在功能和性能上远超ActiveMQ。</p>
@@ -943,7 +937,7 @@ WHERE
     
     <summary type="html">
     
-      &lt;p&gt;&lt;strong&gt;阿里巴巴有2大核心的分布式技术，一个是OceanBase，另一个就是RocketMQ。在实际项目中已经领教过RocketMQ的强大，本人计划写一个RocketMQ实战系列，将涵盖RocketMQ的简介，环境搭建，初步使用、API详解、架构分析、管理员集群操作
+      阿里巴巴有2大核心的分布式技术，一个是OceanBase，另一个就是RocketMQ。在实际项目中已经领教过RocketMQ的强大，本人计划写一个RocketMQ实战系列，将涵盖RocketMQ的简介，环境搭建，初步使用、API详解、架构分析、管理员集群操作等知识。
     
     </summary>
     
@@ -957,7 +951,7 @@ WHERE
     <link href="http://yoursite.com/2017/04/10/head-first-git-branch/"/>
     <id>http://yoursite.com/2017/04/10/head-first-git-branch/</id>
     <published>2017-04-10T14:50:00.000Z</published>
-    <updated>2017-04-10T14:49:34.000Z</updated>
+    <updated>2017-04-26T06:06:07.000Z</updated>
     
     <content type="html"><![CDATA[<p>几乎所有的版本控制系统都以分支的方式进行操作，分支是独立于项目主线的一条支线，我们可以在不影响主线代码的情况下，在分支下进行工作。对于传统的一些版本控制工具来说，我们通常需要花费比较多的时间拷贝主线代码，创建一个分支，并且对分支的管理效率也越来越不令人满意，而如今备受推崇的Git确实名副其实，Git中的分支非常轻量，我们可以随时随意创建任意数量的新分支，几乎感觉不到什么延时，而且对分支的操作也很高效，如，切换分支，暂存内容，分支合并，分支提交等。</p>
 <h2 id="Git分支的与众不同"><a href="#Git分支的与众不同" class="headerlink" title="Git分支的与众不同"></a>Git分支的与众不同</h2><p>上一节我们提到相对于其他大多数版本控制系统，Git分支是轻量且高效的，为什么呢？答案在前几篇已经有提到：传统的版本控制系统存储的数据是文件的变更，而Git则是存储一系列的文件快照（snapshot）。</p>
@@ -1116,7 +1110,7 @@ WHERE
     
     <summary type="html">
     
-      &lt;p&gt;几乎所有的版本控制系统都以分支的方式进行操作，分支是独立于项目主线的一条支线，我们可以在不影响主线代码的情况下，在分支下进行工作。对于传统的一些版本控制工具来说，我们通常需要花费比较多的时间拷贝主线代码，创建一个分支，并且对分支的管理效率也越来越不令人满意，而如今备受推崇的
+      几乎所有的版本控制系统都以分支的方式进行操作，分支是独立于项目主线的一条支线，我们可以在不影响主线代码的情况下，在分支下进行工作。对于传统的一些版本控制工具来说，我们通常需要花费比较多的时间拷贝主线代码，创建一个分支，并且对分支的管理效率也越来越不令人满意，而如今备受推崇的Git确实名副其实，Git中的分支非常轻量，我们可以随时随意创建任意数量的新分支，几乎感觉不到什么延时，而且对分支的操作也很高效，如，切换分支，暂存内容，分支合并，分支提交等。
     
     </summary>
     
@@ -1348,7 +1342,7 @@ WHERE
     <link href="http://yoursite.com/2017/04/10/tomcat-cluster/"/>
     <id>http://yoursite.com/2017/04/10/tomcat-cluster/</id>
     <published>2017-04-10T00:56:00.000Z</published>
-    <updated>2017-04-10T01:00:14.000Z</updated>
+    <updated>2017-04-26T06:04:25.000Z</updated>
     
     <content type="html"><![CDATA[<p>随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息队列中间件、数据存储中间件等等。Web容器负责的工作可能越来越少，但是它确实必不可少的部分，它负责接收用户请求并分别调用各个服务最后响应。可以说目前最受欢迎的web容器是用Java写的tomcat小猫，由于生产上的tomcat考虑负载均衡及高可用性，它一般以集群模式运行，所以这篇文章主要探讨的是tomcat的集群功能如何实现且生产部署如何选型。</p>
 <p>如果说一个web应用不涉及会话的话，那么做集群是相当简单的，因为节点都是无状态的，集群内各个节点无需互相通信，只需要将各个请求均匀分配到集群节点即可。但基本所有web应用都会使用会话机制，所以做web应用集群时整个难点在于会话数据的同步，当然你可以通过一些策略规避复杂的额数据同步操作，例如把会话信息保存在分布式缓存或数据库中统一集中管理，避免了tomcat集群之间的通信。但这种方式也有不足，要额外引入数据库或缓存服务，同时也要保证它们的高可用性，增加了机器和维护成本。本文假设不使用统一管理会话的模式而是将会话交由tomcat自身集群管理。</p>
@@ -1402,7 +1396,7 @@ WHERE
     
     <summary type="html">
     
-      &lt;p&gt;随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息
+      随着互联网快速发展，各种各样供外部访问的系统越来越多且访问量越来越大，以前Web容器可以包揽接收-逻辑处理-响应整个请求生命周期的工作，现在为了构建让更多用户访问更强大的系统，人们通过不断地业务解耦、架构解耦将web容器的逻辑处理抽离交由其他中间件处理，例如缓存中间件、消息队列中间件、数据存储中间件等等。Web容器负责的工作可能越来越少，但是它确实必不可少的部分，它负责接收用户请求并分别调用各个服务最后响应。可以说目前最受欢迎的web容器是用Java写的tomcat小猫，由于生产上的tomcat考虑负载均衡及高可用性，它一般以集群模式运行，所以这篇文章主要探讨的是tomcat的集群功能如何实现且生产部署如何选型。
     
     </summary>
     
@@ -1416,7 +1410,7 @@ WHERE
     <link href="http://yoursite.com/2017/04/04/mysql-7-join/"/>
     <id>http://yoursite.com/2017/04/04/mysql-7-join/</id>
     <published>2017-04-04T09:56:00.000Z</published>
-    <updated>2017-04-10T14:45:20.000Z</updated>
+    <updated>2017-04-26T06:06:45.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Mysql的七种join"><a href="#Mysql的七种join" class="headerlink" title="Mysql的七种join"></a>Mysql的七种join</h1><blockquote>
 <p>对于SQL的Join，在学习起来可能是比较乱的。我们知道，SQL的Join语法有很多inner的，有outer的，有left的，有时候，对于Select出来的结果集是什么样子有点不是很清楚。Coding Horror上有一篇文章（实在不清楚为什么Coding Horror也被墙）通过 文氏图 Venn diagrams解释了SQL的Join。</p>
@@ -1486,8 +1480,7 @@ WHERE
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Mysql的七种join&quot;&gt;&lt;a href=&quot;#Mysql的七种join&quot; class=&quot;headerlink&quot; title=&quot;Mysql的七种join&quot;&gt;&lt;/a&gt;Mysql的七种join&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;对于SQL的Join，在学习起来可
+      对于SQL的Join，在学习起来可能是比较乱的。我们知道，SQL的Join语法有很多inner的，有outer的，有left的，有时候，对于Select出来的结果集是什么样子有点不是很清楚。Coding Horror上有一篇文章（实在不清楚为什么Coding Horror也被墙）通过 文氏图 Venn diagrams解释了SQL的Join。
     
     </summary>
     
@@ -1501,7 +1494,7 @@ WHERE
     <link href="http://yoursite.com/2017/04/04/hello-world/"/>
     <id>http://yoursite.com/2017/04/04/hello-world/</id>
     <published>2017-04-04T09:08:51.000Z</published>
-    <updated>2017-04-04T09:08:51.000Z</updated>
+    <updated>2017-04-26T06:06:17.000Z</updated>
     
     <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
@@ -1516,7 +1509,7 @@ WHERE
     
     <summary type="html">
     
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+      Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
     
     </summary>
     
