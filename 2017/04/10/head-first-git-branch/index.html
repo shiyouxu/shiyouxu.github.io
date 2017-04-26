@@ -90,7 +90,7 @@
 				<h1 class="site-name"><a href="/" title="Lost Youth">Lost Youth</a></h1>
 				<h2 class="blog-motto"></h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -108,7 +108,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:yoursite.com">
 					</form>
 					
@@ -131,14 +131,14 @@
 		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
 		
   <p class="article-time">
-    <time datetime="2017-04-10T14:50:00.000Z" itemprop="datePublished"> 发表于 2017-04-10</time>
+    <time datetime="2017-04-10T14:50:00.000Z" itemprop="datePublished"> Published 2017-04-10</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Git分支的与众不同"><span class="toc-number">1.</span> <span class="toc-text">Git分支的与众不同</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git主干分支（master）"><span class="toc-number">2.</span> <span class="toc-text">Git主干分支（master）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支类型"><span class="toc-number">3.</span> <span class="toc-text">分支类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支指针（HEAD）"><span class="toc-number">4.</span> <span class="toc-text">分支指针（HEAD）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建分支（git-branch-git-checkout-b）"><span class="toc-number">5.</span> <span class="toc-text">创建分支（git branch, git checkout -b）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#切换分支（git-checkout）"><span class="toc-number">6.</span> <span class="toc-text">切换分支（git checkout）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多分支并行"><span class="toc-number">7.</span> <span class="toc-text">多分支并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#合并分支（git-merge）"><span class="toc-number">8.</span> <span class="toc-text">合并分支（git merge）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#非快速推进合并（NO-FAST-FORWARD）"><span class="toc-number">8.0.1.</span> <span class="toc-text">非快速推进合并（NO FAST-FORWARD）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#非快速推进与快速推进合并（FAST-FORWARD-amp-NO-FAST-FORWARD）"><span class="toc-number">8.0.2.</span> <span class="toc-text">非快速推进与快速推进合并（FAST-FORWARD & NO FAST-FORWARD）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#三路合并（THREE-WAY-MERGE）"><span class="toc-number">8.0.3.</span> <span class="toc-text">三路合并（THREE-WAY MERGE）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支冲突（conflict）"><span class="toc-number">9.</span> <span class="toc-text">分支冲突（conflict）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看分支"><span class="toc-number">10.</span> <span class="toc-text">查看分支</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#筛选分支"><span class="toc-number">10.0.1.</span> <span class="toc-text">筛选分支</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除分支（git-branch-d）"><span class="toc-number">11.</span> <span class="toc-text">删除分支（git branch -d）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程分支（remote-branch）"><span class="toc-number">12.</span> <span class="toc-text">远程分支（remote branch）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#跟踪分支（TRACKING-BRANCH）"><span class="toc-number">12.0.1.</span> <span class="toc-text">跟踪分支（TRACKING BRANCH）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#创建跟踪分支"><span class="toc-number">12.0.1.0.1.</span> <span class="toc-text">创建跟踪分支</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#修改跟踪关系"><span class="toc-number">12.0.1.0.2.</span> <span class="toc-text">修改跟踪关系</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#查看跟踪分支（git-branch-vv）"><span class="toc-number">12.0.1.0.3.</span> <span class="toc-text">查看跟踪分支（git branch -vv）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#删除远程分支"><span class="toc-number">12.0.1.0.4.</span> <span class="toc-text">删除远程分支</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变基（rebase）"><span class="toc-number">13.</span> <span class="toc-text">变基（rebase）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#三路合并与变基"><span class="toc-number">13.0.1.</span> <span class="toc-text">三路合并与变基</span></a></li></ol></li></ol></li></ol>
 		
@@ -349,17 +349,17 @@
 	
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
+  <strong class="toc-title">Contents</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Git分支的与众不同"><span class="toc-number">1.</span> <span class="toc-text">Git分支的与众不同</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git主干分支（master）"><span class="toc-number">2.</span> <span class="toc-text">Git主干分支（master）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支类型"><span class="toc-number">3.</span> <span class="toc-text">分支类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支指针（HEAD）"><span class="toc-number">4.</span> <span class="toc-text">分支指针（HEAD）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建分支（git-branch-git-checkout-b）"><span class="toc-number">5.</span> <span class="toc-text">创建分支（git branch, git checkout -b）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#切换分支（git-checkout）"><span class="toc-number">6.</span> <span class="toc-text">切换分支（git checkout）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多分支并行"><span class="toc-number">7.</span> <span class="toc-text">多分支并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#合并分支（git-merge）"><span class="toc-number">8.</span> <span class="toc-text">合并分支（git merge）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#非快速推进合并（NO-FAST-FORWARD）"><span class="toc-number">8.0.1.</span> <span class="toc-text">非快速推进合并（NO FAST-FORWARD）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#非快速推进与快速推进合并（FAST-FORWARD-amp-NO-FAST-FORWARD）"><span class="toc-number">8.0.2.</span> <span class="toc-text">非快速推进与快速推进合并（FAST-FORWARD & NO FAST-FORWARD）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#三路合并（THREE-WAY-MERGE）"><span class="toc-number">8.0.3.</span> <span class="toc-text">三路合并（THREE-WAY MERGE）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支冲突（conflict）"><span class="toc-number">9.</span> <span class="toc-text">分支冲突（conflict）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看分支"><span class="toc-number">10.</span> <span class="toc-text">查看分支</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#筛选分支"><span class="toc-number">10.0.1.</span> <span class="toc-text">筛选分支</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除分支（git-branch-d）"><span class="toc-number">11.</span> <span class="toc-text">删除分支（git branch -d）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程分支（remote-branch）"><span class="toc-number">12.</span> <span class="toc-text">远程分支（remote branch）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#跟踪分支（TRACKING-BRANCH）"><span class="toc-number">12.0.1.</span> <span class="toc-text">跟踪分支（TRACKING BRANCH）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#创建跟踪分支"><span class="toc-number">12.0.1.0.1.</span> <span class="toc-text">创建跟踪分支</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#修改跟踪关系"><span class="toc-number">12.0.1.0.2.</span> <span class="toc-text">修改跟踪关系</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#查看跟踪分支（git-branch-vv）"><span class="toc-number">12.0.1.0.3.</span> <span class="toc-text">查看跟踪分支（git branch -vv）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#删除远程分支"><span class="toc-number">12.0.1.0.4.</span> <span class="toc-text">删除远程分支</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变基（rebase）"><span class="toc-number">13.</span> <span class="toc-text">变基（rebase）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#三路合并与变基"><span class="toc-number">13.0.1.</span> <span class="toc-text">三路合并与变基</span></a></li></ol></li></ol></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
@@ -369,7 +369,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">标签</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -405,7 +405,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
+  <p class="asidetitle">Links</p>
     <ul>
         
           <li>
@@ -427,11 +427,11 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
   <div class="weiboshow">
-  <p class="asidetitle">新浪微博</p>
+  <p class="asidetitle">Weibo</p>
     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
@@ -658,7 +658,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
