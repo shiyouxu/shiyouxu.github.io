@@ -1,0 +1,783 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java8学习笔记 | Lost Youth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="xiaoyou">
+    
+
+    
+    <meta name="description" content="原文出处： Listen Java8是2014年发布的，至今也已经有快三年的时间了，之前虽然有学习过，但是学的比较零散，不成系统，而且也没有覆盖到Java8所有的特性。 由于公司已经使用了JDK1.8，所以工作中能使用Java8的机会还是很多的，因此决定来系统地学习一下Java8的新特性，这是对我最近学习Java8的一些记录， 以备在有些细节记不太清的时候可以查询。  先来一个概览，上图是我整理的">
+<meta name="keywords" content="Java8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java8学习笔记">
+<meta property="og:url" content="http://yoursite.com/2017/04/26/java-8-in-practice/index.html">
+<meta property="og:site_name" content="Lost Youth">
+<meta property="og:description" content="原文出处： Listen Java8是2014年发布的，至今也已经有快三年的时间了，之前虽然有学习过，但是学的比较零散，不成系统，而且也没有覆盖到Java8所有的特性。 由于公司已经使用了JDK1.8，所以工作中能使用Java8的机会还是很多的，因此决定来系统地学习一下Java8的新特性，这是对我最近学习Java8的一些记录， 以备在有些细节记不太清的时候可以查询。  先来一个概览，上图是我整理的">
+<meta property="og:image" content="http://oo77gy3uq.bkt.clouddn.com/Java8-features.png">
+<meta property="og:updated_time" content="2017-04-26T00:56:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java8学习笔记">
+<meta name="twitter:description" content="原文出处： Listen Java8是2014年发布的，至今也已经有快三年的时间了，之前虽然有学习过，但是学的比较零散，不成系统，而且也没有覆盖到Java8所有的特性。 由于公司已经使用了JDK1.8，所以工作中能使用Java8的机会还是很多的，因此决定来系统地学习一下Java8的新特性，这是对我最近学习Java8的一些记录， 以备在有些细节记不太清的时候可以查询。  先来一个概览，上图是我整理的">
+<meta name="twitter:image" content="http://oo77gy3uq.bkt.clouddn.com/Java8-features.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lost Youth" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Lost Youth" title="Lost Youth"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lost Youth">Lost Youth</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/tools">Tools</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/04/26/java-8-in-practice/" title="Java8学习笔记" itemprop="url">Java8学习笔记</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="xiaoyou" target="_blank" itemprop="author">xiaoyou</a>
+		
+  <p class="article-time">
+    <time datetime="2017-04-26T00:50:00.000Z" itemprop="datePublished"> Published 2017-04-26</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式接口"><span class="toc-number">1.</span> <span class="toc-text">函数式接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda表达式和方法引用"><span class="toc-number">2.</span> <span class="toc-text">Lambda表达式和方法引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream"><span class="toc-number">3.</span> <span class="toc-text">Stream</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#默认方法"><span class="toc-number">4.</span> <span class="toc-text">默认方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optional"><span class="toc-number">5.</span> <span class="toc-text">Optional</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CompletableFuture"><span class="toc-number">6.</span> <span class="toc-text">CompletableFuture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新的时间和日期API"><span class="toc-number">7.</span> <span class="toc-text">新的时间和日期API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">8.</span> <span class="toc-text">小结</span></a></li></ol>
+		
+		</div>
+		
+		<p>原文出处： <a href="http://listenzhangbin.com/post/2017/01/java8-learning-notes/" target="_blank" rel="external">Listen</a></p>
+<p>Java8是2014年发布的，至今也已经有快三年的时间了，之前虽然有学习过，但是学的比较零散，不成系统，而且也没有覆盖到Java8所有的特性。 由于公司已经使用了JDK1.8，所以工作中能使用Java8的机会还是很多的，因此决定来系统地学习一下Java8的新特性，这是对我最近学习Java8的一些记录， 以备在有些细节记不太清的时候可以查询。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/Java8-features.png" alt="Java8"></p>
+<p>先来一个概览，上图是我整理的Java8中的新特性，总的来看，大致上可以分成这么几个大块。</p>
+<h2 id="函数式接口"><a href="#函数式接口" class="headerlink" title="函数式接口"></a>函数式接口</h2><p>所谓的函数式接口就是只有一个抽象方法的接口，注意这里说的是抽象方法，因为Java8中加入了默认方法的特性，但是函数式接口是不关心接口中有没有默认方法的。 一般函数式接口可以使用<code>@FunctionalInterface</code>注解的形式来标注表示这是一个函数式接口，该注解标注与否对函数式接口没有实际的影响， 不过一般还是推荐使用该注解，就像使用<code>@Override</code>注解一样。JDK1.8中提供了一些函数式接口如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数式接口</th>
+<th style="text-align:center">函数描述符</th>
+<th style="text-align:center">原始类型特化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
+<td style="text-align:center">T -&gt; boolean</td>
+<td style="text-align:center"><code>IntPredicate, LongPredicate, DoublePredicate</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Consumer&lt;T&gt;</code></td>
+<td style="text-align:center">T -&gt; void</td>
+<td style="text-align:center"><code>IntConsumer, LongConsumer, DoubleConsumer</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Function&lt;T,R&gt;</code></td>
+<td style="text-align:center">T -&gt; R</td>
+<td style="text-align:center"><code>IntFunction&lt;R&gt;, IntToDoubleFunction, IntToLongFunction, LongFunction&lt;R&gt;, LongToDoubleFunction, LongToIntFunction, DoubleFunction&lt;R&gt;, ToIntFunction&lt;T&gt;, ToDoubleFunction&lt;T&gt;, ToLongFunction&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Supplier&lt;T&gt;</code></td>
+<td style="text-align:center">() -&gt; T</td>
+<td style="text-align:center"><code>BooleanSupplier, IntSupplier, LongSupplier, DoubleSupplier</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>UnaryOperator&lt;T&gt;</code></td>
+<td style="text-align:center">T -&gt; T</td>
+<td style="text-align:center"><code>IntUnaryOperator, LongUnaryOperator, DoubleUnaryOperator</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>BinaryOperator&lt;T&gt;</code></td>
+<td style="text-align:center">(T,T) -&gt; T</td>
+<td style="text-align:center"><code>IntBinaryOperator, LongBinaryOperator, DoubleBinaryOperator</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>BiPredicate&lt;L,R&gt;</code></td>
+<td style="text-align:center">(L,R) -&gt; boolean</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>BiConsumer&lt;T,U&gt;</code></td>
+<td style="text-align:center">(T,U) -&gt; void</td>
+<td style="text-align:center"><code>ObjIntConsumer&lt;T&gt;, ObjLongConsumer&lt;T&gt;, ObjDoubleConsumer&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>BiFunction&lt;T,U,R&gt;</code></td>
+<td style="text-align:center">(T,U) -&gt; R</td>
+<td style="text-align:center"><code>ToIntBiFunction&lt;T,U&gt;, ToLongBiFunction&lt;T,U&gt;, ToDoubleBiFunction&lt;T,U&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>上表中的原始类型特化指的是为了消除自动装箱和拆箱的性能开销，JDK1.8提供的针对基本类型的函数式接口。</p>
+<h2 id="Lambda表达式和方法引用"><a href="#Lambda表达式和方法引用" class="headerlink" title="Lambda表达式和方法引用"></a>Lambda表达式和方法引用</h2><p>有了函数式接口之后，就可以使用Lambda表达式和方法引用了。其实函数式接口的表中的函数描述符就是Lambda表达式，在函数式接口中Lambda表达式相当于匿名内部类的效果。 举个简单的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestLambda</span> </span>&#123;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable runnable)</span> </span>&#123;</div><div class="line"></div><div class="line">runnable.run();</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line"><span class="comment">//Java8之前</span></div><div class="line"></div><div class="line">execute(<span class="keyword">new</span> Runnable() &#123;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">		System.out.println(<span class="string">"run"</span>);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">//使用Lambda表达式</span></div><div class="line"></div><div class="line">execute(() -&gt; System.out.println(<span class="string">"run"</span>));</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到，相比于使用匿名内部类的方式，Lambda表达式可以使用更少的代码但是有更清晰的表述。注意，Lambda表达式也不是完全等价于匿名内部类的， 两者的不同点在于<code>this</code>的指向和本地变量的屏蔽上。</p>
+<p>Lambda表达式还可以复合，把几个Lambda表达式串起来使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Predicate&lt;Apple&gt; redAndHeavyApple = redApple.and(a -&gt; a.getWeight() &gt; <span class="number">150</span>).or(a -&gt; “green”.equals(a.getColor()));</div></pre></td></tr></table></figure>
+<p>上面这行代码把两个Lambda表达式串了起来，含义是选择重量大于150或者绿色的苹果。</p>
+<p>方法引用可以看作Lambda表达式的更简洁的一种表达形式，使用<code>::</code>操作符，方法引用主要有三类：</p>
+<ol>
+<li>指向静态方法的方法引用(例如Integer的parseInt方法，写作<code>Integer::parseInt</code>)；</li>
+<li>指向任意类型实例方法的方法引用(例如String的length方法，写作<code>String::length</code>)；</li>
+<li>指向现有对象的实例方法的方法引用(例如假设你有一个本地变量localVariable用于存放Variable类型的对象，它支持实例方法getValue，那么可以写成<code>localVariable::getValue</code>)。</li>
+</ol>
+<p>举个方法引用的简单的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Function&lt;String, Integer&gt; stringToInteger = (String s) -&gt; Integer.parseInt(s);</div><div class="line"> </div><div class="line"><span class="comment">//使用方法引用</span></div><div class="line">Function&lt;String, Integer&gt; stringToInteger = Integer::parseInt;</div></pre></td></tr></table></figure>
+<p>方法引用中还有一种特殊的形式，构造函数引用，假设一个类有一个默认的构造函数，那么使用方法引用的形式为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Supplier&lt;SomeClass&gt; c1 = SomeClass::<span class="keyword">new</span>;</div><div class="line">SomeClass s1 = c1.get();</div><div class="line"> </div><div class="line"><span class="comment">//等价于</span></div><div class="line"> </div><div class="line">Supplier&lt;SomeClass&gt; c1 = () -&gt; <span class="keyword">new</span> SomeClass();</div><div class="line">SomeClass s1 = c1.get();</div></pre></td></tr></table></figure>
+<p>如果是构造函数有一个参数的情况：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Function&lt;Integer, SomeClass&gt; c1 = SomeClass::<span class="keyword">new</span>;</div><div class="line">SomeClass s1 = c1.apply(<span class="number">100</span>);</div><div class="line"> </div><div class="line"><span class="comment">//等价于</span></div><div class="line"> </div><div class="line">Function&lt;Integer, SomeClass&gt; c1 = i -&gt; <span class="keyword">new</span> SomeClass(i);</div><div class="line">SomeClass s1 = c1.apply(<span class="number">100</span>);</div></pre></td></tr></table></figure>
+<h2 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h2><p>Stream可以分成串行流和并行流，并行流是基于Java7中提供的<code>ForkJoinPool</code>来进行任务的调度，达到并行的处理的目的。 集合是我们平时在进行Java编程时非常常用的API，使用Stream可以帮助更好的来操作集合。Stream提供了非常丰富的操作，包括筛选、切片、映射、查找、匹配、归约等等， 这些操作又可以分为中间操作和终端操作，中间操作会返回一个流，因此我们可以使用多个中间操作来作链式的调用，当使用了终端操作之后，那么这个流就被认为是被消费了， 每个流只能有一个终端操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//筛选后收集到一个List中</span></div><div class="line">List&lt;Apple&gt; vegetarianMenu = apples.stream().filter(Apple::isRed).collect(Collectors.toList());</div><div class="line"> </div><div class="line"><span class="comment">//筛选加去重</span></div><div class="line">List&lt;Integer&gt; numbers = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>);</div><div class="line">numbers.stream().filter(i -&gt; i % <span class="number">2</span> == <span class="number">0</span>).distinct().forEach(System.out::println);</div></pre></td></tr></table></figure>
+<p>以上都是一些简单的例子，Stream提供的API非常丰富，可以很好的满足我们的需求。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">操作</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">返回类型</th>
+<th style="text-align:center">使用的类型/函数式接口</th>
+<th style="text-align:center">函数描述符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">filter</td>
+<td style="text-align:center">中间</td>
+<td style="text-align:center"><code>Stream&lt;T&gt;</code></td>
+<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
+<td style="text-align:center"><code>T -&gt; boolean</code></td>
+</tr>
+<tr>
+<td style="text-align:center">distinct</td>
+<td style="text-align:center">中间</td>
+<td style="text-align:center"><code>Stream&lt;T&gt;</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">skip</td>
+<td style="text-align:center">中间</td>
+<td style="text-align:center"><code>Stream&lt;T&gt;</code></td>
+<td style="text-align:center"><code>long</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">limit</td>
+<td style="text-align:center">中间</td>
+<td style="text-align:center"><code>Stream&lt;T&gt;</code></td>
+<td style="text-align:center"><code>long</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">map</td>
+<td style="text-align:center">中间</td>
+<td style="text-align:center"><code>Stream&lt;R&gt;</code></td>
+<td style="text-align:center"><code>Function&lt;T,R&gt;</code></td>
+<td style="text-align:center"><code>T -&gt; R</code></td>
+</tr>
+<tr>
+<td style="text-align:center">flatMap</td>
+<td style="text-align:center">中间</td>
+<td style="text-align:center"><code>Stream&lt;R&gt;</code></td>
+<td style="text-align:center"><code>Function&lt;T, Stream&lt;R&gt;&gt;</code></td>
+<td style="text-align:center"><code>T -&gt; Stream&lt;R&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align:center">sorted</td>
+<td style="text-align:center">中间</td>
+<td style="text-align:center"><code>Stream&lt;R&gt;</code></td>
+<td style="text-align:center"><code>Comparator&lt;T&gt;</code></td>
+<td style="text-align:center"><code>(T,T) -&gt; int</code></td>
+</tr>
+<tr>
+<td style="text-align:center">anyMatch</td>
+<td style="text-align:center">终端</td>
+<td style="text-align:center"><code>boolean</code></td>
+<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
+<td style="text-align:center"><code>T -&gt; boolean</code></td>
+</tr>
+<tr>
+<td style="text-align:center">noneMatch</td>
+<td style="text-align:center">终端</td>
+<td style="text-align:center"><code>boolean</code></td>
+<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
+<td style="text-align:center"><code>T -&gt; boolean</code></td>
+</tr>
+<tr>
+<td style="text-align:center">allMatch</td>
+<td style="text-align:center">终端</td>
+<td style="text-align:center"><code>boolean</code></td>
+<td style="text-align:center"><code>Predicate&lt;T&gt;</code></td>
+<td style="text-align:center"><code>T -&gt; boolean</code></td>
+</tr>
+<tr>
+<td style="text-align:center">findAny</td>
+<td style="text-align:center">终端</td>
+<td style="text-align:center"><code>Optional&lt;T&gt;</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">findFirst</td>
+<td style="text-align:center">终端</td>
+<td style="text-align:center"><code>Optional&lt;T&gt;</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">forEach</td>
+<td style="text-align:center">终端</td>
+<td style="text-align:center"><code>void</code></td>
+<td style="text-align:center"><code>Consumer&lt;T&gt;</code></td>
+<td style="text-align:center"><code>T -&gt; void</code></td>
+</tr>
+<tr>
+<td style="text-align:center">collect</td>
+<td style="text-align:center">终端</td>
+<td style="text-align:center"><code>R</code></td>
+<td style="text-align:center"><code>Collector&lt;T,A,R&gt;</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">reduce</td>
+<td style="text-align:center">终端</td>
+<td style="text-align:center"><code>Optional&lt;T&gt;</code></td>
+<td style="text-align:center"><code>BinaryOperator&lt;T&gt;</code></td>
+<td style="text-align:center"><code>(T,T) -&gt; T</code></td>
+</tr>
+<tr>
+<td style="text-align:center">count</td>
+<td style="text-align:center">终端</td>
+<td style="text-align:center"><code>long</code></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>与函数式接口类似，Stream也提供了原始类型特化的流，比如说<code>IntStream</code>等：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//maoToInt转化为一个IntStream</span></div><div class="line"><span class="keyword">int</span> count = list.stream().mapToInt(list::getNumber).sum();</div></pre></td></tr></table></figure>
+<p>并行流与串行流的区别就在于将stream改成parallelStream，并行流会将流的操作拆分，放到线程池中去执行，但是并不是说使用并行流的性能一定好于串行的流， 恰恰相反，可能大多数时候使用串行流会有更好的性能，这是因为将任务提交到线程池，执行完之后再合并，这些本身都是有不小的开销的。关于并行流其实还有非常多的细节， 这里做一个抛砖引玉，有兴趣的同学可以在网上自行查找一些资料来学习。</p>
+<h2 id="默认方法"><a href="#默认方法" class="headerlink" title="默认方法"></a>默认方法</h2><p>默认方法出现的原因是为了对原有接口的扩展，有了默认方法之后就不怕因改动原有的接口而对已经使用这些接口的程序造成的代码不兼容的影响。 在Java8中也对一些接口增加了一些默认方法，比如<code>Map</code>接口等等。一般来说，使用默认方法的场景有两个：可选方法和行为的多继承。</p>
+<p>默认方法的使用相对来说比较简单，唯一要注意的点是如何处理默认方法的冲突。关于如何处理默认方法的冲突可以参考以下三条规则：</p>
+<ol>
+<li>类中的方法优先级最高。类或父类中声明的方法的优先级高于任何声明为默认方法的优先级。</li>
+<li>如果无法依据第一条规则进行判断，那么子接口的优先级更高：函数签名相同时，优先选择拥有最具体实现的默认方法的接口。即如果B继承了A，那么B就比A更具体。</li>
+<li>最后，如果还是无法判断，继承了多个接口的类必须通过显式覆盖和调用期望的方法，显式地选择使用哪一个默认方法的实现。那么如何显式地指定呢:</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">C</span> <span class="keyword">implements</span> <span class="title">B</span>, <span class="title">A</span> </span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span> </span>&#123;</div><div class="line">        B.<span class="keyword">super</span>().hello();    </div><div class="line">    &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用<code>X.super.m(..)</code>显式地调用希望调用的方法。</p>
+<h2 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h2><p>如果一个方法返回一个Object，那么我们在使用的时候总是要判断一下返回的结果是否为空，一般是这样的形式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (a != <span class="keyword">null</span>) &#123;</div><div class="line">    <span class="comment">//do something...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但是简单的情况还好，如果复杂的情况下每一个都要去检查非常麻烦，而且写出来的代码也不好看、很臃肿，但是如果不检查就很容易遇到<code>NullPointerException</code>， Java8中的Optional就是为此而设计的。</p>
+<p>Optional一般使用在方法的返回值中，如果使用Optional来包装方法的返回值，这就表示方法的返回值可能为<code>null</code>，需要使用Optional提供的方法来检查，如果为null，还可以提供一个默认值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建Optional对象</span></div><div class="line">Optional&lt;String&gt; opt = Optional.empty();</div><div class="line"> </div><div class="line"><span class="comment">//依据一个非空值创建Optional</span></div><div class="line">Optional&lt;String&gt; opt = Optional.of(<span class="string">"hello"</span>);</div><div class="line"> </div><div class="line"><span class="comment">//可接受null的Optional</span></div><div class="line">Optional&lt;String&gt; opt = Optional.ofNullable(<span class="keyword">null</span>);</div></pre></td></tr></table></figure>
+<p>除了以上这些方法外，Optional还提供了以下方法：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方法</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">empty</td>
+<td style="text-align:center">返回一个空的Optional实例</td>
+</tr>
+<tr>
+<td style="text-align:center">filter</td>
+<td style="text-align:center">如果值存在并且满足提供的谓词，就返回包括该值的Optional对象；否则返回一个空的Optional对象</td>
+</tr>
+<tr>
+<td style="text-align:center">flatMap</td>
+<td style="text-align:center">如果值存在，就对该值执行提供的mapping函数调用，返回一个Optional类型的值，否则就返回一个空的Optional对象</td>
+</tr>
+<tr>
+<td style="text-align:center">get</td>
+<td style="text-align:center">如果该值存在，将该值用Optional封装返回，否则抛出一个NoSuchElementException异常</td>
+</tr>
+<tr>
+<td style="text-align:center">ifPresent</td>
+<td style="text-align:center">如果值存在，就执行使用该值的方法调用，否则返回false</td>
+</tr>
+<tr>
+<td style="text-align:center">isPresent</td>
+<td style="text-align:center">如果值存在就返回true，否则返回false</td>
+</tr>
+<tr>
+<td style="text-align:center">map</td>
+<td style="text-align:center">如果值存在，就对该值执行提供的mapping函数调用</td>
+</tr>
+<tr>
+<td style="text-align:center">of</td>
+<td style="text-align:center">将指定值用Optional封装之后返回，如果该值为null，抛出一个NullPointerException异常</td>
+</tr>
+<tr>
+<td style="text-align:center">ofNullable</td>
+<td style="text-align:center">将指定值用Optional封装之后返回，如果该值为null，则返回一个空的Optional对象</td>
+</tr>
+<tr>
+<td style="text-align:center">orElse</td>
+<td style="text-align:center">如果有值则将其返回，否则返回一个默认值</td>
+</tr>
+<tr>
+<td style="text-align:center">orElseGet</td>
+<td style="text-align:center">如果有值则将其返回，否则返回一个由指定的Supplier接口生成的值</td>
+</tr>
+<tr>
+<td style="text-align:center">orElseThrow</td>
+<td style="text-align:center">如果有值则将其返回，否则抛出一个由指定的Supplier接口生成的异常</td>
+</tr>
+</tbody>
+</table>
+<h2 id="CompletableFuture"><a href="#CompletableFuture" class="headerlink" title="CompletableFuture"></a>CompletableFuture</h2><p>在Java8之前，我们会使用JDK提供的<code>Future</code>接口来进行一些异步的操作，其实<code>CompletableFuture</code>也是实现了<code>Future</code>接口， 并且基于<code>ForkJoinPool</code>来执行任务，因此本质上来讲，<code>CompletableFuture</code>只是对原有API的封装， 而使用CompletableFuture与原来的Future的不同之处在于可以将两个Future组合起来，或者如果两个Future是有依赖关系的，可以等第一个执行完毕后再实行第二个等特性。</p>
+<p>先来看看基本的使用方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Future&lt;Double&gt; <span class="title">getPriceAsync</span><span class="params">(<span class="keyword">final</span> String product)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> CompletableFuture&lt;Double&gt; futurePrice = <span class="keyword">new</span> CompletableFuture&lt;&gt;();</div><div class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</div><div class="line">        <span class="keyword">double</span> price = calculatePrice(product);</div><div class="line">        futurePrice.complete(price);  <span class="comment">//完成后使用complete方法，设置future的返回值</span></div><div class="line">    &#125;).start();</div><div class="line">    <span class="keyword">return</span> futurePrice;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>得到Future之后就可以使用get方法来获取结果，CompletableFuture提供了一些工厂方法来简化这些API，并且使用函数式编程的方式来使用这些API，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Future&lt;Double&gt; price = CompletableFuture.supplyAsync(() -&gt; calculatePrice(product));</div></pre></td></tr></table></figure>
+<p>代码是不是一下子简洁了许多呢。之前说了，CompletableFuture可以组合多个Future，不管是Future之间有依赖的，还是没有依赖的。 如果第二个请求依赖于第一个请求的结果，那么可以使用<code>thenCompose</code>方法来组合两个Future</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">findPriceAsync</span><span class="params">(String product)</span> </span>&#123;</div><div class="line">    List&lt;CompletableFutute&lt;String&gt;&gt; priceFutures = tasks.stream()</div><div class="line">    .map(task -&gt; CompletableFuture.supplyAsync(() -&gt; task.getPrice(product),executor))</div><div class="line">    .map(future -&gt; future.thenApply(Work::parse))</div><div class="line">    .map(future -&gt; future.thenCompose(work -&gt; CompletableFuture.supplyAsync(() -&gt; Count.applyCount(work), executor)))</div><div class="line">    .collect(Collectors.toList());</div><div class="line"> </div><div class="line">    <span class="keyword">return</span> priceFutures.stream().map(CompletableFuture::join).collect(Collectors.toList());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面这段代码使用了<code>thenCompose</code>来组合两个CompletableFuture。<code>supplyAsync</code>方法第二个参数接受一个自定义的Executor。 首先使用CompletableFuture执行一个任务，调用<code>getPrice</code>方法，得到一个Future，之后使用<code>thenApply</code>方法，将Future的结果应用<code>parse</code>方法， 之后再使用执行完<code>parse</code>之后的结果作为参数再执行一个<code>applyCount</code>方法，然后收集成一个<code>CompletableFuture&lt;String&gt;</code>的List， 最后再使用一个流，调用CompletableFuture的<code>join</code>方法，这是为了等待所有的异步任务执行完毕，获得最后的结果。</p>
+<p>注意，这里必须使用两个流，如果在一个流里调用<code>join</code>方法，那么由于Stream的延迟特性，所有的操作还是会串行的执行，并不是异步的。</p>
+<p>再来看一个两个Future之间没有依赖关系的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Future&lt;String&gt; futurePriceInUsd = CompletableFuture.supplyAsync(() -&gt; shop.getPrice(“price1”))</div><div class="line">                                    .thenCombine(CompletableFuture.supplyAsync(() -&gt; shop.getPrice(“price2”)), (s1, s2) -&gt; s1 + s2);</div></pre></td></tr></table></figure>
+<p>这里有两个异步的任务，使用<code>thenCombine</code>方法来组合两个Future，<code>thenCombine</code>方法的第二个参数就是用来合并两个Future方法返回值的操作函数。</p>
+<p>有时候，我们并不需要等待所有的异步任务结束，只需要其中的一个完成就可以了，CompletableFuture也提供了这样的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//假设getStream方法返回一个Stream&lt;CompletableFuture&lt;String&gt;&gt;</span></div><div class="line">CompletableFuture[] futures = getStream(“listen”).map(f -&gt; f.thenAccept(System.out::println)).toArray(CompletableFuture[]::<span class="keyword">new</span>);</div><div class="line"><span class="comment">//等待其中的一个执行完毕</span></div><div class="line">CompletableFuture.anyOf(futures).join();</div></pre></td></tr></table></figure>
+<p>使用<code>anyOf</code>方法来响应CompletableFuture的completion事件。</p>
+<h2 id="新的时间和日期API"><a href="#新的时间和日期API" class="headerlink" title="新的时间和日期API"></a>新的时间和日期API</h2><p>Java8之前的时间和日期API并不好用，而且在线程安全性等方面也存在问题，一般会借助一些开源类库来解决时间处理的问题。在JDK1.8中新加入了时间和日期的API， 借助这些新的API基本可以不再需要开源类库的帮助来完成时间的处理了。</p>
+<p>Java8中加入了<code>LocalDateTime, LocalDate, LocalTime, Duration, Period, Instant, DateTimeFormatter</code>等等API，来看一些使用这些API的简单的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建日期</span></div><div class="line">LocalDate date = LocalDate.of(<span class="number">2017</span>,<span class="number">1</span>,<span class="number">21</span>); <span class="comment">//2017-01-21</span></div><div class="line"><span class="keyword">int</span> year = date.getYear() <span class="comment">//2017</span></div><div class="line">Month month = date.getMonth(); <span class="comment">//JANUARY</span></div><div class="line"><span class="keyword">int</span> day = date.getDayOfMonth(); <span class="comment">//21</span></div><div class="line">DayOfWeek dow = date.getDayOfWeek(); <span class="comment">//SATURDAY</span></div><div class="line"><span class="keyword">int</span> len = date.lengthOfMonth(); <span class="comment">//31(days in January)</span></div><div class="line"><span class="keyword">boolean</span> leap = date.isLeapYear(); <span class="comment">//false(not a leap year)</span></div><div class="line"> </div><div class="line"><span class="comment">//时间的解析和格式化</span></div><div class="line">LocalDate date = LocalDate.parse(“<span class="number">2017</span>-<span class="number">01</span>-<span class="number">21</span>”);</div><div class="line">LocalTime time = LocalTime.parse(“<span class="number">13</span>:<span class="number">45</span>:<span class="number">20</span>”);</div><div class="line"> </div><div class="line">LocalDateTime now = LocalDateTime.now();</div><div class="line">now.format(DateTimeFormatter.BASIC_ISO_DATE);</div><div class="line"> </div><div class="line"><span class="comment">//合并日期和时间</span></div><div class="line">LocalDateTime dt1 = LocalDateTime.of(<span class="number">2017</span>, Month.JANUARY, <span class="number">21</span>, <span class="number">18</span>, <span class="number">7</span>);</div><div class="line">LocalDateTime dt2 = LocalDateTime.of(localDate, time);</div><div class="line">LocalDateTime dt3 = localDate.atTime(<span class="number">13</span>,<span class="number">45</span>,<span class="number">20</span>);</div><div class="line">LocalDateTime dt4 = localDate.atTime(time);</div><div class="line">LocalDateTime dt5 = time.atDate(localDate);</div><div class="line"> </div><div class="line"><span class="comment">//操作日期</span></div><div class="line">LocalDate date1 = LocalDate.of(<span class="number">2014</span>,<span class="number">3</span>,<span class="number">18</span>); <span class="comment">//2014-3-18</span></div><div class="line">LocalDate date2 = date1.plusWeeks(<span class="number">1</span>); <span class="comment">//2014-3-25</span></div><div class="line">LocalDate date3 = date2.minusYears(<span class="number">3</span>); <span class="comment">//2011-3-25</span></div><div class="line">LocalDate date4 = date3.plus(<span class="number">6</span>, ChronoUnit.MONTHS); <span class="comment">//2011-09-25</span></div></pre></td></tr></table></figure>
+<p>可以发现，新的时间和日期API都是不可变的，并且是线程安全的，之前使用的比如<code>SimpleDateFormat</code>不是线程安全的， 现在可以使用<code>DateTimeFormatter</code>来代替，<code>DateTimeFormatter</code>是线程安全的。</p>
+<p>以上只是Java8提供的新时间和日期API的一部分，更多的内容可以参考官网文档，有了这些API，相信完全可以不再依赖开源的类库来进行时间的处理。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>以上只是对Java8的新特性进行了一个非常简单的介绍，由于近年来函数式编程很火，Java8也受函数式编程思想的影响，吸收了函数式编程好的地方， 很多新特性都是按照函数式编程来设计的。关于Java8还有非常多的细节没有提到，这些需要我们自行去学习，推荐一本学习Java8非常好的书籍——《Java8实战》， 看完这本书对Java8的使用可以有一个比较清楚的了解。</p>
+<p>现在已经是2017年了，据说今年会推出Java9，Java9会推出什么新特性，让我们拭目以待吧。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Java8/">Java8</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2017/04/26/java-8-in-practice/" data-title="Java8学习笔记 | Lost Youth" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/04/23/distribute-micro-service-2/" title="微服务业务开发三个难题－拆分、事务、查询（下）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  微服务业务开发三个难题－拆分、事务、查询（下）</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式接口"><span class="toc-number">1.</span> <span class="toc-text">函数式接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda表达式和方法引用"><span class="toc-number">2.</span> <span class="toc-text">Lambda表达式和方法引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream"><span class="toc-number">3.</span> <span class="toc-text">Stream</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#默认方法"><span class="toc-number">4.</span> <span class="toc-text">默认方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optional"><span class="toc-number">5.</span> <span class="toc-text">Optional</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CompletableFuture"><span class="toc-number">6.</span> <span class="toc-text">CompletableFuture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新的时间和日期API"><span class="toc-number">7.</span> <span class="toc-text">新的时间和日期API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">8.</span> <span class="toc-text">小结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微服务/" title="微服务">微服务<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/唯一ID/" title="唯一ID">唯一ID<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySql/" title="MySql">MySql<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/RocketMQ/" title="RocketMQ">RocketMQ<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java8/" title="Java8">Java8<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="xiaoyou">xiaoyou</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
