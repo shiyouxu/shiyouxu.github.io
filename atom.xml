@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-05-04T05:35:05.000Z</updated>
+  <updated>2017-05-12T00:51:28.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring Boot In Action</title>
+    <link href="http://yoursite.com/2017/05/12/spring-boot-in-action/"/>
+    <id>http://yoursite.com/2017/05/12/spring-boot-in-action/</id>
+    <published>2017-05-12T00:51:00.000Z</published>
+    <updated>2017-05-12T00:51:28.000Z</updated>
+    
+    <content type="html"><![CDATA[
+
+	<div class="row">
+    <embed src="http://oo77gy3uq.bkt.clouddn.com/SpringBootInAction.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+]]></content>
+    
+    <summary type="html">
+    
+      Spring Boot In Action
+    
+    </summary>
+    
+    
+      <category term="Spring Boot" scheme="http://yoursite.com/tags/Spring-Boot/"/>
+    
+  </entry>
   
   <entry>
     <title>我必须得告诉大家的MySQL优化原理</title>
@@ -609,142 +636,6 @@
   </entry>
   
   <entry>
-    <title>微服务业务开发三个难题－拆分、事务、查询（下）</title>
-    <link href="http://yoursite.com/2017/04/23/distribute-micro-service-2/"/>
-    <id>http://yoursite.com/2017/04/23/distribute-micro-service-2/</id>
-    <published>2017-04-23T13:50:00.000Z</published>
-    <updated>2017-04-26T06:05:57.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><a href="http://mp.weixin.qq.com/s?__biz=MzA5MzQ2NTY0OA==&amp;mid=2650796589&amp;idx=1&amp;sn=37e7bee10cb31e6698411a249eafc641&amp;chksm=88562f72bf21a6646bf09070a52cca41bbf458ecbde44b52d1712356f2ab881095c3e987cc1d&amp;scene=21#wechat_redirect" target="_blank" rel="external">上集</a>我们阐述了使用微服务体系架构的关键障碍是领域模型，事务和查询，这三个障碍似乎和功能拆分具有天然的对抗。只要功能拆分了，就涉及这三个难题。</p>
-<p>然后我们向你展示了一种解决方案就是将每个服务的业务逻辑实现为一组DDD聚合。然后每个事务只能更新或创建一个单独的聚合。然后通过事件来维护聚合（和服务）之间的数据一致性。</p>
-<p>在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，<strong>事件源</strong>是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为<strong>命令查询责任分离（CQRS）</strong>的方法来实现可扩展和高性能的查询。</p>
-<p><strong>可靠地更新状态和发布事件</strong></p>
-<p>从表面上看，使用事件来保持聚合之间的一致性似乎很简单。</p>
-<p>当一个服务创建或更新数据库的一个聚合时，它只是简单地发布一个事件。</p>
-<p>但是，这只是表象，其实还有一个核心问题就是：更新数据库和发布事件必须是原子的。否则，就会出现类似这样的情况：如果服务在更新数据库之后但在发布事件之前崩溃，则系统就出现了不一致的问题。</p>
-<p>传统的解决方案是一般都是使用分布式事务来搞，一个涉及数据库和消息broker的分布式事务。但是，由于上一集所述的原因，2PC不是一个可行的选择。</p>
-<p>其实除了2PC ，还有几种解决这个问题的方法。</p>
-<p>一种解决方案就是，<strong>应用程序可以通过向类似Kafka这样的消息中间件的broker发布一个事件来执行更新</strong>。然后一个消息consumer订阅这个事件，通过消费该事件然后最终更新数据库。这种方法可以确保数据库被更新并且事件被发布。</p>
-<p>但是缺点就是这种一致性模型过于复杂，至少有点复杂。而且应用程序不能够立即读取到自己刚刚的写入。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552458911.jpg" alt=""></p>
-<p><em>图1 - 通过发布事件到消息broker来更新数据库</em></p>
-<p>另一种做法就是，如图2所示，就是应用程序追加事务日志到数据库（a.k.a.commit log），将每个记录的更改转换为事件，然后把事件发布到消息broker。这种做法的一个重要好处就是应用程序本身不需要任何的改变。</p>
-<p>然而，一个缺点是，这种做法是一种底层（low-level）的事件，而不是上层业务事件。可能难以将上层业务事件（由于数据库更新的原因）从底层更改逆转到表中的行。</p>
-<blockquote>
-<p>原文：it can be difficult toreverse engineer the high-level business event - the reason for the databaseupdate - from the low-level changes to the rows in the tables.</p>
-</blockquote>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552567780.jpg" alt=""></p>
-<p><strong>图**</strong>2 -<strong> </strong>追加数据库事务日志**</p>
-<p>第三种解决方案就是，图3所示的这种，使用数据库表来作为一种临时性的message queue。当一个服务更新一个聚合，它会insert一个事件到EVENTS表，作为本地ACID事务的一部分。然后一个单独的进程轮询EVENTS表并将事件发布到消息broker。</p>
-<p>这种做法的好处就是service能够发布high-level的业务事件。</p>
-<p>缺点是这种做法容易出错，有这种潜在的可能，因为事件发布代码必须与业务逻辑同步。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552770649.jpg" alt=""></p>
-<p><strong>图**</strong>3 -<strong> </strong>使用数据库表作为<strong>**message queue</strong></p>
-<p>上面三种做法都有比较典型的缺点。</p>
-<p><strong>发布一个事件到**</strong>message broker<strong>**并稍后更新</strong>的做法总是不能提供一种read-your-writes的一致性，也就是只能保证最终一致。</p>
-<p><strong>追加事务日志</strong>提供了一致的读取，但却不能发布高级业务事件。</p>
-<p><strong>使用数据库表</strong>作为message queue提供了一致的读取并且可以发布high-level业务事件，但</p>
-<p>却对开发人员有依赖，就是开发人员得记得在状态发生改变的时候加上发布事件的逻辑。</p>
-<p>幸运的是，我们还有另外一种解决方案，那就是event sourcing，事件源。它是一种针对持久化和业务逻辑的一种以事件为中心方法，称为事件源。这里解释的不够清楚，稍后慢慢展开。</p>
-<p><strong>使用事件源来开发微服务</strong></p>
-<p>事件源（Event sourcing）是一种以事件为中心的持久化方法。这不是一个新的概念。</p>
-<p>我第一次了解到这个概念是在大概五年多以前，之后对这个新生事物一直充满了好奇，直到我开始开发微服务。接下来，你将会看到通过事件源来实现事件驱动的微服务架构是多么不错的一种方法。</p>
-<p>一个service通过event sourcing使用一系列的事件来持久化每个聚合。</p>
-<p>当创建或更新一个聚合的时候，这个service会在数据库里保存一个或多个事件，这种数据库里存储event的方式可以叫做是event store，以下我们就叫“事件数据库”。</p>
-<p>它通过加载这些事件并replay这些事件，从而实现更新聚合的当前状态。</p>
-<p>在函数式编程里，一个service通过执行一个函数式的fold或reduce来重构聚合，而不是事件。</p>
-<p>由于事件就是状态，所以你就不会再有原子地更新状态和发布事件的问题了。</p>
-<p>例如，比如订单服务（Order Service）。不是将每个订单作为一行存储在ORDERS表中，而是将每个订单聚合作为一系列的事件，比如订单已创建，订单已批准，订单已发货等持久化到EVENTS表中。图4显示了这些事件如何存储在基于SQL的事件数据库（event store）中。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552990545.jpg" alt=""></p>
-<p><strong>图**</strong>4 -<strong> </strong>使用事件源来持久化一个订单**</p>
-<p>每列的意思：</p>
-<ul>
-<li><p><strong>entity_type</strong> 和<strong>entity_id</strong> –唯一标识一个聚合</p>
-</li>
-<li><p><strong>event_id</strong> – 事件ID，唯一标识</p>
-</li>
-<li><p><strong>event_type</strong> – 事件类型</p>
-</li>
-<li><p><strong>event_data</strong> -事件属性的序列化JSON表示</p>
-</li>
-</ul>
-<p>一些事件包含大量数据。例如，订单创建（Order Created）事件包含完整订单，包括其订单项，付款信息和交货信息。其他事件，如订单出货（Order Shipped）事件，包含很少或没有数据，只是表示状态转换。</p>
-<p><strong>事件源（**</strong>Event Sourcing<strong>**）和发布事件</strong></p>
-<p>严格的讲，<strong>事件源只是简单的将聚合们作为事件进行了持久化</strong>。更直接的说，就是使用事件源来作为一种可靠的事件发布机制。保存一个事件是一个固有的原子操作，它可以确保事件数据库（event store）把事件传递给感兴趣的服务。</p>
-<p>例如，如果事件被存储在上面所示的EVENTS表中，订阅者可以简单地轮询表以查找新事件。更复杂的事件数据库（event store）将使用另一种做法，这种做法具有更高性能和可扩展性。例如，Eventuate Local使用追加事务日志的方式。它从MySQL replication流中读取插入到EVENTS表中的事件，并将它们发布到Apache Kafka。</p>
-<blockquote>
-<p>至于Eventuate Local是个什么鬼？你可以去github 搜搜。下面放一张图：</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553153761.jpg" alt=""></p>
-</blockquote>
-<p><strong>使用**</strong>Snapshot<strong>**改善性能</strong></p>
-<p>订单（Order）聚合具有相对较少的状态转换，因此它只有少量的事件。</p>
-<p>所以，针对这些事件查询事件数据库（event store）并重构Order聚合，效率是不错的。然而，一些聚合有很多的事件。例如，客户（Customer）聚合可能有大量的预留信用（Credit Reserved）事件。随着时间的推移，加载和消费（fold）这些事件的效率会越来越低。</p>
-<p>一个常见的解决方案是定期保存聚合状态的快照（snapshot）。应用程序通过加载最近的快照然后从快照创建之后发生的那些事件开始来恢复聚合的状态。</p>
-<p>在函数式下，快照就是折叠（fold）的初始值。（原文：In functional terms, the snapshot is the initial value of thefold. ）如果聚合是一个简单，容易序列化的结构，则快照可以简单地是JSON序列化格式。更复杂的聚合可以使用Memento模式（Mementopattern）进行快照。至于这种设计模式具体是什么鬼，你可以自己查阅。</p>
-<p>在线商店示例中的客户（Customer）聚合具有非常简单的结构：客户的信息，他们的信用额度（credit limit）和他们的信用预留（credit reservations）。</p>
-<p>客户（Customer）的快照只是其状态的JSON序列化。图5展现了如何从与事件＃103的客户（Customer）的状态相对应的快照中重新创建一个客户（Customer）。客户服务（Customer Service）只需要加载快照和加载事件＃103后发生的事件。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553325815.jpg" alt=""></p>
-<p><strong>图**</strong>5 –<strong> </strong>使用快照来优化性能**</p>
-<p>客户服务（Customer Service）通过反序列化快照的JSON后加载并消费＃104到＃106的事件来重新创建那个客户（Customer）。</p>
-<p><strong>事件源实现</strong></p>
-<p><strong>事件数据库（event store）是数据库和消息borker的混合体</strong>。它是一个数据库，因为它有一个API，用于通过主键插入和检索聚合的事件。事件数据库（event store）也是消息broker，因为它具有用于订阅事件的API。</p>
-<p>有一些不同的方法来实现事件数据库（event store）。</p>
-<p><strong>一个做法是编写自己的事件源框架</strong>。例如，您可以在RDBMS中持久化事件。一种简单的，但性能略低的方式来发布事件，然后订阅者轮询事件的EVENTS表。</p>
-<p><strong>另一个做法是使用专用的事件数据库（event store）</strong>，它通常能够提供更丰富的功能以及更好的性能和可扩展性。“事件源”的开发者之一Greg Young有一个基于.NET的开源事件数据库，称为Event Store。 Lightbend，这个公司以前叫Typesafe，有一个叫Lagom的微服务框架，是基于事件源的。这里推荐一个我自己的创业项目，Eventuate，一个用于微服务的事件源框架，你可以把它作为一个云服务，你也可以把它认为是一个基于Kafka 或RDBMS的开源项目。</p>
-<p><strong>事件源的好处与缺点</strong></p>
-<p>事件源有好处也有缺点。</p>
-<p>事件源的一个主要优点是它可以在聚合的状态发生变化时可靠地发布事件。它为事件驱动的微服务架构打下了良好的基础。而且，由于每个事件都可以记录进行更改的用户的身份，因此事件源还提供了一个准确的审核日志。事件流可用于各种其他目的，包括向用户发送通知以及应用集成等等。</p>
-<p>事件源的另一个好处是它存储每个聚合的整个历史。你可以轻松实现检索聚合的过去状态的时态查询。要确定在给定时间点的聚合的状态，您只需消费（fold）直到该点为止发生的事件。例如，可以直接计算过去某个时间点客户的可用信用额。</p>
-<p>事件源也避免了O / R阻抗失衡的问题。这是因为它持久化了事件而不是聚合。事件通常具有简单，容易序列化的结构。服务（service）可以通过序列化其状态的记录来对复杂聚合进行快照。 Memento模式在聚合和它的序列化表示之间增加了一个中间层。</p>
-<blockquote>
-<p><strong><em>有关O/R impedance mismatch：</em></strong></p>
-<p>对象关系阻抗失衡（object-relational impedance mismatch ）是当关系数据库管理系统（RDBMS）由以面向对象的编程语言或风格编写的应用程序（或多个应用程序）服务时经常遇到的一组概念和技术困难，特别是因为对象或类定义必须映射到关系模式定义的数据库表。</p>
-</blockquote>
-<p>事件源当然不是完美的，它也有一些缺点。它是一个完全不一样的和而且你可能并不熟悉的编程模型，所以要花一些时间去学习。为了使现有应用程序使用事件源，你必须要重写业务逻辑。幸运的是，这是一个相当机械的转换，你可以在将应用程序迁移到微服务的时候做这件事情。</p>
-<p>事件源的另一个缺点是消息broker通常保证至少一次（at-least once）传递。非幂等的事件处理handler必须检测并丢弃那些重复的事件。事件源框架可以通过为每个事件分配单调递增的id来解决这个问题。事件处理handler然后可以通过对最大事件ID跟踪来检测重复事件。</p>
-<p>事件源的另一个局限就是事件（和快照！）的schema将随时间发展。  由于事件永久存储，当服务重建聚合时，服务可能需要折叠与多个schema版本对应的事件。  简化服务的一种方法是，当事件源框架从事件数据库（event store）加载它们时，将所有事件转换为最新版本的模式。因此，服务只需消费（fold）最新版本的事件。</p>
-<p>事件源的另一个缺点是查询事件数据库（event store）可能比较困难。让我们想象一下，例如，您需要找到信用额度较低的客户。你不能简单地写SELECT * FROM CUSTOMERWHERE CREDIT_LIMIT ？ AND c.CREATION_DATE&gt;？。因为根本就没有信用额度（CREDIT_LIMIT）这样的列。相反，你不得不使用嵌套SELECT的更复杂而且还可能无效的查询，通过处理和消费（fold）事件来计算信用额度。更糟糕的是，基于NoSQL的事件数据库（event store）通常只支持基于主键的查找。因此，必须使用“命令查询责任分离“（CQRS）的方法实施查询。CQRS 的全称：Command Query Responsibility Segregation。</p>
-<p>我们接下来的内容就是介绍CQRS。</p>
-<p><strong>使用**</strong>CQRS<strong>**实现查询</strong></p>
-<p>事件源是在微服务体系结构中实现高效查询的主要障碍。这还不是唯一的问题，还有比如你使用SQL去查找一些高价值订单的新客户。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> *</div><div class="line"><span class="keyword">FROM</span> CUSTOMER c, <span class="keyword">ORDER</span> o</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">   c.id = o.ID</div><div class="line">     <span class="keyword">AND</span> o.ORDER_TOTAL &gt; <span class="number">100000</span></div><div class="line">     <span class="keyword">AND</span> o.STATE = <span class="string">'SHIPPED'</span></div><div class="line">     <span class="keyword">AND</span> c.CREATION_DATE &gt; ?</div></pre></td></tr></table></figure>
-<p>在微服务架构中，你不能join CUSTOMER和ORDER这两张表。每个表由不同的服务所拥有，并且只能通过该服务的API访问。你不能编写连接多个服务所拥有的表的传统查询。事件源使事情变得更糟，阻碍你编写简单，直接的查询。让我们来看看在微服务架构中是如何实现类似查询的。</p>
-<p><strong>如何使用**</strong>CQRS**</p>
-<p><strong>实现查询的好方法是使用称为命令查询责任分离（CQRS）的体系结构模式： Command Query Responsibility Segregation。</strong>如名称所示，CQRS将应用程序分为两部分。第一部分是<strong>命令侧（command-side）</strong>，其处理命令（例如，HTTP POST，PUT和DELETE）以创建，更新和删除聚合。前提是这些聚合是使用事件源实现的。应用程序的第二部分是<strong>查询侧（query-side）</strong>，其通过查询聚合的一个或多个物化视图（materialized views）来处理查询（例如HTTP GET）。查询侧通过订阅由命令侧发布的事件来保持视图（view）与聚合（aggregate）同步。</p>
-<p>查询侧（query-side）视图可以使用任何类型的能满足需求的数据库来实现。根据需求，应用程序的查询端可能使用一个或多个以下数据库：</p>
-<p><strong>表**</strong>1.<strong> </strong>查询侧视图数据库选择**</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553705958.jpg" alt=""></p>
-<p>在很多场合，CQRS是一个以事件为基础（event-based）的综合体，比如使用RDBMS作为记录系统再使用比如Elasticsearch来处理文本查询。CQRS的查询侧可以使用其它类型的数据库，支持多种类型的数据库，不仅仅是文本搜索引擎。而且，它通过订阅事件准实时地去更新查询侧的视图。</p>
-<p>图6显示了应用于在线商店示例的CQRS模式。客户服务（Customer Service）和订单服务（Order Service）是命令端服务。它们提供用于创建和更新客户和订单的API。客户视图服务（Customer View Service）是查询侧服务。它提供了一个用于查询客户的API。</p>
-<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553811388.jpg" alt=""></p>
-<p><strong>图**</strong>6 –<strong> </strong>在线商店中使用<strong> </strong>CQRS**</p>
-<p>客户视图服务（Customer View Service）订阅命令端服务发布的客户（Customer）和订单（Order）事件。它更新那个用MongoDB实现的视图存储（view store）。该服务维护一个MongoDB文档集合，每个客户一个。每个文档都具有客户详细信息的属性。它还具有存储客户最近订单的属性。此集合支持各种查询，包括上面说到的那些查询。</p>
-<p><strong>CQRS**</strong>的好处和缺点**</p>
-<p>CQRS既有优点也有缺点。 CQRS的一个主要优点是它可以在微服务架构中实现查询，特别是使用事件源的架构。它使应用程序有效地支持一组不同的查询。另一个好处就是把命令侧和查询侧分离，达到了解耦的作用。</p>
-<p>CQRS也有一些缺点。一个缺点就是需要额外的工作来开发和维护这套系统。你需要开发和部署更新和查询视图的查询端服务。还有就是你需要部署视图数据库（view store）。</p>
-<p>CQRS的另一个缺点是处理命令侧和查询侧视图之间的“滞后”。查询层相比命令侧存在一定的时延。更新聚合，然后立即查询视图的客户端应用程序可能会看到聚合的以前版本。所以必须通过一些手法来避免暴露这些潜在的不一致性给用户。</p>
-<p><strong>总结</strong></p>
-<p><strong>
-</strong></p>
-<p>使用事件来维护服务之间的数据一致性时的主要挑战是原子级地更新数据库和发布事件。传统的解决方案是使用跨数据库和消息broker的分布式事务。然而，2PC不是现代应用的可行技术。<strong>更好的方法是使用事件源，这是一种以事件为中心的方法来处理业务逻辑设计和持久化。</strong></p>
-<p>微服务架构中的另一个挑战是查询。查询通常需要join由多个服务拥有的数据。但是，join不能再使用了，因为数据对每个服务都是私有的。使用事件源还使得更加难以有效地实现查询，因为当前状态没有被显式地存储。<strong>解决方案是使用命令查询责任分离（CQRS）并维护可以容易查询的聚合的一个或多个物化视图。</strong></p>
-<blockquote>
-<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p><strong><img src="http://oo77gy3uq.bkt.clouddn.com/14929554011934.jpg" alt="">Chris Richardson</strong>是一位开发人员和架构师。 他是Java Champion和POJO in Action的作者，他描述了如何使用Spring和Hibernate等框架构建企业Java应用程序。 Chris也是早期CloudFoundry.com的创始人。 他与组织协商，改进他们如何开发和部署应用程序，并在他的第三个创业公司工作。 你可以在Twitter @crichardson和Eventuate上找到Chris。</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，**事件源**是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为**命令查询责任分离（CQRS）**的方法来实现可扩展和高性能的查询。
-    
-    </summary>
-    
-    
-      <category term="微服务" scheme="http://yoursite.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-  </entry>
-  
-  <entry>
     <title>微服务业务开发三个难题－拆分、事务、查询（上）</title>
     <link href="http://yoursite.com/2017/04/23/distribute-micro-service-1/"/>
     <id>http://yoursite.com/2017/04/23/distribute-micro-service-1/</id>
@@ -900,6 +791,142 @@ WHERE
       微服务架构变得越来越流行了。它是模块化的一种方法。它把一整块应用拆分成一个个服务。它让团队在开发大型复杂的应用时更快地交付出高质量的软件。团队成员们可以轻松地接受到新技术，因为他们可以使用最新且推荐的技术栈来实现各自的服务。微服务架构也通过让每个服务都被部署在最佳状态的硬件上而改善了应用的扩展性。
 但微服务不是万能的。特别是在 领域模型、事务以及查询这几个地方，似乎总是不能适应拆分。或者说这几块也是微服务需要专门处理的地方，相对于过去的单体架构。
 在这篇文章中，我会描述一种开发微服务的方法，这个方法可以解决这些问题。主要是通过领域模型设计，也就是DDD以及事件源（Event Sourcing）以及CQRS。让我们首先来看看开发人员在开发微服务的时候会遇到哪些问题吧。
+    
+    </summary>
+    
+    
+      <category term="微服务" scheme="http://yoursite.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>微服务业务开发三个难题－拆分、事务、查询（下）</title>
+    <link href="http://yoursite.com/2017/04/23/distribute-micro-service-2/"/>
+    <id>http://yoursite.com/2017/04/23/distribute-micro-service-2/</id>
+    <published>2017-04-23T13:50:00.000Z</published>
+    <updated>2017-04-26T06:05:57.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="http://mp.weixin.qq.com/s?__biz=MzA5MzQ2NTY0OA==&amp;mid=2650796589&amp;idx=1&amp;sn=37e7bee10cb31e6698411a249eafc641&amp;chksm=88562f72bf21a6646bf09070a52cca41bbf458ecbde44b52d1712356f2ab881095c3e987cc1d&amp;scene=21#wechat_redirect" target="_blank" rel="external">上集</a>我们阐述了使用微服务体系架构的关键障碍是领域模型，事务和查询，这三个障碍似乎和功能拆分具有天然的对抗。只要功能拆分了，就涉及这三个难题。</p>
+<p>然后我们向你展示了一种解决方案就是将每个服务的业务逻辑实现为一组DDD聚合。然后每个事务只能更新或创建一个单独的聚合。然后通过事件来维护聚合（和服务）之间的数据一致性。</p>
+<p>在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，<strong>事件源</strong>是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为<strong>命令查询责任分离（CQRS）</strong>的方法来实现可扩展和高性能的查询。</p>
+<p><strong>可靠地更新状态和发布事件</strong></p>
+<p>从表面上看，使用事件来保持聚合之间的一致性似乎很简单。</p>
+<p>当一个服务创建或更新数据库的一个聚合时，它只是简单地发布一个事件。</p>
+<p>但是，这只是表象，其实还有一个核心问题就是：更新数据库和发布事件必须是原子的。否则，就会出现类似这样的情况：如果服务在更新数据库之后但在发布事件之前崩溃，则系统就出现了不一致的问题。</p>
+<p>传统的解决方案是一般都是使用分布式事务来搞，一个涉及数据库和消息broker的分布式事务。但是，由于上一集所述的原因，2PC不是一个可行的选择。</p>
+<p>其实除了2PC ，还有几种解决这个问题的方法。</p>
+<p>一种解决方案就是，<strong>应用程序可以通过向类似Kafka这样的消息中间件的broker发布一个事件来执行更新</strong>。然后一个消息consumer订阅这个事件，通过消费该事件然后最终更新数据库。这种方法可以确保数据库被更新并且事件被发布。</p>
+<p>但是缺点就是这种一致性模型过于复杂，至少有点复杂。而且应用程序不能够立即读取到自己刚刚的写入。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552458911.jpg" alt=""></p>
+<p><em>图1 - 通过发布事件到消息broker来更新数据库</em></p>
+<p>另一种做法就是，如图2所示，就是应用程序追加事务日志到数据库（a.k.a.commit log），将每个记录的更改转换为事件，然后把事件发布到消息broker。这种做法的一个重要好处就是应用程序本身不需要任何的改变。</p>
+<p>然而，一个缺点是，这种做法是一种底层（low-level）的事件，而不是上层业务事件。可能难以将上层业务事件（由于数据库更新的原因）从底层更改逆转到表中的行。</p>
+<blockquote>
+<p>原文：it can be difficult toreverse engineer the high-level business event - the reason for the databaseupdate - from the low-level changes to the rows in the tables.</p>
+</blockquote>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552567780.jpg" alt=""></p>
+<p><strong>图**</strong>2 -<strong> </strong>追加数据库事务日志**</p>
+<p>第三种解决方案就是，图3所示的这种，使用数据库表来作为一种临时性的message queue。当一个服务更新一个聚合，它会insert一个事件到EVENTS表，作为本地ACID事务的一部分。然后一个单独的进程轮询EVENTS表并将事件发布到消息broker。</p>
+<p>这种做法的好处就是service能够发布high-level的业务事件。</p>
+<p>缺点是这种做法容易出错，有这种潜在的可能，因为事件发布代码必须与业务逻辑同步。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552770649.jpg" alt=""></p>
+<p><strong>图**</strong>3 -<strong> </strong>使用数据库表作为<strong>**message queue</strong></p>
+<p>上面三种做法都有比较典型的缺点。</p>
+<p><strong>发布一个事件到**</strong>message broker<strong>**并稍后更新</strong>的做法总是不能提供一种read-your-writes的一致性，也就是只能保证最终一致。</p>
+<p><strong>追加事务日志</strong>提供了一致的读取，但却不能发布高级业务事件。</p>
+<p><strong>使用数据库表</strong>作为message queue提供了一致的读取并且可以发布high-level业务事件，但</p>
+<p>却对开发人员有依赖，就是开发人员得记得在状态发生改变的时候加上发布事件的逻辑。</p>
+<p>幸运的是，我们还有另外一种解决方案，那就是event sourcing，事件源。它是一种针对持久化和业务逻辑的一种以事件为中心方法，称为事件源。这里解释的不够清楚，稍后慢慢展开。</p>
+<p><strong>使用事件源来开发微服务</strong></p>
+<p>事件源（Event sourcing）是一种以事件为中心的持久化方法。这不是一个新的概念。</p>
+<p>我第一次了解到这个概念是在大概五年多以前，之后对这个新生事物一直充满了好奇，直到我开始开发微服务。接下来，你将会看到通过事件源来实现事件驱动的微服务架构是多么不错的一种方法。</p>
+<p>一个service通过event sourcing使用一系列的事件来持久化每个聚合。</p>
+<p>当创建或更新一个聚合的时候，这个service会在数据库里保存一个或多个事件，这种数据库里存储event的方式可以叫做是event store，以下我们就叫“事件数据库”。</p>
+<p>它通过加载这些事件并replay这些事件，从而实现更新聚合的当前状态。</p>
+<p>在函数式编程里，一个service通过执行一个函数式的fold或reduce来重构聚合，而不是事件。</p>
+<p>由于事件就是状态，所以你就不会再有原子地更新状态和发布事件的问题了。</p>
+<p>例如，比如订单服务（Order Service）。不是将每个订单作为一行存储在ORDERS表中，而是将每个订单聚合作为一系列的事件，比如订单已创建，订单已批准，订单已发货等持久化到EVENTS表中。图4显示了这些事件如何存储在基于SQL的事件数据库（event store）中。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929552990545.jpg" alt=""></p>
+<p><strong>图**</strong>4 -<strong> </strong>使用事件源来持久化一个订单**</p>
+<p>每列的意思：</p>
+<ul>
+<li><p><strong>entity_type</strong> 和<strong>entity_id</strong> –唯一标识一个聚合</p>
+</li>
+<li><p><strong>event_id</strong> – 事件ID，唯一标识</p>
+</li>
+<li><p><strong>event_type</strong> – 事件类型</p>
+</li>
+<li><p><strong>event_data</strong> -事件属性的序列化JSON表示</p>
+</li>
+</ul>
+<p>一些事件包含大量数据。例如，订单创建（Order Created）事件包含完整订单，包括其订单项，付款信息和交货信息。其他事件，如订单出货（Order Shipped）事件，包含很少或没有数据，只是表示状态转换。</p>
+<p><strong>事件源（**</strong>Event Sourcing<strong>**）和发布事件</strong></p>
+<p>严格的讲，<strong>事件源只是简单的将聚合们作为事件进行了持久化</strong>。更直接的说，就是使用事件源来作为一种可靠的事件发布机制。保存一个事件是一个固有的原子操作，它可以确保事件数据库（event store）把事件传递给感兴趣的服务。</p>
+<p>例如，如果事件被存储在上面所示的EVENTS表中，订阅者可以简单地轮询表以查找新事件。更复杂的事件数据库（event store）将使用另一种做法，这种做法具有更高性能和可扩展性。例如，Eventuate Local使用追加事务日志的方式。它从MySQL replication流中读取插入到EVENTS表中的事件，并将它们发布到Apache Kafka。</p>
+<blockquote>
+<p>至于Eventuate Local是个什么鬼？你可以去github 搜搜。下面放一张图：</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553153761.jpg" alt=""></p>
+</blockquote>
+<p><strong>使用**</strong>Snapshot<strong>**改善性能</strong></p>
+<p>订单（Order）聚合具有相对较少的状态转换，因此它只有少量的事件。</p>
+<p>所以，针对这些事件查询事件数据库（event store）并重构Order聚合，效率是不错的。然而，一些聚合有很多的事件。例如，客户（Customer）聚合可能有大量的预留信用（Credit Reserved）事件。随着时间的推移，加载和消费（fold）这些事件的效率会越来越低。</p>
+<p>一个常见的解决方案是定期保存聚合状态的快照（snapshot）。应用程序通过加载最近的快照然后从快照创建之后发生的那些事件开始来恢复聚合的状态。</p>
+<p>在函数式下，快照就是折叠（fold）的初始值。（原文：In functional terms, the snapshot is the initial value of thefold. ）如果聚合是一个简单，容易序列化的结构，则快照可以简单地是JSON序列化格式。更复杂的聚合可以使用Memento模式（Mementopattern）进行快照。至于这种设计模式具体是什么鬼，你可以自己查阅。</p>
+<p>在线商店示例中的客户（Customer）聚合具有非常简单的结构：客户的信息，他们的信用额度（credit limit）和他们的信用预留（credit reservations）。</p>
+<p>客户（Customer）的快照只是其状态的JSON序列化。图5展现了如何从与事件＃103的客户（Customer）的状态相对应的快照中重新创建一个客户（Customer）。客户服务（Customer Service）只需要加载快照和加载事件＃103后发生的事件。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553325815.jpg" alt=""></p>
+<p><strong>图**</strong>5 –<strong> </strong>使用快照来优化性能**</p>
+<p>客户服务（Customer Service）通过反序列化快照的JSON后加载并消费＃104到＃106的事件来重新创建那个客户（Customer）。</p>
+<p><strong>事件源实现</strong></p>
+<p><strong>事件数据库（event store）是数据库和消息borker的混合体</strong>。它是一个数据库，因为它有一个API，用于通过主键插入和检索聚合的事件。事件数据库（event store）也是消息broker，因为它具有用于订阅事件的API。</p>
+<p>有一些不同的方法来实现事件数据库（event store）。</p>
+<p><strong>一个做法是编写自己的事件源框架</strong>。例如，您可以在RDBMS中持久化事件。一种简单的，但性能略低的方式来发布事件，然后订阅者轮询事件的EVENTS表。</p>
+<p><strong>另一个做法是使用专用的事件数据库（event store）</strong>，它通常能够提供更丰富的功能以及更好的性能和可扩展性。“事件源”的开发者之一Greg Young有一个基于.NET的开源事件数据库，称为Event Store。 Lightbend，这个公司以前叫Typesafe，有一个叫Lagom的微服务框架，是基于事件源的。这里推荐一个我自己的创业项目，Eventuate，一个用于微服务的事件源框架，你可以把它作为一个云服务，你也可以把它认为是一个基于Kafka 或RDBMS的开源项目。</p>
+<p><strong>事件源的好处与缺点</strong></p>
+<p>事件源有好处也有缺点。</p>
+<p>事件源的一个主要优点是它可以在聚合的状态发生变化时可靠地发布事件。它为事件驱动的微服务架构打下了良好的基础。而且，由于每个事件都可以记录进行更改的用户的身份，因此事件源还提供了一个准确的审核日志。事件流可用于各种其他目的，包括向用户发送通知以及应用集成等等。</p>
+<p>事件源的另一个好处是它存储每个聚合的整个历史。你可以轻松实现检索聚合的过去状态的时态查询。要确定在给定时间点的聚合的状态，您只需消费（fold）直到该点为止发生的事件。例如，可以直接计算过去某个时间点客户的可用信用额。</p>
+<p>事件源也避免了O / R阻抗失衡的问题。这是因为它持久化了事件而不是聚合。事件通常具有简单，容易序列化的结构。服务（service）可以通过序列化其状态的记录来对复杂聚合进行快照。 Memento模式在聚合和它的序列化表示之间增加了一个中间层。</p>
+<blockquote>
+<p><strong><em>有关O/R impedance mismatch：</em></strong></p>
+<p>对象关系阻抗失衡（object-relational impedance mismatch ）是当关系数据库管理系统（RDBMS）由以面向对象的编程语言或风格编写的应用程序（或多个应用程序）服务时经常遇到的一组概念和技术困难，特别是因为对象或类定义必须映射到关系模式定义的数据库表。</p>
+</blockquote>
+<p>事件源当然不是完美的，它也有一些缺点。它是一个完全不一样的和而且你可能并不熟悉的编程模型，所以要花一些时间去学习。为了使现有应用程序使用事件源，你必须要重写业务逻辑。幸运的是，这是一个相当机械的转换，你可以在将应用程序迁移到微服务的时候做这件事情。</p>
+<p>事件源的另一个缺点是消息broker通常保证至少一次（at-least once）传递。非幂等的事件处理handler必须检测并丢弃那些重复的事件。事件源框架可以通过为每个事件分配单调递增的id来解决这个问题。事件处理handler然后可以通过对最大事件ID跟踪来检测重复事件。</p>
+<p>事件源的另一个局限就是事件（和快照！）的schema将随时间发展。  由于事件永久存储，当服务重建聚合时，服务可能需要折叠与多个schema版本对应的事件。  简化服务的一种方法是，当事件源框架从事件数据库（event store）加载它们时，将所有事件转换为最新版本的模式。因此，服务只需消费（fold）最新版本的事件。</p>
+<p>事件源的另一个缺点是查询事件数据库（event store）可能比较困难。让我们想象一下，例如，您需要找到信用额度较低的客户。你不能简单地写SELECT * FROM CUSTOMERWHERE CREDIT_LIMIT ？ AND c.CREATION_DATE&gt;？。因为根本就没有信用额度（CREDIT_LIMIT）这样的列。相反，你不得不使用嵌套SELECT的更复杂而且还可能无效的查询，通过处理和消费（fold）事件来计算信用额度。更糟糕的是，基于NoSQL的事件数据库（event store）通常只支持基于主键的查找。因此，必须使用“命令查询责任分离“（CQRS）的方法实施查询。CQRS 的全称：Command Query Responsibility Segregation。</p>
+<p>我们接下来的内容就是介绍CQRS。</p>
+<p><strong>使用**</strong>CQRS<strong>**实现查询</strong></p>
+<p>事件源是在微服务体系结构中实现高效查询的主要障碍。这还不是唯一的问题，还有比如你使用SQL去查找一些高价值订单的新客户。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> *</div><div class="line"><span class="keyword">FROM</span> CUSTOMER c, <span class="keyword">ORDER</span> o</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">   c.id = o.ID</div><div class="line">     <span class="keyword">AND</span> o.ORDER_TOTAL &gt; <span class="number">100000</span></div><div class="line">     <span class="keyword">AND</span> o.STATE = <span class="string">'SHIPPED'</span></div><div class="line">     <span class="keyword">AND</span> c.CREATION_DATE &gt; ?</div></pre></td></tr></table></figure>
+<p>在微服务架构中，你不能join CUSTOMER和ORDER这两张表。每个表由不同的服务所拥有，并且只能通过该服务的API访问。你不能编写连接多个服务所拥有的表的传统查询。事件源使事情变得更糟，阻碍你编写简单，直接的查询。让我们来看看在微服务架构中是如何实现类似查询的。</p>
+<p><strong>如何使用**</strong>CQRS**</p>
+<p><strong>实现查询的好方法是使用称为命令查询责任分离（CQRS）的体系结构模式： Command Query Responsibility Segregation。</strong>如名称所示，CQRS将应用程序分为两部分。第一部分是<strong>命令侧（command-side）</strong>，其处理命令（例如，HTTP POST，PUT和DELETE）以创建，更新和删除聚合。前提是这些聚合是使用事件源实现的。应用程序的第二部分是<strong>查询侧（query-side）</strong>，其通过查询聚合的一个或多个物化视图（materialized views）来处理查询（例如HTTP GET）。查询侧通过订阅由命令侧发布的事件来保持视图（view）与聚合（aggregate）同步。</p>
+<p>查询侧（query-side）视图可以使用任何类型的能满足需求的数据库来实现。根据需求，应用程序的查询端可能使用一个或多个以下数据库：</p>
+<p><strong>表**</strong>1.<strong> </strong>查询侧视图数据库选择**</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553705958.jpg" alt=""></p>
+<p>在很多场合，CQRS是一个以事件为基础（event-based）的综合体，比如使用RDBMS作为记录系统再使用比如Elasticsearch来处理文本查询。CQRS的查询侧可以使用其它类型的数据库，支持多种类型的数据库，不仅仅是文本搜索引擎。而且，它通过订阅事件准实时地去更新查询侧的视图。</p>
+<p>图6显示了应用于在线商店示例的CQRS模式。客户服务（Customer Service）和订单服务（Order Service）是命令端服务。它们提供用于创建和更新客户和订单的API。客户视图服务（Customer View Service）是查询侧服务。它提供了一个用于查询客户的API。</p>
+<p><img src="http://oo77gy3uq.bkt.clouddn.com/14929553811388.jpg" alt=""></p>
+<p><strong>图**</strong>6 –<strong> </strong>在线商店中使用<strong> </strong>CQRS**</p>
+<p>客户视图服务（Customer View Service）订阅命令端服务发布的客户（Customer）和订单（Order）事件。它更新那个用MongoDB实现的视图存储（view store）。该服务维护一个MongoDB文档集合，每个客户一个。每个文档都具有客户详细信息的属性。它还具有存储客户最近订单的属性。此集合支持各种查询，包括上面说到的那些查询。</p>
+<p><strong>CQRS**</strong>的好处和缺点**</p>
+<p>CQRS既有优点也有缺点。 CQRS的一个主要优点是它可以在微服务架构中实现查询，特别是使用事件源的架构。它使应用程序有效地支持一组不同的查询。另一个好处就是把命令侧和查询侧分离，达到了解耦的作用。</p>
+<p>CQRS也有一些缺点。一个缺点就是需要额外的工作来开发和维护这套系统。你需要开发和部署更新和查询视图的查询端服务。还有就是你需要部署视图数据库（view store）。</p>
+<p>CQRS的另一个缺点是处理命令侧和查询侧视图之间的“滞后”。查询层相比命令侧存在一定的时延。更新聚合，然后立即查询视图的客户端应用程序可能会看到聚合的以前版本。所以必须通过一些手法来避免暴露这些潜在的不一致性给用户。</p>
+<p><strong>总结</strong></p>
+<p><strong>
+</strong></p>
+<p>使用事件来维护服务之间的数据一致性时的主要挑战是原子级地更新数据库和发布事件。传统的解决方案是使用跨数据库和消息broker的分布式事务。然而，2PC不是现代应用的可行技术。<strong>更好的方法是使用事件源，这是一种以事件为中心的方法来处理业务逻辑设计和持久化。</strong></p>
+<p>微服务架构中的另一个挑战是查询。查询通常需要join由多个服务拥有的数据。但是，join不能再使用了，因为数据对每个服务都是私有的。使用事件源还使得更加难以有效地实现查询，因为当前状态没有被显式地存储。<strong>解决方案是使用命令查询责任分离（CQRS）并维护可以容易查询的聚合的一个或多个物化视图。</strong></p>
+<blockquote>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p><strong><img src="http://oo77gy3uq.bkt.clouddn.com/14929554011934.jpg" alt="">Chris Richardson</strong>是一位开发人员和架构师。 他是Java Champion和POJO in Action的作者，他描述了如何使用Spring和Hibernate等框架构建企业Java应用程序。 Chris也是早期CloudFoundry.com的创始人。 他与组织协商，改进他们如何开发和部署应用程序，并在他的第三个创业公司工作。 你可以在Twitter @crichardson和Eventuate上找到Chris。</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      在本集中，我们将会向你介绍使用事件的时候遇到了一个新的问题，就是怎么样通过原子方式更新聚合和发布事件。然后会展示如何使用事件源来解决这个问题，**事件源**是一种以事件为中心的业务逻辑设计和持久化的方法。之后，我们会阐述微服务架构下的查询困难的问题。然后向你介绍一种称为**命令查询责任分离（CQRS）**的方法来实现可扩展和高性能的查询。
     
     </summary>
     
