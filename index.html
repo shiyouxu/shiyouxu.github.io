@@ -182,7 +182,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySql/">MySql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RocketMQ/">RocketMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tomcat/">Tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/唯一ID/">唯一ID</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySql/">MySql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RocketMQ/">RocketMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tomcat/">Tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式-服务化/">分布式 服务化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/唯一ID/">唯一ID</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
                     </div>
                 </section>
                 
@@ -258,6 +258,70 @@
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-distrute-in-action" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/20/distrute-in-action/" class="article-date">
+      <time datetime="2017-05-20T02:50:00.000Z" itemprop="datePublished">2017-05-20</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/20/distrute-in-action/">分布式服务化系统一致性的“最佳实干</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              一致性是一个抽象的、具有多重含义的计算机术语，在不同应用场景下，有不同的定义和含义。在传统的IT时代，一致性通常指强一致性，强一致性通常体现在你中有我、我中有你、浑然一体；而在互联网时代，一致性的含义远远超出了它原有的含义，在我们讨论互联网时代的一致性之前，我们先了解一下互联网时代的特点，互联网时代信息量巨大、需要计算能力巨大，不但对用户响应速度要求快，而且吞吐量指标也要向外扩展（既：水平伸缩），于是单节点的服务器无法满足需求，服务节点开始池化，想想那个经典的故事，一只筷子一折就断，一把筷子怎么都折不断，可见人多力量大的思想是多么的重要，但是人多也不一定能解决所有事情，还得进行有序、合理的分配任务，进行有效的管理，于是互联网时代谈论最多的话题就是拆分，拆分一般分为“水平拆分”和“垂直拆分”（大家不要对应到数据库或者缓存拆分，这里主要表达一种逻辑）。这里，“水平拆分”指的是同一个功能由于单机节点无法满足性能需求，需要扩展成为多节点，多个节点具有一致的功能，组成一个服务池，一个节点服务一部分的请求量，团结起来共同处理大规模高并发的请求量。“垂直拆分”指的是按照功能拆分，秉着“专业的人干专业的事儿”的原则，把一个复杂的功能拆分到多个单一的简单的元功能，不同的元功能组合在一起，和未拆分前完成的功能是一致的，由于每个元功能职责单一、功能简单，让维护和变更都变得更简单、安全，更易于产品版本的迭代，在这样的一个互联网的时代和环境，一致性指分布式服务化系统之间的弱一致性，包括应用系统一致性和数据一致性。
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式-服务化/">分布式 服务化</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/05/20/distrute-in-action/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-spring-boot-in-action" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -819,70 +883,6 @@
       
         <p class="article-more-link">
           <a href="/2017/04/10/rocket-in-practice-1/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-head-first-git-branch" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/04/10/head-first-git-branch/" class="article-date">
-      <time datetime="2017-04-10T14:50:00.000Z" itemprop="datePublished">2017-04-10</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/10/head-first-git-branch/">Git由浅入深之分支管理</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              几乎所有的版本控制系统都以分支的方式进行操作，分支是独立于项目主线的一条支线，我们可以在不影响主线代码的情况下，在分支下进行工作。对于传统的一些版本控制工具来说，我们通常需要花费比较多的时间拷贝主线代码，创建一个分支，并且对分支的管理效率也越来越不令人满意，而如今备受推崇的Git确实名副其实，Git中的分支非常轻量，我们可以随时随意创建任意数量的新分支，几乎感觉不到什么延时，而且对分支的操作也很高效，如，切换分支，暂存内容，分支合并，分支提交等。
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/04/10/head-first-git-branch/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
